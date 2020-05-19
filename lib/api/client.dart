@@ -94,6 +94,14 @@ class ApiClient {
   setToken(String sign) {
     this.token = sign;
   }
+
+  subscribeTag(int tagId) async {
+    return dio.put("$baseUrl/tag/$tagId/subscription",options: RequestOptions(headers: {"Authorization": token}));
+  }
+
+  cancelSubscribeTag(int tagId) async {
+    return dio.delete("$baseUrl/tag/$tagId/subscription",options: RequestOptions(headers: {"Authorization": token}));
+  }
 }
 
 class CustomInterceptors extends InterceptorsWrapper {

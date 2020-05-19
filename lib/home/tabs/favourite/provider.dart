@@ -74,6 +74,7 @@ class FavoritesPage extends StatelessWidget {
             child: ListView.builder(
               itemCount: provider.dataSource.collections.length,
               controller: _controller,
+              physics: AlwaysScrollableScrollPhysics(),
               itemBuilder: (itemContext, idx) {
                 final CollectionEntity collection =
                 provider.dataSource.collections[idx];

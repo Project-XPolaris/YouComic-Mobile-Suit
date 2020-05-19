@@ -5,16 +5,14 @@ import 'package:youcomic/bottom_bar.dart';
 import 'package:youcomic/home/drawers/book_filter_drawer.dart';
 import 'package:youcomic/home/tabs/favourite/provider.dart';
 import 'package:youcomic/home/tabs/home/home.dart';
-import 'package:youcomic/home/tabs/user.dart';
+import 'package:youcomic/home/tabs/tag/tag.dart';
 import 'package:youcomic/pages/login/Login.dart';
 import 'package:youcomic/pages/search/search.dart';
 import 'package:youcomic/pages/start/StartPage.dart';
 import 'package:youcomic/providers/app.dart';
 import 'package:youcomic/providers/form.dart';
-import 'package:youcomic/home/tabs/home/provider.dart';
 import 'package:youcomic/providers/layout.dart';
 import 'package:youcomic/providers/login.dart';
-import 'package:youcomic/providers/search.dart';
 import 'package:youcomic/providers/start.dart';
 import 'package:youcomic/providers/user_provider.dart';
 
@@ -41,9 +39,7 @@ void main() {
       ChangeNotifierProvider<StartProvider>(
         create: (_) => StartProvider(),
       ),
-      ChangeNotifierProvider<SearchProvider>(
-        create: (_) => SearchProvider(),
-      ),
+
     ],
     child: MyApp(),
   ));
@@ -101,6 +97,7 @@ class MyHomePage extends StatelessWidget {
     return Consumer<LayoutProvider>(builder: (context, layoutProvider, child) {
       var searchTitle = TextField(
         onSubmitted: (searchKey) {
+          print(searchKey);
           SearchPage.launch(context, searchKey);
           layoutProvider.switchSearch();
         },
@@ -154,6 +151,7 @@ class MyHomePage extends StatelessWidget {
             HomePage(),
             BookListPage(),
             FavoritesPage(),
+            SubscribePage()
           ],
         ),
         // This trailing comma makes auto-formatting nicer for build methods.

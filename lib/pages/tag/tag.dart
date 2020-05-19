@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import 'package:youcomic/api/model/tag_entity.dart';
 import 'package:youcomic/components/book_info_bottom_sheet.dart';
 import 'package:youcomic/components/book_item.dart';
+import 'package:youcomic/pages/tag/menu.dart';
 import 'package:youcomic/pages/tag/provider.dart';
 
 class TagPage extends StatelessWidget {
@@ -21,6 +22,7 @@ class TagPage extends StatelessWidget {
       create: (_) => TagProvider(tag: tagEntity),
       child: Consumer<TagProvider>(builder: (context, tagProvider, builder) {
         tagProvider.onLoad();
+        tagProvider.checkIsSubscribe();
         Future _pullToRefresh() async {
           await tagProvider.bookDataSource.loadBooks(true);
         }
@@ -47,14 +49,15 @@ class TagPage extends StatelessWidget {
           if (maxScroll == pixel) {
             tagProvider.loadMoreBooks();
           } else {
-
           }
         });
+
         return Scaffold(
           appBar: AppBar(
             brightness: Brightness.light,
             backgroundColor: Colors.white,
             iconTheme: IconThemeData(color: Colors.black87),
+            actions: renderAction(tagProvider),
             title: Text(
               tagProvider.title,
               style: TextStyle(color: Colors.black87),

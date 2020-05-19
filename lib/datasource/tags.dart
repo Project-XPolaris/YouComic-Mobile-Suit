@@ -1,8 +1,9 @@
 import 'package:youcomic/api/client.dart';
+import 'package:youcomic/api/model/tag_entity.dart';
 import 'package:youcomic/api/util.dart';
 
 class TagDataSource {
-  var tags = [];
+  List<TagEntity> tags = [];
   var hasMore = true;
   int page = 1;
   int pageSize = 10;
@@ -19,11 +20,11 @@ class TagDataSource {
       "page_size": pageSize,
       "page": page + 1
     }..addAll(extraQueryParam));
-    var moreBooks = response.data["result"];
+    var moreTags = TagEntity.parseList(response.data["result"]);
     String nextUrl = response.data["next"];
     hasMore = nextUrl.isNotEmpty;
     page = response.data["page"];
-    tags.addAll(moreBooks);
+    tags.addAll(moreTags);
     isLoading = false;
   }
 
@@ -31,17 +32,16 @@ class TagDataSource {
     if ((tags.isEmpty && !isLoading) || force) {
       page = 1;
       isLoading = true;
-      var response = await ApiClient().fetchBooks({
+      var response = await ApiClient().fetchTags({
         "order": "-id",
         "page_size": pageSize,
         "page": page
       }..addAll(extraQueryParam));
-      tags = response.data["result"];
+      tags = TagEntity.parseList(response.data["result"]);
 
       String nextUrl = response.data["next"];
       hasMore = nextUrl.isNotEmpty;
       isLoading = false;
-      print("------------------------------");
     }
   }
 }

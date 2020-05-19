@@ -4,8 +4,9 @@ import 'package:youcomic/datasource/collections.dart';
 import 'package:youcomic/datasource/tags.dart';
 
 class SearchProvider extends ChangeNotifier {
-  var searchKey = "";
-  var title = "搜索";
+  String searchKey = "";
+  String title = "搜索";
+  SearchProvider({this.searchKey});
   BookDataSource bookDataSource = new BookDataSource();
   TagDataSource tagsDataSource = new TagDataSource();
   CollectionDataSource collectionDataSource = new CollectionDataSource();

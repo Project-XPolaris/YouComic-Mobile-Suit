@@ -4,8 +4,10 @@ import 'package:provider/provider.dart';
 import 'package:youcomic/bottom_bar.dart';
 import 'package:youcomic/home/drawers/book_filter_drawer.dart';
 import 'package:youcomic/home/tabs/favourite/provider.dart';
+import 'package:youcomic/home/tabs/history/history.dart';
 import 'package:youcomic/home/tabs/home/home.dart';
 import 'package:youcomic/home/tabs/tag/tag.dart';
+import 'package:youcomic/menu.dart';
 import 'package:youcomic/pages/login/Login.dart';
 import 'package:youcomic/pages/search/search.dart';
 import 'package:youcomic/pages/start/StartPage.dart';
@@ -95,24 +97,7 @@ class MyHomePage extends StatelessWidget {
     // fast, so that you can just rebuild anything that needs updating rather
     // than having to individually change instances of widgets.
     return Consumer<LayoutProvider>(builder: (context, layoutProvider, child) {
-      var searchTitle = TextField(
-        onSubmitted: (searchKey) {
-          print(searchKey);
-          SearchPage.launch(context, searchKey);
-          layoutProvider.switchSearch();
-        },
-        style: TextStyle(color: Colors.black54),
-        decoration: InputDecoration(
-          icon: Icon(
-            Icons.search,
-            color: Colors.black54,
-          ),
-          hintText: "search for ...",
-          hintStyle: TextStyle(color: Colors.black26),
-          border: InputBorder.none,
-        ),
-        cursorColor: Colors.black54,
-      );
+
       closeDrawer() => Navigator.pop(rootContext);
       return Scaffold(
         key: _scaffoldKey,
@@ -121,29 +106,7 @@ class MyHomePage extends StatelessWidget {
                 onClose: closeDrawer,
               )
             : null,
-        appBar: AppBar(
-          brightness: Brightness.light,
-          automaticallyImplyLeading: false,
-          backgroundColor: Colors.white,
-          // Here we take the value from the MyHomePage object that was created by
-          // the App.build method, and use it to set our appbar title.
-          title: layoutProvider.isSearching
-              ? searchTitle
-              : Text(
-                  "YouComic",
-                  style: TextStyle(color: Colors.black54),
-                ),
-          actions: <Widget>[
-            IconButton(
-              onPressed: layoutProvider.switchSearch,
-              icon: Icon(
-                layoutProvider.isSearching ? Icons.cancel : Icons.search,
-                color: Colors.black54,
-              ),
-              color: Colors.black54,
-            )
-          ],
-        ),
+        appBar: renderAppBar(layoutProvider,context),
         bottomNavigationBar: BottomBar(),
         body: IndexedStack(
           index: layoutProvider.tabIdx,
@@ -151,7 +114,8 @@ class MyHomePage extends StatelessWidget {
             HomePage(),
             BookListPage(),
             FavoritesPage(),
-            SubscribePage()
+            SubscribePage(),
+            HistoryPage()
           ],
         ),
         // This trailing comma makes auto-formatting nicer for build methods.

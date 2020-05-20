@@ -68,11 +68,14 @@ class SubscribePage extends StatelessWidget {
                   onDismissed: _onDismiss,
                   confirmDismiss: _onDismissConfirm,
                   child: ListTile(
-                    leading: Icon(Icons.bookmark),
+                    leading: CircleAvatar(
+                      child: Icon(Icons.bookmark),
+                    ),
                     onTap: (){
                       TagPage.launch(context, tag);
                     },
                     title: Text(tag.name),
+                    subtitle: Text(tag.type),
                   ),
                 );
               },

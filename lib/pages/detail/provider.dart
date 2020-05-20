@@ -73,7 +73,7 @@ class DetailProvider with ChangeNotifier {
       return;
     }
     this.bookLoad = "Loading";
-
+    await ApiClient().fetchBook(this.book.id,withHistory: true);
     name = this.book.name;
 
     // get cover

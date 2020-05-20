@@ -75,9 +75,14 @@ class ApiClient {
         options: RequestOptions(headers: {"Authorization": token}));
   }
 
-  fetchBook(int bookId) async {
+  fetchBook(int bookId, {withHistory}) async {
+    var queryParams = new Map<String, dynamic>();
+    if (withHistory) {
+      queryParams["history"] = "True";
+    }
     return dio.get(baseUrl + "/book/$bookId",
-        options: RequestOptions(headers: {"Authorization": token}));
+        options: RequestOptions(
+            headers: {"Authorization": token}, queryParameters: queryParams));
   }
 
   fetchBookTags(int bookId) async {
@@ -96,11 +101,29 @@ class ApiClient {
   }
 
   subscribeTag(int tagId) async {
-    return dio.put("$baseUrl/tag/$tagId/subscription",options: RequestOptions(headers: {"Authorization": token}));
+    return dio.put("$baseUrl/tag/$tagId/subscription",
+        options: RequestOptions(headers: {"Authorization": token}));
   }
 
   cancelSubscribeTag(int tagId) async {
-    return dio.delete("$baseUrl/tag/$tagId/subscription",options: RequestOptions(headers: {"Authorization": token}));
+    return dio.delete("$baseUrl/tag/$tagId/subscription",
+        options: RequestOptions(headers: {"Authorization": token}));
+  }
+
+  fetchHistories(Map<String, dynamic> param) async {
+    return dio.get("$baseUrl/histories",
+        options: RequestOptions(
+            queryParameters: param, headers: {"Authorization": token}));
+  }
+
+  deleteHistory(int historyId) async {
+    return dio.delete("$baseUrl/history/$historyId",
+        options: RequestOptions(headers: {"Authorization": token}));
+  }
+
+  clearHistory(int historyId) async {
+    return dio.delete("$baseUrl/account/histories",
+        options: RequestOptions(headers: {"Authorization": token}));
   }
 }
 

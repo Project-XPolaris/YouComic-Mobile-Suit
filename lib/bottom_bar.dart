@@ -9,8 +9,10 @@ class BottomBar extends StatelessWidget {
       builder: (context, layoutProvider, child) {
         return Container(
           child: BottomNavigationBar(
-            type: BottomNavigationBarType.fixed,
+            type: BottomNavigationBarType.shifting,
             currentIndex: layoutProvider.tabIdx,
+            selectedItemColor: Colors.blue,
+            unselectedItemColor: Colors.black26,
             onTap: layoutProvider.setTabIdx,
             items: [
               BottomNavigationBarItem(
@@ -28,6 +30,10 @@ class BottomBar extends StatelessWidget {
               BottomNavigationBarItem(
                 icon: Icon(Icons.bookmark),
                 title: Text('标签'),
+              ),
+              BottomNavigationBarItem(
+                icon: Icon(Icons.history),
+                title: Text('历史'),
               ),
             ],
           ),

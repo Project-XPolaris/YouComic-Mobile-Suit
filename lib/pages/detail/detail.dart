@@ -216,7 +216,9 @@ class DetailPage extends StatelessWidget {
                                     showModalBottomSheet(
                                         context: context,
                                         builder: (builder) =>
-                                            SelectCollectionBottomSheet());
+                                            SelectCollectionBottomSheet(
+                                              detailProvider: detailProvider,
+                                            ));
                                   },
                                 ),
                               ))

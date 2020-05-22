@@ -125,6 +125,12 @@ class ApiClient {
     return dio.delete("$baseUrl/account/histories",
         options: RequestOptions(headers: {"Authorization": token}));
   }
+
+  removeBookFromCollection(int collectionId, List<int> bookIds) async {
+    return dio.delete("$baseUrl/collection/$collectionId/books",
+        data: {"books": bookIds},
+        options: RequestOptions(headers: {"Authorization": token}));
+  }
 }
 
 class CustomInterceptors extends InterceptorsWrapper {

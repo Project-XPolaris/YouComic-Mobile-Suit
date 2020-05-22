@@ -2,13 +2,17 @@ class CollectionEntity {
   int id;
   String name;
   int owner;
+  bool contain;
 
-  CollectionEntity({this.id, this.name, this.owner});
+  CollectionEntity({this.id, this.name, this.owner, this.contain});
 
-  CollectionEntity.fromJson(json) {
+  CollectionEntity.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     name = json['name'];
     owner = json['owner'];
+    if (json.containsKey("contain")) {
+      contain = json["contain"];
+    }
   }
 
   static List<CollectionEntity> parseList(List<dynamic> list) {

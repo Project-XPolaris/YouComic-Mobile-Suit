@@ -6,10 +6,10 @@ import 'package:youcomic/datasource/base.dart';
 class HistoryDataSource extends DataSource<HistoryEntity> {
   @override
   HistoryEntity convert(json) {
-
     HistoryEntity entity = HistoryEntity.fromJson(json);
     if (entity.book != null) {
-      entity.book.cover = getRealThumbnailCover(entity.book.cover);
+      entity.book.cover =
+          getRealThumbnailCover(entity.book.id, entity.book.cover);
     }
     return entity;
   }

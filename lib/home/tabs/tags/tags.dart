@@ -26,6 +26,7 @@ class TagsPage extends StatelessWidget {
 
         return Scaffold(
             body: ListView.separated(
+                controller: _controller,
                 itemBuilder: (itemContext, idx) {
                   final TagEntity tag = provider.dataSource.tags[idx];
                   return ListTile(

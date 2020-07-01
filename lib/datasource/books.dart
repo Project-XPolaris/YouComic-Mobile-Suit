@@ -9,6 +9,7 @@ class BookDataSource {
   int pageSize = 5;
   bool isLoading = false;
   Map<String, dynamic> extraQueryParam = {};
+
   loadMore() async {
     if (!hasMore || isLoading) {
       return;
@@ -20,7 +21,8 @@ class BookDataSource {
       "page": page + 1
     }..addAll(extraQueryParam));
     List<BookEntity> moreBooks = BookEntity.parseList(response.data["result"]);
-    moreBooks.forEach((book) => book.cover = getRealThumbnailCover(book.id,book.cover));
+    moreBooks.forEach(
+        (book) => book.cover = getRealThumbnailCover(book.id, book.cover));
     String nextUrl = response.data["next"];
     hasMore = nextUrl.isNotEmpty;
     page = response.data["page"];
@@ -38,7 +40,11 @@ class BookDataSource {
         "page": page
       }..addAll(extraQueryParam));
       books = BookEntity.parseList(response.data["result"]);
-      books.forEach((book) => book.cover = getRealThumbnailCover(book.id,book.cover));
+      books.forEach(
+          (book) => book.cover = getRealThumbnailCover(book.id, book.cover));
+      books.forEach((element) {
+        print(element.cover);
+      });
       String nextUrl = response.data["next"];
       hasMore = nextUrl.isNotEmpty;
       isLoading = false;

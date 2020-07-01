@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import 'package:youcomic/api/model/tag_entity.dart';
 import 'package:youcomic/components/book_info_bottom_sheet.dart';
 import 'package:youcomic/components/book_item.dart';
+import 'package:youcomic/config/application.dart';
 import 'package:youcomic/pages/tag/menu.dart';
 import 'package:youcomic/pages/tag/provider.dart';
 
@@ -57,7 +58,9 @@ class TagPage extends StatelessWidget {
             brightness: Brightness.light,
             backgroundColor: Colors.white,
             iconTheme: IconThemeData(color: Colors.black87),
-            actions: renderAction(tagProvider),
+            actions: ApplicationConfig().useNanoMode
+                ? null
+                : renderAction(tagProvider),
             title: Text(
               tagProvider.title,
               style: TextStyle(color: Colors.black87),

@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:youcomic/config/application.dart';
 import 'package:youcomic/pages/search/search.dart';
 import 'package:youcomic/providers/layout.dart';
 
-renderAppBar(LayoutProvider layoutProvider,BuildContext context){
+renderAppBar(LayoutProvider layoutProvider, BuildContext context) {
   var searchTitle = TextField(
     onSubmitted: (searchKey) {
       print(searchKey);
@@ -32,18 +33,22 @@ renderAppBar(LayoutProvider layoutProvider,BuildContext context){
     title: layoutProvider.isSearching
         ? searchTitle
         : Text(
-      "YouComic",
-      style: TextStyle(color: Colors.black54),
-    ),
+            "YouComic",
+            style: TextStyle(color: Colors.black54),
+          ),
     actions: <Widget>[
-      IconButton(
-        onPressed: layoutProvider.switchSearch,
-        icon: Icon(
-          layoutProvider.isSearching ? Icons.cancel : Icons.search,
-          color: Colors.black54,
-        ),
-        color: Colors.black54,
-      ),
+      ...(ApplicationConfig().useNanoMode
+          ? []
+          : [
+              IconButton(
+                onPressed: layoutProvider.switchSearch,
+                icon: Icon(
+                  layoutProvider.isSearching ? Icons.cancel : Icons.search,
+                  color: Colors.black54,
+                ),
+                color: Colors.black54,
+              )
+            ]),
     ]..addAll(actions),
   );
 }

@@ -87,8 +87,6 @@ class BookFilterDrawer extends StatelessWidget {
                   ),
                   IconButton(
                     onPressed: () {
-
-
                       onClose();
                     },
                     icon: Icon(Icons.close),

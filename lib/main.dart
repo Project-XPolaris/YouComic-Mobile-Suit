@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:youcomic/bottom_bar.dart';
 import 'package:youcomic/config/application.dart';
 import 'package:youcomic/home/drawers/book_filter_drawer.dart';
+import 'package:youcomic/home/tabs/books/provider.dart';
 import 'package:youcomic/home/tabs/favourite/provider.dart';
 import 'package:youcomic/home/tabs/history/history.dart';
 import 'package:youcomic/home/tabs/home/home.dart';
@@ -64,38 +65,42 @@ class MyHomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext rootContext) {
-    List<Widget> getTabLayout() {
-      if (ApplicationConfig().useNanoMode) {
-        return [
-          BookListPage(),
-          TagsPage()
-        ];
-      }
-      return [
-        HomePage(),
-        BookListPage(),
-        FavoritesPage(),
-        SubscribePage(),
-        HistoryPage()
-      ];
-    }
-
     return Consumer<LayoutProvider>(builder: (context, layoutProvider, child) {
       closeDrawer() => Navigator.pop(rootContext);
+      BookListProvider bookProvider = BookListProvider();
+      List<Widget> getTabLayout() {
+        if (ApplicationConfig().useNanoMode) {
+          return [
+            BookListPage(
+              externalBookListProvider: bookProvider,
+            ),
+            TagsPage()
+          ];
+        }
+        return [
+          HomePage(),
+          BookListPage(
+            externalBookListProvider: bookProvider,
+          ),
+          FavoritesPage(),
+          SubscribePage(),
+          HistoryPage()
+        ];
+      }
+
       return Scaffold(
         key: _scaffoldKey,
-        endDrawer: layoutProvider.tabIdx == 1
+        endDrawer: layoutProvider.tabIdx == 0
             ? HomeBookListFilterDrawer(
                 onClose: closeDrawer,
+                externalBookListProvider: bookProvider,
               )
             : null,
         appBar: renderAppBar(layoutProvider, context),
         bottomNavigationBar: BottomBar(),
         body: IndexedStack(
           index: layoutProvider.tabIdx,
-          children: <Widget>[
-            ...getTabLayout()
-          ],
+          children: <Widget>[...getTabLayout()],
         ),
         // This trailing comma makes auto-formatting nicer for build methods.
       );

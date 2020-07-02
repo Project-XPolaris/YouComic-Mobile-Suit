@@ -6,15 +6,20 @@ import 'package:youcomic/components/book_item.dart';
 import 'package:youcomic/home/tabs/books/provider.dart';
 
 class BookListPage extends StatelessWidget {
+  final BookListProvider externalBookListProvider;
+
+  BookListPage({this.externalBookListProvider});
+
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider<BookListProvider>(
-      create: (_) => BookListProvider(),
+      create: (_) => externalBookListProvider,
       child: Consumer<BookListProvider>(
           builder: (context, bookListProvider, builder) {
             Future _pullToRefresh() async {
               await bookListProvider.loadBooks(true);
             }
+
 
             bookListProvider.loadBooks(false);
 
@@ -40,21 +45,22 @@ class BookListPage extends StatelessWidget {
                             context: context,
                             builder: (context) {
                               return BookInfoBottomSheet(
-                                bookEntity: bookListProvider.dataSource.books[idx],
+                                bookEntity: bookListProvider.dataSource
+                                    .books[idx],
                               );
                             });
                       },
                     );
                   },
-                  separatorBuilder: (context, index) => Divider(
-                    height: 0,
-                  ),
+                  separatorBuilder: (context, index) =>
+                      Divider(
+                        height: 0,
+                      ),
                   controller: _controller,
                 ),
               ),
             );
           }),
     );
-
   }
 }

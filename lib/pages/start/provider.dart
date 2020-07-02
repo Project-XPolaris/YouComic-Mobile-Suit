@@ -30,6 +30,7 @@ class StartProvider extends ChangeNotifier {
 
   onPasswordChange(String password) {
     this.password = password;
+    notifyListeners();
   }
 
   onApiUrlChange(String url) {

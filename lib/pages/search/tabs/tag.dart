@@ -2,9 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:youcomic/api/model/tag_entity.dart';
 import 'package:youcomic/pages/search/components/tag_item.dart';
 import 'package:youcomic/pages/search/provider.dart';
+
 class SearchTags extends StatelessWidget {
   final SearchProvider provider;
+
   SearchTags({this.provider});
+
   @override
   Widget build(BuildContext context) {
     ScrollController _controller = new ScrollController();
@@ -15,11 +18,16 @@ class SearchTags extends StatelessWidget {
         provider.onLoadMoreTag();
       } else {}
     });
-    var items =
-    provider.tagsDataSource.tags.map((TagEntity tag) => TagItem(tag:tag)).toList();
     print(provider.tagsDataSource.tags);
-    return ListView(
-      children: items,
+    return ListView.separated(
+      separatorBuilder: (BuildContext context, int index) => Divider(),
+      itemBuilder: (itemContext, idx) {
+        TagEntity tag = provider.tagsDataSource.tags[idx];
+        return TagItem(
+          tag: tag,
+        );
+      },
+      itemCount: provider.tagsDataSource.tags.length,
       controller: _controller,
     );
   }

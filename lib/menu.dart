@@ -37,18 +37,14 @@ renderAppBar(LayoutProvider layoutProvider, BuildContext context) {
             style: TextStyle(color: Colors.black54),
           ),
     actions: <Widget>[
-      ...(ApplicationConfig().useNanoMode
-          ? []
-          : [
-              IconButton(
-                onPressed: layoutProvider.switchSearch,
-                icon: Icon(
-                  layoutProvider.isSearching ? Icons.cancel : Icons.search,
-                  color: Colors.black54,
-                ),
-                color: Colors.black54,
-              )
-            ]),
+      IconButton(
+        onPressed: layoutProvider.switchSearch,
+        icon: Icon(
+          layoutProvider.isSearching ? Icons.cancel : Icons.search,
+          color: Colors.black54,
+        ),
+        color: Colors.black54,
+      ),
     ]..addAll(actions),
   );
 }

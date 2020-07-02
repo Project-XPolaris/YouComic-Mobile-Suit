@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:youcomic/config/application.dart';
 import 'package:youcomic/datasource/books.dart';
 import 'package:youcomic/datasource/collections.dart';
 import 'package:youcomic/datasource/tags.dart';
@@ -35,8 +36,10 @@ class SearchProvider extends ChangeNotifier {
     await tagsDataSource.loadTags(true);
     notifyListeners();
 
-    collectionDataSource.extraQueryParam = {"nameSearch": searchKey};
-    await collectionDataSource.loadCollections(true);
+    if (!ApplicationConfig().useNanoMode){
+      collectionDataSource.extraQueryParam = {"nameSearch": searchKey};
+      await collectionDataSource.loadCollections(true);
+    }
     notifyListeners();
   }
 }

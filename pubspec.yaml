@@ -32,6 +32,7 @@ dependencies:
   intl: ^0.16.1
   cached_network_image: ^2.1.0+1
   flutter_cache_manager: ^1.2.1
+  characters: ^1.0.0
 
 dev_dependencies:
   flutter_test:

@@ -18,7 +18,7 @@ class TagDataSource {
     var response = await ApiClient().fetchTags({
       "order": "-id",
       "page_size": pageSize,
-      "page": page + 1
+      "page": page + 1,
     }..addAll(extraQueryParam));
     var moreTags = TagEntity.parseList(response.data["result"]);
     String nextUrl = response.data["next"];
@@ -35,7 +35,7 @@ class TagDataSource {
       var response = await ApiClient().fetchTags({
         "order": "-id",
         "page_size": pageSize,
-        "page": page
+        "page": page,
       }..addAll(extraQueryParam));
       tags = TagEntity.parseList(response.data["result"]);
 

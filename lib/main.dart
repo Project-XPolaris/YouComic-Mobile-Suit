@@ -3,11 +3,13 @@ import 'package:provider/provider.dart';
 import 'package:youcomic/bottom_bar.dart';
 import 'package:youcomic/config/application.dart';
 import 'package:youcomic/home/drawers/book_filter_drawer.dart';
+import 'package:youcomic/home/drawers/tags_filter_drawer.dart';
 import 'package:youcomic/home/tabs/books/provider.dart';
 import 'package:youcomic/home/tabs/favourite/provider.dart';
 import 'package:youcomic/home/tabs/history/history.dart';
 import 'package:youcomic/home/tabs/home/home.dart';
 import 'package:youcomic/home/tabs/tag/tag.dart';
+import 'package:youcomic/home/tabs/tags/provider.dart';
 import 'package:youcomic/home/tabs/tags/tags.dart';
 import 'package:youcomic/menu.dart';
 import 'package:youcomic/pages/login/Login.dart';
@@ -68,13 +70,14 @@ class MyHomePage extends StatelessWidget {
     return Consumer<LayoutProvider>(builder: (context, layoutProvider, child) {
       closeDrawer() => Navigator.pop(rootContext);
       BookListProvider bookProvider = BookListProvider();
+      TagsProvider tagsProvider = TagsProvider();
       List<Widget> getTabLayout() {
         if (ApplicationConfig().useNanoMode) {
           return [
             BookListPage(
               externalBookListProvider: bookProvider,
             ),
-            TagsPage()
+            TagsPage(externalTagProvider: tagsProvider,)
           ];
         }
         return [
@@ -88,14 +91,33 @@ class MyHomePage extends StatelessWidget {
         ];
       }
 
+      Widget getDrawer() {
+        if (ApplicationConfig().useNanoMode) {
+          if (layoutProvider.tabIdx == 0) {
+            return HomeBookListFilterDrawer(
+              onClose: closeDrawer,
+              externalBookListProvider: bookProvider,
+            );
+          }
+          if (layoutProvider.tabIdx == 1) {
+            return HomeTagsFilterDrawer(
+              externalTagProvider: tagsProvider,
+              onClose: closeDrawer,
+            );
+          }
+        }
+
+        if (layoutProvider.tabIdx == 1) {
+          return HomeBookListFilterDrawer(
+            onClose: closeDrawer,
+            externalBookListProvider: bookProvider,
+          );
+        }
+      }
+
       return Scaffold(
         key: _scaffoldKey,
-        endDrawer: layoutProvider.tabIdx == 0
-            ? HomeBookListFilterDrawer(
-                onClose: closeDrawer,
-                externalBookListProvider: bookProvider,
-              )
-            : null,
+        endDrawer: getDrawer(),
         appBar: renderAppBar(layoutProvider, context),
         bottomNavigationBar: BottomBar(),
         body: IndexedStack(

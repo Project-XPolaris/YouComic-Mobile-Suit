@@ -13,13 +13,13 @@ class TagItem {
 class TagSelectFilterSection extends StatelessWidget {
   final List<TagItem> items;
   final bool showDivider;
-
-  TagSelectFilterSection({this.items, this.showDivider = false});
+  final String title;
+  TagSelectFilterSection({this.items, this.showDivider = false,this.title = "排序"});
 
   @override
   Widget build(BuildContext context) {
     return FilterSection(
-      title: "排序",
+      title: title,
       showDivider: true,
       child: Wrap(
         children: <Widget>[

@@ -4,12 +4,15 @@ import 'package:provider/provider.dart';
 import 'package:youcomic/api/model/tag_entity.dart';
 import 'package:youcomic/home/tabs/tags/provider.dart';
 import 'package:youcomic/pages/tag/tag.dart';
+import 'package:youcomic/util/icon.dart';
 
 class TagsPage extends StatelessWidget {
+  final TagsProvider externalTagProvider;
+  TagsPage({this.externalTagProvider});
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
-      create: (_) => TagsProvider(),
+      create: (_) => externalTagProvider,
       child: Consumer<TagsProvider>(builder: (rootContext, provider, builder) {
         provider.onLoad();
         ScrollController _controller = new ScrollController();
@@ -32,6 +35,10 @@ class TagsPage extends StatelessWidget {
                   return ListTile(
                       title: Text(tag.name),
                       subtitle: Text(tag.type),
+                      leading: CircleAvatar(
+                        child: Icon(selectIconByTagType(tag.type)),
+
+                      ),
                       onTap: () => TagPage.launch(context, tag));
                 },
                 separatorBuilder: (BuildContext context, int index) =>

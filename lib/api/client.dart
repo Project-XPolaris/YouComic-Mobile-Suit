@@ -23,6 +23,27 @@ class ApiClient {
     return _instance;
   }
 
+  String getRequestUri(Map<String, dynamic> queryParam, String path) {
+    Map<String, dynamic> encodeParam = new Map();
+
+    queryParam.forEach((key, value) {
+      if (value is List) {
+        encodeParam[key] = value.map((e) => e.toString());
+      } else {
+        encodeParam[key] = value.toString();
+      }
+    });
+    var parseBaseUri = Uri.parse(baseUrl);
+    var uri = Uri(
+        host: parseBaseUri.host,
+        port: parseBaseUri.port,
+        scheme: parseBaseUri.scheme,
+        queryParameters: encodeParam,
+        path: path
+    );
+    return uri.toString();
+  }
+
   authUser(String username, String password) async {
     return dio.post(
       baseUrl + "/user/auth",
@@ -41,9 +62,8 @@ class ApiClient {
   }
 
   fetchTags(Map<String, dynamic> param) async {
-    return dio.get(baseUrl + "/tags",
-        options: RequestOptions(
-            queryParameters: param, headers: {"Authorization": token}));
+    return dio.get(getRequestUri(param, "/tags"),
+        options: RequestOptions(headers: {"Authorization": token}));
   }
 
   updateCollection(int collectionId, String name) async {
@@ -143,7 +163,8 @@ class CustomInterceptors extends InterceptorsWrapper {
   @override
   Future onResponse(Response response) {
     print(
-        "RESPONSE[${response?.statusCode}] => PATH: ${response?.request?.path}");
+        "RESPONSE[${response?.statusCode}] => PATH: ${response?.request
+            ?.path}");
     return super.onResponse(response);
   }
 

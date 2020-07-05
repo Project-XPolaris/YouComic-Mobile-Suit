@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:youcomic/api/model/tag_entity.dart';
 import 'package:youcomic/pages/search/components/tag_item.dart';
 import 'package:youcomic/pages/search/provider.dart';
+import 'package:youcomic/pages/tag/tag.dart';
 
 class SearchTags extends StatelessWidget {
   final SearchProvider provider;
@@ -25,6 +26,7 @@ class SearchTags extends StatelessWidget {
         TagEntity tag = provider.tagsDataSource.tags[idx];
         return TagItem(
           tag: tag,
+          onTap: () => TagPage.launch(context, tag),
         );
       },
       itemCount: provider.tagsDataSource.tags.length,

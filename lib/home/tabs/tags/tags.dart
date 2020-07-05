@@ -11,8 +11,8 @@ class TagsPage extends StatelessWidget {
   TagsPage({this.externalTagProvider});
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider(
-      create: (_) => externalTagProvider,
+    return ChangeNotifierProvider<TagsProvider>.value(
+      value: externalTagProvider,
       child: Consumer<TagsProvider>(builder: (rootContext, provider, builder) {
         provider.onLoad();
         ScrollController _controller = new ScrollController();

@@ -12,55 +12,52 @@ class BookListPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider<BookListProvider>(
-      create: (_) => externalBookListProvider,
+    return ChangeNotifierProvider<BookListProvider>.value(
+      value: externalBookListProvider,
       child: Consumer<BookListProvider>(
           builder: (context, bookListProvider, builder) {
-            Future _pullToRefresh() async {
-              await bookListProvider.loadBooks(true);
-            }
+        Future _pullToRefresh() async {
+          await bookListProvider.loadBooks(true);
+        }
 
+        bookListProvider.loadBooks(false);
 
-            bookListProvider.loadBooks(false);
-
-            ScrollController _controller = new ScrollController();
-            _controller.addListener(() {
-              var maxScroll = _controller.position.maxScrollExtent;
-              var pixel = _controller.position.pixels;
-              if (maxScroll == pixel) {
-                bookListProvider.loadMore();
-              } else {}
-            });
-            return Scaffold(
-              body: RefreshIndicator(
-                onRefresh: _pullToRefresh,
-                child: ListView.separated(
-                  itemCount: bookListProvider.dataSource.books.length,
-                  itemBuilder: (context, idx) {
-                    return BookItem(
-                      book: bookListProvider.dataSource.books[idx],
-                      onLongPress: () {
-                        HapticFeedback.vibrate();
-                        showModalBottomSheet(
-                            context: context,
-                            builder: (context) {
-                              return BookInfoBottomSheet(
-                                bookEntity: bookListProvider.dataSource
-                                    .books[idx],
-                              );
-                            });
-                      },
-                    );
+        ScrollController _controller = new ScrollController();
+        _controller.addListener(() {
+          var maxScroll = _controller.position.maxScrollExtent;
+          var pixel = _controller.position.pixels;
+          if (maxScroll == pixel) {
+            bookListProvider.loadMore();
+          } else {}
+        });
+        return Scaffold(
+          body: RefreshIndicator(
+            onRefresh: _pullToRefresh,
+            child: ListView.separated(
+              itemCount: bookListProvider.dataSource.books.length,
+              itemBuilder: (context, idx) {
+                return BookItem(
+                  book: bookListProvider.dataSource.books[idx],
+                  onLongPress: () {
+                    HapticFeedback.vibrate();
+                    showModalBottomSheet(
+                        context: context,
+                        builder: (context) {
+                          return BookInfoBottomSheet(
+                            bookEntity: bookListProvider.dataSource.books[idx],
+                          );
+                        });
                   },
-                  separatorBuilder: (context, index) =>
-                      Divider(
-                        height: 0,
-                      ),
-                  controller: _controller,
-                ),
+                );
+              },
+              separatorBuilder: (context, index) => Divider(
+                height: 0,
               ),
-            );
-          }),
+              controller: _controller,
+            ),
+          ),
+        );
+      }),
     );
   }
 }

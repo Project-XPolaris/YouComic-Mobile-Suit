@@ -28,9 +28,6 @@ void main() {
       ChangeNotifierProvider<LayoutProvider>(
         create: (_) => LayoutProvider(0),
       ),
-      ChangeNotifierProvider<FormProvider>(
-        create: (_) => FormProvider(),
-      ),
       ChangeNotifierProvider<UserProvider>(
         create: (_) => UserProvider(),
       ),
@@ -64,13 +61,13 @@ class MyApp extends StatelessWidget {
 
 class MyHomePage extends StatelessWidget {
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
-
+  BookListProvider bookProvider = BookListProvider();
+  TagsProvider tagsProvider = TagsProvider();
   @override
   Widget build(BuildContext rootContext) {
     return Consumer<LayoutProvider>(builder: (context, layoutProvider, child) {
       closeDrawer() => Navigator.pop(rootContext);
-      BookListProvider bookProvider = BookListProvider();
-      TagsProvider tagsProvider = TagsProvider();
+
       List<Widget> getTabLayout() {
         if (ApplicationConfig().useNanoMode) {
           return [

@@ -26,7 +26,9 @@ class SearchTags extends StatelessWidget {
         TagEntity tag = provider.tagsDataSource.tags[idx];
         return TagItem(
           tag: tag,
-          onTap: () => TagPage.launch(context, tag),
+          onTap: () {
+            TagPage.launch(context, tag);
+          },
         );
       },
       itemCount: provider.tagsDataSource.tags.length,

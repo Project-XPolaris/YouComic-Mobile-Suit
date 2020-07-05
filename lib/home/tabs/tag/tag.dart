@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:youcomic/api/model/tag_entity.dart';
+import 'package:youcomic/components/empty_view.dart';
 import 'package:youcomic/home/tabs/tag/subscribe.dart';
 import 'package:youcomic/pages/tag/tag.dart';
 
@@ -52,11 +53,22 @@ class SubscribePage extends StatelessWidget {
               });
           return willDelete;
         }
-
-        return Scaffold(
-          body: RefreshIndicator(
-            onRefresh: _pullToRefresh,
-            child: ListView.separated(
+        renderListView(){
+          if (provider.dataSource.tags.isEmpty){
+            return EmptyView(
+              isLoading: provider.dataSource.isLoading,
+              icon: Icon(
+                Icons.bookmark,
+                size: 96,
+                color: Colors.black26,
+              ),
+              text: "暂时没有订阅的标签",
+              onRefresh: (){
+                provider.onForceReload();
+              },
+            );
+          }else{
+            return ListView.separated(
               separatorBuilder: (BuildContext context, int index) => Divider(),
               itemCount: provider.dataSource.tags.length,
               physics: AlwaysScrollableScrollPhysics(),
@@ -79,7 +91,13 @@ class SubscribePage extends StatelessWidget {
                   ),
                 );
               },
-            ),
+            );
+          }
+        }
+        return Scaffold(
+          body: RefreshIndicator(
+            onRefresh: _pullToRefresh,
+            child: renderListView(),
           ),
         );
       }),

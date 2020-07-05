@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:youcomic/api/model/collection.dart';
 import 'package:youcomic/components/collection_item.dart';
+import 'package:youcomic/components/empty_view.dart';
 import 'package:youcomic/components/text_input_bottom_sheet.dart';
 import 'package:youcomic/home/tabs/favourite/collection.dart';
 
@@ -48,7 +49,57 @@ class FavoritesPage extends StatelessWidget {
               });
           return willDelete;
         }
-
+        Widget renderList(){
+          return EmptyView(
+            text: "这里暂时没有东西",
+            isLoading: provider.dataSource.isLoading,
+            icon: Icon(
+              Icons.star,
+              size: 96,
+              color: Colors.black26,
+            ),
+            onRefresh: (){
+              provider.onForceReload();
+            },
+          );
+          return ListView.builder(
+            itemCount: provider.dataSource.collections.length,
+            controller: _controller,
+            physics: AlwaysScrollableScrollPhysics(),
+            itemBuilder: (itemContext, idx) {
+              final CollectionEntity collection =
+              provider.dataSource.collections[idx];
+              return Dismissible(
+                key: UniqueKey(),
+                child: CollectionItem(
+                  collection: collection,
+                  onRename: () {
+                    showModalBottomSheet(
+                        context: itemContext,
+                        backgroundColor: Colors.transparent,
+                        builder: (BuildContext context) {
+                          return TextInputBottomSheet(
+                            initValue: collection.name,
+                            buttonText: "重命名",
+                            onOk: (String text) {
+                              provider.updateCollection(collection.id, text);
+                              Navigator.pop(context);
+                            },
+                          );
+                        });
+                  },
+                ),
+                onDismissed: (DismissDirection direction) {
+                  provider.deleteCollection(collection.id);
+                  Scaffold.of(itemContext).showSnackBar(new SnackBar(content: Text("已删除")));
+                },
+                confirmDismiss: (DismissDirection direction) async {
+                  return showDeleteConfirm();
+                },
+              );
+            },
+          );
+        }
         return Scaffold(
           floatingActionButton: FloatingActionButton(
             onPressed: () {
@@ -71,43 +122,7 @@ class FavoritesPage extends StatelessWidget {
           ),
           body: RefreshIndicator(
             onRefresh: _pullToRefresh,
-            child: ListView.builder(
-              itemCount: provider.dataSource.collections.length,
-              controller: _controller,
-              physics: AlwaysScrollableScrollPhysics(),
-              itemBuilder: (itemContext, idx) {
-                final CollectionEntity collection =
-                provider.dataSource.collections[idx];
-                return Dismissible(
-                  key: UniqueKey(),
-                  child: CollectionItem(
-                    collection: collection,
-                    onRename: () {
-                      showModalBottomSheet(
-                          context: itemContext,
-                          backgroundColor: Colors.transparent,
-                          builder: (BuildContext context) {
-                            return TextInputBottomSheet(
-                              initValue: collection.name,
-                              buttonText: "重命名",
-                              onOk: (String text) {
-                                provider.updateCollection(collection.id, text);
-                                Navigator.pop(context);
-                              },
-                            );
-                          });
-                    },
-                  ),
-                  onDismissed: (DismissDirection direction) {
-                    provider.deleteCollection(collection.id);
-                    Scaffold.of(itemContext).showSnackBar(new SnackBar(content: Text("已删除")));
-                  },
-                  confirmDismiss: (DismissDirection direction) async {
-                    return showDeleteConfirm();
-                  },
-                );
-              },
-            ),
+            child: renderList(),
           ),
         );
       }),

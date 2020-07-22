@@ -1,12 +1,4 @@
-<p align="center">
-    Project Polaris | You Comic
-</p>
-<p align="center">
-    Project Polaris 是针对内容管理的开发项目，YouComic是其中的关于漫画内容管理的套件
-</p>
-<br>
-<hr>
-<br>
+![](./preview/youcomic-mobile-suit-banner.png)
 
 ## YouComic Mobile Suit
 ![](https://img.shields.io/badge/Project-Project%20Polaris-green) 
@@ -33,7 +25,9 @@ YouComic Mobile Suit是YouComic的针对移动设备开发的客户端，书籍�
 <img src="./preview/pv4.jpg"  width="320">
 
 ### 🔗链接
-- [☁️YouComic Server](https://github.com/Project-XPolaris/YouComic-Server)
+- [🏕️YouComic Blog](https://project-xpolaris.github.io/)
 - [💻YouComic Studio](https://github.com/Project-XPolaris/YouComic-Studio)
+- [💻YouComic Web](https://github.com/Project-XPolaris/YouComic-Web)
+- [🌐YouComic Server](https://github.com/Project-XPolaris/YouComic-Server)
 - [🔨YouComic Supervisor](https://github.com/Project-XPolaris/YouComic-Supervisor)
 - [⭐️Project Polaris](https://github.com/Project-XPolaris)

@@ -2,20 +2,24 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:youcomic/pages/start/provider.dart';
 
 class StartPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider(
-      create: (_) => StartProvider(),
-      child:
-          Consumer<StartProvider>(builder: (context, startProvider, builder) {
-        return FutureBuilder(
-            future: startProvider.onLoad(),
-            builder: (BuildContext context, AsyncSnapshot<void> snapshot) {
-              if (snapshot.connectionState == ConnectionState.done) {
-                print(startProvider.username);
+    return FutureBuilder(
+      future: SharedPreferences.getInstance(),
+      builder: (BuildContext context, AsyncSnapshot<SharedPreferences> snapshot) {
+        if (snapshot.hasData){
+          return ChangeNotifierProvider(
+            create: (_) => StartProvider(
+                username: snapshot.data.getString("username"),
+                password: snapshot.data.getString("password"),
+                apiUrl: snapshot.data.getString("apiUrl"),
+            ),
+            child: Consumer<StartProvider>(
+              builder: (context, startProvider, builder) {
                 return Scaffold(
                   body: Container(
                     child: SingleChildScrollView(
@@ -37,7 +41,7 @@ class StartPage extends StatelessWidget {
                                 )),
                             Padding(
                               padding:
-                                  EdgeInsets.only(top: 48, left: 16, right: 16),
+                              EdgeInsets.only(top: 48, left: 16, right: 16),
                               child: TextFormField(
                                 initialValue: startProvider.apiUrl,
                                 decoration: const InputDecoration(
@@ -56,7 +60,7 @@ class StartPage extends StatelessWidget {
                             ),
                             Padding(
                               padding:
-                                  EdgeInsets.only(top: 12, left: 16, right: 16),
+                              EdgeInsets.only(top: 12, left: 16, right: 16),
                               child: TextFormField(
                                 initialValue: startProvider.username,
                                 decoration: const InputDecoration(
@@ -75,7 +79,7 @@ class StartPage extends StatelessWidget {
                             ),
                             Padding(
                               padding:
-                                  EdgeInsets.only(top: 12, left: 16, right: 16),
+                              EdgeInsets.only(top: 12, left: 16, right: 16),
                               child: TextFormField(
                                 obscureText: true,
                                 initialValue: startProvider.password,
@@ -123,10 +127,12 @@ class StartPage extends StatelessWidget {
                     ),
                   ),
                 );
-              }
-              return Container();
-            });
-      }),
+              },
+            ),
+          );
+        }
+        return Container();
+      },
     );
   }
 }

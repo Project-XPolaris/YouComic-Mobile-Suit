@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:youcomic/pages/accounts/AccountPage.dart';
 import 'package:youcomic/pages/start/provider.dart';
 
 class StartPage extends StatelessWidget {
@@ -19,7 +20,7 @@ class StartPage extends StatelessWidget {
                 apiUrl: snapshot.data.getString("apiUrl"),
             ),
             child: Consumer<StartProvider>(
-              builder: (context, startProvider, builder) {
+              builder: (rootContext, startProvider, builder) {
                 return Scaffold(
                   body: Container(
                     child: SingleChildScrollView(
@@ -97,6 +98,7 @@ class StartPage extends StatelessWidget {
                                 },
                               ),
                             ),
+
                             Padding(
                               padding: EdgeInsets.only(
                                   left: 16.0, right: 16.0, top: 8.0),
@@ -105,7 +107,7 @@ class StartPage extends StatelessWidget {
                                 color: Colors.pink,
                                 textColor: Colors.white,
                                 onPressed: () {
-                                  startProvider.loginAsNano(context);
+                                  startProvider.loginAsNano(rootContext);
                                 },
                               ),
                             ),
@@ -116,11 +118,23 @@ class StartPage extends StatelessWidget {
                                 color: Colors.blue,
                                 textColor: Colors.white,
                                 onPressed: () {
-                                  startProvider.loginAccount(context);
+                                  startProvider.loginAccount(rootContext);
                                 },
                                 child: Text("登录"),
                               ),
-                            )
+                            ),
+                            Padding(
+                              padding: EdgeInsets.only(
+                                  left: 16.0, right: 16.0, top: 8.0),
+                              child: FlatButton(
+                                child: Text("已保存的账号"),
+                                color: Colors.blue,
+                                textColor: Colors.white,
+                                onPressed: () {
+                                  AccountPage.launch(rootContext);
+                                },
+                              ),
+                            ),
                           ],
                         ),
                       ),

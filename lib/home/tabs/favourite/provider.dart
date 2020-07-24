@@ -62,43 +62,6 @@ class FavoritesPage extends StatelessWidget {
               provider.onForceReload();
             },
           );
-          return ListView.builder(
-            itemCount: provider.dataSource.collections.length,
-            controller: _controller,
-            physics: AlwaysScrollableScrollPhysics(),
-            itemBuilder: (itemContext, idx) {
-              final CollectionEntity collection =
-              provider.dataSource.collections[idx];
-              return Dismissible(
-                key: UniqueKey(),
-                child: CollectionItem(
-                  collection: collection,
-                  onRename: () {
-                    showModalBottomSheet(
-                        context: itemContext,
-                        backgroundColor: Colors.transparent,
-                        builder: (BuildContext context) {
-                          return TextInputBottomSheet(
-                            initValue: collection.name,
-                            buttonText: "重命名",
-                            onOk: (String text) {
-                              provider.updateCollection(collection.id, text);
-                              Navigator.pop(context);
-                            },
-                          );
-                        });
-                  },
-                ),
-                onDismissed: (DismissDirection direction) {
-                  provider.deleteCollection(collection.id);
-                  Scaffold.of(itemContext).showSnackBar(new SnackBar(content: Text("已删除")));
-                },
-                confirmDismiss: (DismissDirection direction) async {
-                  return showDeleteConfirm();
-                },
-              );
-            },
-          );
         }
         return Scaffold(
           floatingActionButton: FloatingActionButton(

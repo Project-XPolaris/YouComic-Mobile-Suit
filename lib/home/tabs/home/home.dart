@@ -10,14 +10,18 @@ class HomePage extends StatelessWidget {
     return ChangeNotifierProvider<HomeProvider>(
       create: (_) => HomeProvider(),
       child: Consumer<HomeProvider>(builder: (context, homeProvider, builder) {
-        homeProvider.onLoad();
+        homeProvider.onLoad(false);
         var recentlyBooks = homeProvider.recentlyBookDataSource.books;
         if (recentlyBooks == null) {
           recentlyBooks = [];
         }
-        return SingleChildScrollView(
-          child: Container(
-            child: Column(
+        return Scaffold(
+          body: RefreshIndicator(
+            onRefresh: () async {
+              await homeProvider.onLoad(true);
+            },
+            child: ListView(
+              physics: AlwaysScrollableScrollPhysics(),
               children: <Widget>[
                 Padding(
                   padding: EdgeInsets.only(top: 24, left: 16),

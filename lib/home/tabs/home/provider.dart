@@ -10,26 +10,28 @@ class HomeProvider with ChangeNotifier {
   List<CollectionEntity> recentlyCollections;
   bool isRecentlyCollections = true;
   CollectionDataSource collectionDataSource = new CollectionDataSource();
-  onLoadRecentlyAdd() async {
-    if (!isRecentlyBookLoaded){
+  onLoadRecentlyAdd(bool force) async {
+    if (!isRecentlyBookLoaded || force){
       this.isRecentlyBookLoaded = true;
-      recentlyBookDataSource.loadBooks(true);
+      await recentlyBookDataSource.loadBooks(true);
       notifyListeners();
+
     }
   }
 
-  onLoadRecentlyCollection() async {
-    if (!isRecentlyCollections){
+  onLoadRecentlyCollection(bool force) async {
+    if (!isRecentlyCollections || force){
       return;
     }
     isRecentlyCollections = false;
     collectionDataSource.extraQueryParam = {"order":"-id"};
     await collectionDataSource.loadCollections(true);
     notifyListeners();
+
   }
 
-  onLoad() async {
-    onLoadRecentlyAdd();
-    onLoadRecentlyCollection();
+  onLoad(bool force) async {
+    onLoadRecentlyAdd(force);
+    onLoadRecentlyCollection(force);
   }
 }

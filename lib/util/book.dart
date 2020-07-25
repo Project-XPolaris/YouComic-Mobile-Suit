@@ -3,8 +3,12 @@ import 'package:youcomic/api/model/tag_entity.dart';
 
 String getBookTagName(
     {BookEntity bookEntity, String tagType, String defaultText = ""}) {
+  if (bookEntity.tags == null) {
+    return defaultText;
+  }
   var target = bookEntity.tags
       .firstWhere((tag) => tag.type == tagType, orElse: () => null);
+
   if (target != null) {
     return target.name;
   }

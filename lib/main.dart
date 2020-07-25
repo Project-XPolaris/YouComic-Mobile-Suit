@@ -5,7 +5,7 @@ import 'package:youcomic/config/application.dart';
 import 'package:youcomic/home/drawers/book_filter_drawer.dart';
 import 'package:youcomic/home/drawers/tags_filter_drawer.dart';
 import 'package:youcomic/home/tabs/books/provider.dart';
-import 'package:youcomic/home/tabs/favourite/provider.dart';
+import 'package:youcomic/home/tabs/favourite/my_collection.dart';
 import 'package:youcomic/home/tabs/history/history.dart';
 import 'package:youcomic/home/tabs/home/home.dart';
 import 'package:youcomic/home/tabs/tag/tag.dart';

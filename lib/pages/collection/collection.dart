@@ -5,7 +5,7 @@ import 'package:youcomic/api/model/collection.dart';
 import 'package:youcomic/components/book_info_bottom_sheet.dart';
 import 'package:youcomic/components/book_item.dart';
 import 'package:youcomic/pages/collection/provider.dart';
-import 'package:youcomic/home/tabs/favourite/collection.dart';
+import 'package:youcomic/home/tabs/favourite/provider.dart';
 
 class CollectionDetailPage extends StatelessWidget {
   final CollectionEntity collection;

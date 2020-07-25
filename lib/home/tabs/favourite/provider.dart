@@ -1,94 +1,55 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:youcomic/api/client.dart';
 import 'package:youcomic/api/model/collection.dart';
-import 'package:youcomic/components/collection_item.dart';
-import 'package:youcomic/components/empty_view.dart';
-import 'package:youcomic/components/text_input_bottom_sheet.dart';
-import 'package:youcomic/home/tabs/favourite/collection.dart';
+import 'package:youcomic/datasource/collections.dart';
 
-class FavoritesPage extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return ChangeNotifierProvider<CollectionProvider>(
-      create: (_) => CollectionProvider(),
-      child: Consumer<CollectionProvider>(builder: (rootContext, provider, builder) {
-        provider.onLoad();
-        ScrollController _controller = new ScrollController();
-        _controller.addListener(() {
-          var maxScroll = _controller.position.maxScrollExtent;
-          var pixel = _controller.position.pixels;
-          if (maxScroll == pixel) {
-            provider.onLoadMoreCollection();
-          }
-        });
-        Future _pullToRefresh() async {
-          await provider.onForceReload();
-        }
-        Future<bool> showDeleteConfirm() async {
-          bool willDelete = await showDialog(
-              context: rootContext,
-              builder: (BuildContext context) {
-                return AlertDialog(
-                  title: Text("确认删除"),
-                  content: Text("将会移除收藏夹"),
-                  actions: <Widget>[
-                    FlatButton(
-                      child: Text("删除"),
-                      onPressed: () {
-                        Navigator.pop(context,true);
-                      },
-                    ),
-                    FlatButton(
-                      child: Text("取消"),
-                      onPressed: () {
-                        Navigator.pop(context,false);
-                      },
-                    )
-                  ],
-                );
-              });
-          return willDelete;
-        }
-        Widget renderList(){
-          return EmptyView(
-            text: "这里暂时没有东西",
-            isLoading: provider.dataSource.isLoading,
-            icon: Icon(
-              Icons.star,
-              size: 96,
-              color: Colors.black26,
-            ),
-            onRefresh: (){
-              provider.onForceReload();
-            },
-          );
-        }
-        return Scaffold(
-          floatingActionButton: FloatingActionButton(
-            onPressed: () {
-              showModalBottomSheet(
-                  context: rootContext,
-                  backgroundColor: Colors.transparent,
-                  builder: (BuildContext context) {
-                    return TextInputBottomSheet(
-                      initValue: "",
-                      buttonText: "创建",
-                      onOk: (String text) {
-                        provider.createCollection(text);
-                        Navigator.pop(context);
-                      },
-                    );
-                  });
-            },
-            child: Icon(Icons.add),
-            backgroundColor: Colors.blue,
-          ),
-          body: RefreshIndicator(
-            onRefresh: _pullToRefresh,
-            child: renderList(),
-          ),
-        );
-      }),
-    );
+class CollectionProvider with ChangeNotifier {
+  CollectionDataSource dataSource = new CollectionDataSource();
+  bool first = true;
+
+  onLoadMoreCollection() async {
+    await dataSource.loadMore();
+    notifyListeners();
+  }
+
+  onForceReload() async {
+    await dataSource.loadCollections(true);
+    notifyListeners();
+  }
+
+  onLoad() async {
+    if (first) {
+      first = false;
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      dataSource.extraQueryParam = {"owner": prefs.getInt("uid")};
+      await dataSource.loadCollections(true);
+      notifyListeners();
+    }
+  }
+
+  updateCollection(int collectionId, String text) async {
+    var response = await ApiClient().updateCollection(collectionId, text);
+    CollectionEntity updateCollectionEntity =
+        CollectionEntity.fromJson(response.data);
+    dataSource.collections = dataSource.collections.map((collectionEntity) {
+      if (updateCollectionEntity.id == collectionEntity.id) {
+        return updateCollectionEntity;
+      }
+      return collectionEntity;
+    }).toList();
+    notifyListeners();
+  }
+
+  deleteCollection(int id) async {
+    await ApiClient().deleteCollection(id);
+    dataSource.collections.removeWhere((collection) => collection.id == id);
+    notifyListeners();
+  }
+
+  createCollection(name) async {
+    await ApiClient().createCollection(name);
+    await dataSource.loadCollections(true);
+    notifyListeners();
   }
 }

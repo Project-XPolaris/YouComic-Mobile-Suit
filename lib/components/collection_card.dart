@@ -12,37 +12,40 @@ class CollectionCard extends StatelessWidget {
     return Container(
       width: 150,
       child: Card(
-        child: GestureDetector(
+        child: InkWell(
           onTap: (){
             CollectionDetailPage.launch(context, collectionEntity);
           },
-            child: Column(
-          children: <Widget>[
-            Container(
-              height: 70,
-              child: Center(
-                child: CircleAvatar(
-                  child: Icon(Icons.folder),
-                ),
-              ),
-            ),
-            Divider(),
-            Padding(
-              padding: EdgeInsets.only(left: 16, right: 16),
-              child: Center(
-                child: Text(
-                  collectionEntity.name,
-                  maxLines: 2,
-                  overflow: TextOverflow.ellipsis,
-                  style: TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.w300
+          child: Column(
+            children: <Widget>[
+              Container(
+                color: Colors.blue,
+                child: Padding(
+                  padding: EdgeInsets.only(top: 16,bottom: 16),
+                  child: Center(
+                    child: Icon(Icons.folder,size: 36,color: Colors.white,),
                   ),
                 ),
-              ),
-            )
-          ],
-        )),
+              )
+              ,
+              Divider(height: 1,),
+              Padding(
+                padding: EdgeInsets.only(top: 8),
+                child: Center(
+                  child: Text(
+                    collectionEntity.name,
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                    style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.w300
+                    ),
+                  ),
+                ),
+              )
+            ],
+          ),
+        )
       ),
     );
   }

@@ -12,7 +12,7 @@ class CollectionHorizonCollection extends StatelessWidget {
   Widget build(BuildContext context) {
     return HorizonCardCollection(
       title: "收藏夹",
-      height: 150,
+      height: 120,
       child: ListView(
         scrollDirection: Axis.horizontal,
         children: <Widget>[

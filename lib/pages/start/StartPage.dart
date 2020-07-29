@@ -11,134 +11,189 @@ class StartPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return FutureBuilder(
       future: SharedPreferences.getInstance(),
-      builder: (BuildContext context, AsyncSnapshot<SharedPreferences> snapshot) {
-        if (snapshot.hasData){
+      builder:
+          (BuildContext context, AsyncSnapshot<SharedPreferences> snapshot) {
+        if (snapshot.hasData) {
           return ChangeNotifierProvider(
             create: (_) => StartProvider(
-                username: snapshot.data.getString("username"),
-                password: snapshot.data.getString("password"),
-                apiUrl: snapshot.data.getString("apiUrl"),
+              username: snapshot.data.getString("username"),
+              password: snapshot.data.getString("password"),
+              apiUrl: snapshot.data.getString("apiUrl"),
             ),
             child: Consumer<StartProvider>(
               builder: (rootContext, startProvider, builder) {
-                return Scaffold(
-                  body: Container(
-                    child: SingleChildScrollView(
-                      child: Container(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.stretch,
-                          children: <Widget>[
-                            Padding(
-                                padding: EdgeInsets.only(
-                                    top: 120, left: 16, right: 16),
-                                child: Center(
-                                  child: Text(
-                                    "YouComic",
-                                    textAlign: TextAlign.center,
-                                    style: TextStyle(
-                                        fontSize: 32,
-                                        fontWeight: FontWeight.w300),
-                                  ),
-                                )),
-                            Padding(
-                              padding:
-                              EdgeInsets.only(top: 48, left: 16, right: 16),
-                              child: TextFormField(
-                                initialValue: startProvider.apiUrl,
-                                decoration: const InputDecoration(
-                                  hintText: 'YouComic服务地址',
-                                  labelText: "YouComic服务地址",
-                                  border: OutlineInputBorder(),
-                                ),
-                                onChanged: startProvider.onApiUrlChange,
-                                validator: (value) {
-                                  if (value.isEmpty) {
-                                    return '请输入地址';
-                                  }
-                                  return null;
-                                },
-                              ),
-                            ),
-                            Padding(
-                              padding:
-                              EdgeInsets.only(top: 12, left: 16, right: 16),
-                              child: TextFormField(
-                                initialValue: startProvider.username,
-                                decoration: const InputDecoration(
-                                  hintText: '用户名',
-                                  labelText: "用户名",
-                                  border: OutlineInputBorder(),
-                                ),
-                                onChanged: startProvider.onUsernameChange,
-                                validator: (value) {
-                                  if (value.isEmpty) {
-                                    return '请输入用户名';
-                                  }
-                                  return null;
-                                },
-                              ),
-                            ),
-                            Padding(
-                              padding:
-                              EdgeInsets.only(top: 12, left: 16, right: 16),
-                              child: TextFormField(
-                                obscureText: true,
-                                initialValue: startProvider.password,
-                                decoration: const InputDecoration(
-                                  hintText: '密码',
-                                  labelText: "密码",
-                                  border: OutlineInputBorder(),
-                                ),
-                                onChanged: startProvider.onPasswordChange,
-                                validator: (value) {
-                                  if (value.isEmpty) {
-                                    return '请输入密码';
-                                  }
-                                  return null;
-                                },
-                              ),
-                            ),
 
-                            Padding(
-                              padding: EdgeInsets.only(
-                                  left: 16.0, right: 16.0, top: 8.0),
-                              child: FlatButton(
-                                child: Text("以YouComic Nano登入"),
-                                color: Colors.pink,
-                                textColor: Colors.white,
-                                onPressed: () {
-                                  startProvider.loginAsNano(rootContext);
-                                },
-                              ),
+                return Scaffold(
+                  body: Builder(
+                    builder: (builderContext) {
+                      return Container(
+                        child: SingleChildScrollView(
+                          child: Container(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.stretch,
+                              children: <Widget>[
+                                Padding(
+                                    padding: EdgeInsets.only(
+                                        top: 32,
+                                        left: 16,
+                                        right: 16,
+                                    ),
+                                    child: Container(
+                                      alignment: Alignment.topRight,
+                                      child: FlatButton(
+                                        onPressed: (){
+                                          print(startProvider.loginMode);
+                                          if (startProvider.loginMode == StartProvider.YOUCOMIC_SERVER_MODE){
+                                            startProvider.changeLoginModel(StartProvider.YOUCOMIC_NANO_MODE);
+                                          }else{
+                                            startProvider.changeLoginModel(StartProvider.YOUCOMIC_SERVER_MODE);
+                                          }
+                                        },
+                                        child: Text(
+                                          startProvider.loginMode ==
+                                                  StartProvider
+                                                      .YOUCOMIC_SERVER_MODE
+                                              ? "以 Nano 登录"
+                                              : "以Service登录",
+                                          style: TextStyle(color: startProvider.loginMode ==
+                                              StartProvider
+                                                  .YOUCOMIC_SERVER_MODE
+                                              ? Colors.pink
+                                              : Colors.blue),
+                                        ),
+                                      ),
+                                    )),
+                                Padding(
+                                    padding: EdgeInsets.only(
+                                        top: 48,
+                                        left: 16,
+                                        right: 16,
+                                        bottom: 36),
+                                    child: Center(
+                                      child: Image.asset(
+                                        "icon/launcher.png",
+                                        width: 96,
+                                        height: 96,
+                                      ),
+                                    )),
+                                Padding(
+                                  padding: EdgeInsets.only(
+                                      top: 48, left: 32, right: 32),
+                                  child: TextFormField(
+                                    initialValue: startProvider.apiUrl,
+                                    cursorColor: startProvider.mainColor,
+                                    decoration: InputDecoration(
+                                      focusedBorder: OutlineInputBorder(
+                                        borderSide: BorderSide(color: startProvider.mainColor)
+                                      ),
+                                      hintStyle: TextStyle(
+                                        color: startProvider.mainColor
+                                      ),
+                                      labelStyle: TextStyle(
+                                        color:startProvider.mainColor
+                                      ),
+
+                                      hintText: 'YouComic服务地址',
+                                      labelText: "YouComic服务地址",
+                                      border: OutlineInputBorder(),
+                                    ),
+                                    onChanged: startProvider.onApiUrlChange,
+                                    validator: (value) {
+                                      if (value.isEmpty) {
+                                        return '请输入地址';
+                                      }
+                                      return null;
+                                    },
+                                  ),
+                                ),
+                                Padding(
+                                  padding: EdgeInsets.only(
+                                      top: 12, left: 32, right: 32),
+                                  child: TextFormField(
+                                    initialValue: startProvider.username,
+                                    decoration: InputDecoration(
+                                      focusedBorder: OutlineInputBorder(
+                                          borderSide: BorderSide(color: startProvider.mainColor)
+                                      ),
+                                      hintStyle: TextStyle(
+                                          color: startProvider.mainColor
+                                      ),
+                                      labelStyle: TextStyle(
+                                          color:startProvider.mainColor
+                                      ),
+                                      hintText: '用户名',
+                                      labelText: "用户名",
+                                      border: OutlineInputBorder(),
+                                    ),
+                                    onChanged: startProvider.onUsernameChange,
+                                    validator: (value) {
+                                      if (value.isEmpty) {
+                                        return '请输入用户名';
+                                      }
+                                      return null;
+                                    },
+                                  ),
+                                ),
+                                Padding(
+                                  padding: EdgeInsets.only(
+                                      top: 12, left: 32, right: 32),
+                                  child: TextFormField(
+                                    obscureText: true,
+                                    initialValue: startProvider.password,
+                                    decoration: InputDecoration(
+                                      focusedBorder: OutlineInputBorder(
+                                          borderSide: BorderSide(color: startProvider.mainColor)
+                                      ),
+                                      hintStyle: TextStyle(
+                                          color: startProvider.mainColor
+                                      ),
+                                      labelStyle: TextStyle(
+                                          color:startProvider.mainColor
+                                      ),
+                                      hintText: '密码',
+                                      labelText: "密码",
+                                      border: OutlineInputBorder(),
+                                    ),
+                                    onChanged: startProvider.onPasswordChange,
+                                    validator: (value) {
+                                      if (value.isEmpty) {
+                                        return '请输入密码';
+                                      }
+                                      return null;
+                                    },
+                                  ),
+                                ),
+                                Padding(
+                                  padding: EdgeInsets.only(
+                                      left: 32, right: 32, top: 8.0),
+                                  child: FlatButton(
+                                    color: startProvider.mainColor,
+                                    textColor: Colors.white,
+                                    onPressed: () {
+                                      startProvider
+                                          .loginAccount(builderContext);
+                                    },
+                                    child: Text("登录"),
+                                  ),
+                                ),
+                                Padding(
+                                  padding: EdgeInsets.only(
+                                      left: 32, right: 32, top: 8.0),
+                                  child: FlatButton(
+                                    child: Text("已保存的账号"),
+                                    color: startProvider.mainColor,
+                                    textColor: Colors.white,
+                                    onPressed: () {
+                                      AccountPage.launch(rootContext);
+                                    },
+                                  ),
+                                ),
+                              ],
                             ),
-                            Padding(
-                              padding: EdgeInsets.only(
-                                  left: 16.0, right: 16.0, top: 8.0),
-                              child: FlatButton(
-                                color: Colors.blue,
-                                textColor: Colors.white,
-                                onPressed: () {
-                                  startProvider.loginAccount(rootContext);
-                                },
-                                child: Text("登录"),
-                              ),
-                            ),
-                            Padding(
-                              padding: EdgeInsets.only(
-                                  left: 16.0, right: 16.0, top: 8.0),
-                              child: FlatButton(
-                                child: Text("已保存的账号"),
-                                color: Colors.blue,
-                                textColor: Colors.white,
-                                onPressed: () {
-                                  AccountPage.launch(rootContext);
-                                },
-                              ),
-                            ),
-                          ],
+                          ),
                         ),
-                      ),
-                    ),
+                      );
+                    },
                   ),
                 );
               },

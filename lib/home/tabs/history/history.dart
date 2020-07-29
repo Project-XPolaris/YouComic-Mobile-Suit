@@ -26,7 +26,7 @@ class HistoryPage extends StatelessWidget {
         }
 
         Widget listView = ListView.separated(
-          separatorBuilder: (BuildContext context, int index) => Divider(),
+          separatorBuilder: (BuildContext context, int index) => Divider(height: 0,),
           itemCount: provider.dataSource.data.length,
           physics: AlwaysScrollableScrollPhysics(),
           controller: _controller,

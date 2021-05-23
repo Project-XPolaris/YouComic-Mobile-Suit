@@ -11,10 +11,6 @@ class HomePage extends StatelessWidget {
       create: (_) => HomeProvider(),
       child: Consumer<HomeProvider>(builder: (context, homeProvider, builder) {
         homeProvider.onLoad(false);
-        var recentlyBooks = homeProvider.recentlyBookDataSource.books;
-        if (recentlyBooks == null) {
-          recentlyBooks = [];
-        }
         return Scaffold(
           body: RefreshIndicator(
             onRefresh: () async {
@@ -25,7 +21,7 @@ class HomePage extends StatelessWidget {
               children: <Widget>[
                 Padding(
                   padding: EdgeInsets.only(top: 24, left: 16),
-                  child: BookHorizonCollection(books: recentlyBooks),
+                  child: BookHorizonCollection(books: homeProvider.recentlyBookDataSource.books),
                 ),
                 Padding(
                   padding: EdgeInsets.only(top: 24, left: 16),

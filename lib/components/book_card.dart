@@ -12,7 +12,10 @@ class BookCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     List<TagEntity> bookTags = this.book.tags;
-    var authorTag = bookTags.firstWhere((tag) => tag.type == "artist");
+    var authorTag = null;
+    if (bookTags.length > 0) {
+      authorTag = bookTags.firstWhere((tag) => tag.type == "artist");
+    }
     var authorName = "未知";
     if (authorTag != null) {
       authorName = authorTag.name;
@@ -20,7 +23,6 @@ class BookCard extends StatelessWidget {
     onCardClick() {
       DetailPage.launch(context, book);
     }
-
     return Container(
       width: 130,
       child: Card(
@@ -38,6 +40,9 @@ class BookCard extends StatelessWidget {
                   fit: BoxFit.cover,
                   image: NetworkImage(book.cover,
                       headers: {"Authorization": ApiClient().token}),
+                  errorBuilder: (b,s,e) {
+                    return Container();
+                  },
                 ),
                 Padding(
                   padding: EdgeInsets.only(top: 8, left: 8),

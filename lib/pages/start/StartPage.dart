@@ -80,7 +80,7 @@ class StartPage extends StatelessWidget {
                                   padding: EdgeInsets.only(
                                       top: 48, left: 32, right: 32),
                                   child: TextFormField(
-                                    initialValue: startProvider.apiUrl,
+                                    initialValue: startProvider.apiUrl ?? "http://192.168.31.193:8880",
                                     cursorColor: startProvider.mainColor,
                                     decoration: InputDecoration(
                                       focusedBorder: OutlineInputBorder(

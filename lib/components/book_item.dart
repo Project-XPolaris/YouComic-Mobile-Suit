@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:youcomic/api/client.dart';
 import 'package:youcomic/api/model/book_entity.dart';
@@ -20,13 +21,19 @@ class BookItem extends StatelessWidget {
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          Image(
-            width: 96,
-            height: 150,
-            fit: BoxFit.cover,
-            image: NetworkImage(book.cover,
-                headers: {"Authorization": ApiClient().token}),
+          ClipRRect(
+              borderRadius: BorderRadius.circular(8.0),
+              child: CachedNetworkImage(
+                width: 96,
+                height: 150,
+                fit: BoxFit.cover,
+                httpHeaders: {"Authorization": ApiClient().token},
+                imageUrl: book.cover,
+                placeholder: (context, url) => Container(color: Colors.black12,),
+                errorWidget: (context, url, error) => Container(color: Colors.black12,),
+              ),
           ),
+
           Expanded(
             child: Padding(
                 padding: EdgeInsets.only(left: 16, top: 8),
@@ -71,8 +78,8 @@ class BookItem extends StatelessWidget {
                         child: Text(
                           getBookTagName(
                               bookEntity: book,
-                              tagType: "artist",
-                              defaultText: "theme"),
+                              tagType: "theme",
+                              defaultText: ""),
                           style: TextStyle(color: Colors.black54),
                         ),
                       )

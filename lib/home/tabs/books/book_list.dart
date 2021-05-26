@@ -33,26 +33,26 @@ class BookListPage extends StatelessWidget {
         return Scaffold(
           body: RefreshIndicator(
             onRefresh: _pullToRefresh,
-            child: ListView.separated(
+            child: ListView.builder(
               itemCount: bookListProvider.dataSource.books.length,
               itemBuilder: (context, idx) {
-                return BookItem(
-                  book: bookListProvider.dataSource.books[idx],
-                  onLongPress: () {
-                    HapticFeedback.vibrate();
-                    showModalBottomSheet(
-                        context: context,
-                        builder: (context) {
-                          return BookInfoBottomSheet(
-                            bookEntity: bookListProvider.dataSource.books[idx],
-                          );
-                        });
-                  },
+                return Container(
+                  padding: EdgeInsets.all(8),
+                  child: BookItem(
+                    book: bookListProvider.dataSource.books[idx],
+                    onLongPress: () {
+                      HapticFeedback.vibrate();
+                      showModalBottomSheet(
+                          context: context,
+                          builder: (context) {
+                            return BookInfoBottomSheet(
+                              bookEntity: bookListProvider.dataSource.books[idx],
+                            );
+                          });
+                    },
+                  ),
                 );
               },
-              separatorBuilder: (context, index) => Divider(
-                height: 0,
-              ),
               controller: _controller,
             ),
           ),

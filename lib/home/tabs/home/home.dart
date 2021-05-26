@@ -23,6 +23,7 @@ class HomePage extends StatelessWidget {
                   padding: EdgeInsets.only(top: 24, left: 16),
                   child: BookHorizonCollection(books: homeProvider.recentlyBookDataSource.books),
                 ),
+                homeProvider.collectionDataSource.collections.isEmpty?Container():
                 Padding(
                   padding: EdgeInsets.only(top: 24, left: 16),
                   child: CollectionHorizonCollection(

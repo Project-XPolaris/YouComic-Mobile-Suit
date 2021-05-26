@@ -5,16 +5,19 @@ import '../provider.dart';
 
 class SearchBooksTab extends StatelessWidget {
   final SearchProvider provider;
+
   SearchBooksTab({this.provider});
+
   @override
   Widget build(BuildContext context) {
     List<Widget> items = [];
     createBookItem(book) {
-      items.add(BookItem(book:book));
-      items.add(Divider(
-        height: 0,
+      items.add(Container(
+        padding: EdgeInsets.all(8),
+        child: BookItem(book: book),
       ));
     }
+
     provider.bookDataSource.books.forEach((book) => createBookItem(book));
     ScrollController _controller = new ScrollController();
     _controller.addListener(() {

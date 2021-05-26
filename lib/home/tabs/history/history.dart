@@ -42,8 +42,11 @@ class HistoryPage extends StatelessWidget {
                 );
                 Scaffold.of(context).showSnackBar(snackBar);
               },
-              child: BookItem(
-                book: history.book,
+              child: Container(
+                padding: EdgeInsets.all(8),
+                child: BookItem(
+                  book: history.book,
+                ),
               ),
             );
           },

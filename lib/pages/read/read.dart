@@ -39,8 +39,6 @@ class ReadPage extends StatelessWidget {
           final List<double> mapping = [];
           for (var idx = 0; idx < readProvider.dataSource.pages.length; idx++) {
             var pageEntity = readProvider.dataSource.pages[idx];
-//          print(pageEntity.id);
-//          print(pageEntity.height);
             mapping.add(offset);
             offset +=
                 (pageEntity.height / pageEntity.width) * size.width + 16.0;
@@ -73,16 +71,11 @@ class ReadPage extends StatelessWidget {
         _controller.addListener(() {
           final maxScroll = _controller.position.maxScrollExtent;
           final pixel = _controller.offset;
-//        readProvider.dataSource.pages.firstWhere(test)
-//        print(_controller.position.pixels);
           final pageStartMapping = _buildPageStartMapping();
-//        print(pageStartMapping);
           final pos = pageStartMapping
               .indexWhere((offset) => offset > _controller.position.pixels);
-//        print(pos);
           Provider.of<ReadStatusProvider>(context, listen: false)
               .updateCurrentDisplayPage(pos);
-//        readProvider.updateCurrentDisplayPage(pos);
           if (sliderKey != null) {
             sliderKey.currentState.onSliderValueChange(pos.toDouble());
           }

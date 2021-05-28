@@ -37,21 +37,21 @@ class TagPage extends StatelessWidget {
 
         List<Widget> items = [];
         createBookItem(book) {
-          items.add(BookItem(
-            book: book,
-            onLongPress: () {
-              HapticFeedback.vibrate();
-              showModalBottomSheet(
-                  context: context,
-                  builder: (context) {
-                    return BookInfoBottomSheet(
-                      bookEntity: book,
-                    );
-                  });
-            },
-          ));
-          items.add(Divider(
-            height: 0,
+          items.add(Container(
+            padding: EdgeInsets.all(8),
+            child: BookItem(
+              book: book,
+              onLongPress: () {
+                HapticFeedback.vibrate();
+                showModalBottomSheet(
+                    context: context,
+                    builder: (context) {
+                      return BookInfoBottomSheet(
+                        bookEntity: book,
+                      );
+                    });
+              },
+            ),
           ));
         }
 

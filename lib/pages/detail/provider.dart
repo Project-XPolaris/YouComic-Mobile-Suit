@@ -69,7 +69,7 @@ class DetailProvider with ChangeNotifier {
   loadRelateTheme() async {
     if (book.tags.lastIndexWhere((tag) => tag.type == "theme") != -1) {
       var theme = book.tags.firstWhere((tag) => tag.type == "theme");
-      relateSeriesBookDataSource.extraQueryParam = {"tag": theme.id};
+      relateThemeBookDataSource.extraQueryParam = {"tag": theme.id};
       await relateThemeBookDataSource.loadBooks(true);
       relateThemeBookDataSource.books
           .removeWhere((book) => book.id == this.book.id);

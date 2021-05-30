@@ -17,7 +17,7 @@ class PageDataSource {
     }
     isLoading = true;
     final response = await ApiClient().fetchPages({
-      "order": "order",
+      "order": "page_order",
       "page_size": 5,
       "page": page + 1
     }..addAll(extraQueryParam));
@@ -35,17 +35,12 @@ class PageDataSource {
     if ((pages.isEmpty && !isLoading) || force) {
       page = 1;
       isLoading = true;
-      print({
-        "order": "order",
-        "page_size": 99999,
-        "page": page
-      }..addAll(extraQueryParam));
       var response = await ApiClient().fetchPages({
-        "order": "order",
+        "order": "page_order",
         "page_size": 99999,
         "page": page
       }..addAll(extraQueryParam));
-      print(response.data);
+      print(response.data["result"]);
       pages = PageEntity.parseList(response.data["result"]);
       pages.forEach((page) => page.path = "${ApiClient().baseUrl}${page.path}");
       String nextUrl = response.data["next"];

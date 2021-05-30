@@ -25,10 +25,9 @@ class ImagePage extends StatelessWidget {
         ));
     return Consumer<ReadStatusProvider>(
         builder: (context, readStatusProvider, builder) {
-      if ((readStatusProvider.currentDisplayPage - page.order).abs() < 2) {
-        print("display page  = ${page.order}");
+      if ((readStatusProvider.currentDisplayPage - page.pageOrder).abs() < 2) {
       }
-      return (readStatusProvider.currentDisplayPage - page.order).abs() < 3?CachedNetworkImage(
+      return (readStatusProvider.currentDisplayPage - page.pageOrder).abs() < 3?CachedNetworkImage(
         imageUrl: page.path,
         width: width,
         height: height,

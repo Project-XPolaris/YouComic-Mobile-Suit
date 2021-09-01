@@ -5,7 +5,7 @@ class TagsProvider with ChangeNotifier {
   TagDataSource dataSource = new TagDataSource();
   bool first = true;
   final List<String> typesFilter = List();
-
+  bool randomPick = false;
   onLoadMore() async {
     await dataSource.loadMore();
     notifyListeners();
@@ -23,6 +23,12 @@ class TagsProvider with ChangeNotifier {
     this.onLoad();
   }
 
+  refreshRandom(bool isRandom ) {
+    this.randomPick = isRandom;
+    this.first = true;
+    this.onLoad();
+  }
+
   onLoad() async {
     if (first) {
       first = false;
@@ -31,6 +37,11 @@ class TagsProvider with ChangeNotifier {
         dataSource.extraQueryParam["type"] = typesFilter;
       } else {
         dataSource.extraQueryParam.remove("type");
+      }
+      if (randomPick) {
+        dataSource.extraQueryParam["random"] = "1";
+      }else{
+        dataSource.extraQueryParam.remove("random");
       }
       await dataSource.loadTags(true);
       notifyListeners();

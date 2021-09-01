@@ -13,7 +13,6 @@ class ApiClient {
   ApiClient._() {
     dio.options.connectTimeout = 5000; //5s
     dio.options.receiveTimeout = 3000;
-    dio.interceptors.add(CustomInterceptors());
   }
 
   static ApiClient _client() {
@@ -39,8 +38,7 @@ class ApiClient {
         port: parseBaseUri.port,
         scheme: parseBaseUri.scheme,
         queryParameters: encodeParam,
-        path: path
-    );
+        path: path);
     return uri.toString();
   }
 
@@ -57,42 +55,48 @@ class ApiClient {
 
   fetchBooks(Map<String, dynamic> param) async {
     return dio.get(baseUrl + "/books",
-        options: RequestOptions(
-            queryParameters: param, headers: {"Authorization": token}));
+        options: Options(headers: {"Authorization": token}),
+        queryParameters: param);
   }
 
   fetchTags(Map<String, dynamic> param) async {
     return dio.get(getRequestUri(param, "/tags"),
-        options: RequestOptions(headers: {"Authorization": token}));
+        options: Options(headers: {"Authorization": token}));
   }
 
   updateCollection(int collectionId, String name) async {
-    return dio.patch("$baseUrl/collection/$collectionId",
-        options: RequestOptions(
-            data: {"name": name}, headers: {"Authorization": token}));
+    return dio.patch(
+      "$baseUrl/collection/$collectionId",
+      options: Options(headers: {"Authorization": token}),
+      data: {"name": name},
+    );
   }
 
   fetchCollections(Map<String, dynamic> param) async {
-    return dio.get(baseUrl + "/collections",
-        options: RequestOptions(
-            queryParameters: param, headers: {"Authorization": token}));
+    return dio.get(
+      baseUrl + "/collections",
+      options: Options(headers: {"Authorization": token}),
+      queryParameters: param,
+    );
   }
 
   addBookToCollection(collectionId, books) async {
-    return dio.put("$baseUrl/collection/$collectionId/books",
-        data: {"books": books},
-        options: RequestOptions(headers: {"Authorization": token}));
+    return dio.put(
+      "$baseUrl/collection/$collectionId/books",
+      options: Options(headers: {"Authorization": token}),
+      data: {"books": books},
+    );
   }
 
   createCollection(name) async {
     return dio.post("$baseUrl/collections",
         data: {"name": name},
-        options: RequestOptions(headers: {"Authorization": token}));
+        options: Options(headers: {"Authorization": token}));
   }
 
   deleteCollection(int collectionId) async {
     return dio.delete("$baseUrl/collection/$collectionId",
-        options: RequestOptions(headers: {"Authorization": token}));
+        options: Options(headers: {"Authorization": token}));
   }
 
   fetchBook(int bookId, {withHistory}) async {
@@ -101,19 +105,21 @@ class ApiClient {
       queryParams["history"] = "True";
     }
     return dio.get(baseUrl + "/book/$bookId",
-        options: RequestOptions(
-            headers: {"Authorization": token}, queryParameters: queryParams));
+        options: Options(
+          headers: {"Authorization": token},
+        ),
+        queryParameters: queryParams);
   }
 
   fetchBookTags(int bookId) async {
     return dio.get(baseUrl + "/book/$bookId/tags",
-        options: RequestOptions(headers: {"Authorization": token}));
+        options: Options(headers: {"Authorization": token}));
   }
 
   fetchPages(Map<String, dynamic> param) async {
     return dio.get(baseUrl + "/pages",
-        options: RequestOptions(
-            queryParameters: param, headers: {"Authorization": token}));
+        options: Options(
+            headers: {"Authorization": token}),queryParameters: param, );
   }
 
   setToken(String sign) {
@@ -122,55 +128,34 @@ class ApiClient {
 
   subscribeTag(int tagId) async {
     return dio.put("$baseUrl/tag/$tagId/subscription",
-        options: RequestOptions(headers: {"Authorization": token}));
+        options: Options(headers: {"Authorization": token}));
   }
 
   cancelSubscribeTag(int tagId) async {
     return dio.delete("$baseUrl/tag/$tagId/subscription",
-        options: RequestOptions(headers: {"Authorization": token}));
+        options: Options(headers: {"Authorization": token}));
   }
 
   fetchHistories(Map<String, dynamic> param) async {
     return dio.get("$baseUrl/histories",
-        options: RequestOptions(
-            queryParameters: param, headers: {"Authorization": token}));
+        options: Options(
+           headers: {"Authorization": token}), queryParameters: param, );
   }
 
   deleteHistory(int historyId) async {
     return dio.delete("$baseUrl/history/$historyId",
-        options: RequestOptions(headers: {"Authorization": token}));
+        options: Options(headers: {"Authorization": token}));
   }
 
   clearHistory(int historyId) async {
     return dio.delete("$baseUrl/account/histories",
-        options: RequestOptions(headers: {"Authorization": token}));
+        options: Options(headers: {"Authorization": token}));
   }
 
   removeBookFromCollection(int collectionId, List<int> bookIds) async {
     return dio.delete("$baseUrl/collection/$collectionId/books",
         data: {"books": bookIds},
-        options: RequestOptions(headers: {"Authorization": token}));
+        options: Options(headers: {"Authorization": token}));
   }
 }
 
-class CustomInterceptors extends InterceptorsWrapper {
-  @override
-  Future onRequest(RequestOptions options) {
-    print("REQUEST[${options?.method}] => PATH: ${options?.path}");
-    return super.onRequest(options);
-  }
-
-  @override
-  Future onResponse(Response response) {
-    print(
-        "RESPONSE[${response?.statusCode}] => PATH: ${response?.request
-            ?.path}");
-    return super.onResponse(response);
-  }
-
-  @override
-  Future onError(DioError err) {
-    print("ERROR[${err?.response?.statusCode}] => PATH: ${err?.request?.path}");
-    return super.onError(err);
-  }
-}

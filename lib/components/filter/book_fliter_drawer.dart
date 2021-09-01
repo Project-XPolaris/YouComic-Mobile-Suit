@@ -10,6 +10,7 @@ class BookFilterDrawer extends StatelessWidget {
   final List<DateTime> customTimeRange;
   final Function() onClearCustomTimeRange;
   final Function(String newRange) onTimeRangeChange;
+  final Function(bool random) onRandomChange;
   final String timeRangeSelectMode;
 
   BookFilterDrawer({
@@ -20,7 +21,8 @@ class BookFilterDrawer extends StatelessWidget {
     this.customTimeRange,
     this.onClearCustomTimeRange,
     this.onTimeRangeChange,
-    this.timeRangeSelectMode
+    this.timeRangeSelectMode,
+    this.onRandomChange
   });
 
   _buildOrderOptions() {
@@ -62,6 +64,11 @@ class BookFilterDrawer extends StatelessWidget {
           name: "创建时间降序",
           key: "-created_at",
           isSelected: activeOrders.contains("-created_at"),
+          onActiveChange: onSelectChange),
+      new TagItem(
+          name: "随机",
+          key: "random",
+          isSelected: activeOrders.contains("random"),
           onActiveChange: onSelectChange)
     ];
   }
@@ -112,7 +119,7 @@ class BookFilterDrawer extends StatelessWidget {
                       onClearCustomTimeRange: this.onClearCustomTimeRange,
                       onTimeRangeChange: this.onTimeRangeChange,
                     ),
-                  )
+                  ),
                 ],
               ),
             )

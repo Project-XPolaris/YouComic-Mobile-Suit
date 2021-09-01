@@ -28,22 +28,25 @@ class TagsPage extends StatelessWidget {
         }
 
         return Scaffold(
-            body: ListView.separated(
-                controller: _controller,
-                itemBuilder: (itemContext, idx) {
-                  final TagEntity tag = provider.dataSource.tags[idx];
-                  return ListTile(
-                      title: Text(tag.name),
-                      subtitle: Text(tag.type),
-                      leading: CircleAvatar(
-                        child: Icon(selectIconByTagType(tag.type)),
+            body: RefreshIndicator(
+              onRefresh: _pullToRefresh,
+              child: ListView.separated(
+                  controller: _controller,
+                  itemBuilder: (itemContext, idx) {
+                    final TagEntity tag = provider.dataSource.tags[idx];
+                    return ListTile(
+                        title: Text(tag.name),
+                        subtitle: Text(tag.type),
+                        leading: CircleAvatar(
+                          child: Icon(selectIconByTagType(tag.type)),
 
-                      ),
-                      onTap: () => TagPage.launch(context, tag));
-                },
-                separatorBuilder: (BuildContext context, int index) =>
-                    Divider(),
-                itemCount: provider.dataSource.tags.length));
+                        ),
+                        onTap: () => TagPage.launch(context, tag));
+                  },
+                  separatorBuilder: (BuildContext context, int index) =>
+                      Divider(),
+                  itemCount: provider.dataSource.tags.length),
+            ));
       }),
     );
   }

@@ -43,7 +43,6 @@ class StartProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-
   loginAccount(BuildContext context) async {
     login(context, loginMode);
   }
@@ -85,12 +84,10 @@ class StartProvider extends ChangeNotifier {
         MaterialPageRoute(builder: (context) => MyHomePage()),
       );
     } on DioError catch (e) {
-      if (e.type == DioErrorType.RESPONSE) {
-        ApiError apiError = ApiError.fromDioError(e);
-        Scaffold.of(context).showSnackBar(SnackBar(
-          content: Text(apiError.reason),
-        ));
-      }
+      ApiError apiError = ApiError.fromDioError(e);
+      Scaffold.of(context).showSnackBar(SnackBar(
+        content: Text(apiError.reason),
+      ));
     }
   }
 }

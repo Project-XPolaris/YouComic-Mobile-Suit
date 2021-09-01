@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:youcomic/components/filter/filter_drawer.dart';
 import 'package:youcomic/components/filter/tag_select_section.dart';
@@ -6,9 +7,15 @@ class TagFilterDrawer extends StatelessWidget {
   final Function() onClose;
   final Function(List<String> updatedActiveTypeFilters) onTypeFilterChange;
   final List<String> activeTypeFilters;
+  final bool random;
+  final Function(bool) onRandomChange;
 
   TagFilterDrawer(
-      {this.onClose, this.onTypeFilterChange, this.activeTypeFilters});
+      {this.onClose,
+      this.onTypeFilterChange,
+      this.activeTypeFilters,
+      this.random,
+      this.onRandomChange});
 
   @override
   Widget build(BuildContext context) {
@@ -52,6 +59,17 @@ class TagFilterDrawer extends StatelessWidget {
       children: [
         TagSelectFilterSection(
           items: items,
+        ),
+        Wrap(
+          children: [
+            ActionChip(
+              label: Text("Random"),
+              backgroundColor: random ? Colors.blue : null,
+              onPressed: () {
+                onRandomChange(!random);
+              },
+            )
+          ],
         )
       ],
     );

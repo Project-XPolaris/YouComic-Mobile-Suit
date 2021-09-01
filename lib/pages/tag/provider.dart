@@ -27,7 +27,7 @@ class TagProvider extends ChangeNotifier {
     isFirst = false;
     title = "标签：${tag.name}";
     notifyListeners();
-    bookDataSource.extraQueryParam = {"tag": tag.id};
+    bookDataSource.extraQueryParam = {"tag": tag.id,"order":"-id"};
     await bookDataSource.loadBooks(true);
     notifyListeners();
   }

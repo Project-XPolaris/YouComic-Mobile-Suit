@@ -16,7 +16,6 @@ class TagDataSource {
     }
     isLoading = true;
     var response = await ApiClient().fetchTags({
-      "order": "-id",
       "page_size": pageSize,
       "page": page + 1,
     }..addAll(extraQueryParam));
@@ -33,7 +32,6 @@ class TagDataSource {
       page = 1;
       isLoading = true;
       var response = await ApiClient().fetchTags({
-        "order": "-id",
         "page_size": pageSize,
         "page": page,
       }..addAll(extraQueryParam));

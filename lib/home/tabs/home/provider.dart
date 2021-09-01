@@ -13,9 +13,9 @@ class HomeProvider with ChangeNotifier {
   onLoadRecentlyAdd(bool force) async {
     if (!isRecentlyBookLoaded || force){
       this.isRecentlyBookLoaded = true;
+      recentlyBookDataSource.extraQueryParam = {"order":"-id"};
       await recentlyBookDataSource.loadBooks(true);
       notifyListeners();
-
     }
   }
 

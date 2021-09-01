@@ -33,6 +33,12 @@ class BottomBar extends StatelessWidget {
           title: Text('书籍'),
         ),
         BottomNavigationBarItem(
+          icon: Icon(
+            Icons.tag,
+          ),
+          title: Text('标签'),
+        ),
+        BottomNavigationBarItem(
           icon: Icon(Icons.star),
           title: Text('收藏'),
         ),

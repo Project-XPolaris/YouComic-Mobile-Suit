@@ -26,12 +26,12 @@ dependencies:
   cupertino_icons: ^0.1.2
   settings_ui: ^0.2.0
   provider: 4.0.4
-  dio: ^3.0.9
-  shared_preferences: ^0.5.6+3
+  dio: ^4.0.0
+  shared_preferences: ^2.0.6
   date_range_picker: ^1.0.5
   intl: ^0.16.1
-  cached_network_image: ^2.1.0+1
-  flutter_cache_manager: ^1.2.1
+  cached_network_image: ^3.1.0
+  flutter_cache_manager: ^3.1.2
   characters: ^1.0.0
   sqflite:
   path:
@@ -39,7 +39,7 @@ dependencies:
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  flutter_launcher_icons: "^0.7.3"
+  flutter_launcher_icons: 0.9.1
 
 flutter_icons:
   android: true

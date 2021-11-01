@@ -6,7 +6,7 @@ import 'package:youcomic/components/horizon_card_collection.dart';
 class BookHorizonCollection extends StatelessWidget {
   final List<BookEntity> books;
 
-  BookHorizonCollection({this.books});
+  BookHorizonCollection({required this.books});
 
   @override
   Widget build(BuildContext context) {

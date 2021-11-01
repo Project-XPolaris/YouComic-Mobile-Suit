@@ -5,7 +5,7 @@ import 'package:youcomic/pages/collection/collection.dart';
 class CollectionCard extends StatelessWidget {
   final CollectionEntity collectionEntity;
 
-  CollectionCard({this.collectionEntity});
+  CollectionCard({required this.collectionEntity});
 
   @override
   Widget build(BuildContext context) {
@@ -33,7 +33,7 @@ class CollectionCard extends StatelessWidget {
                 padding: EdgeInsets.only(top: 8),
                 child: Center(
                   child: Text(
-                    collectionEntity.name,
+                    collectionEntity.getName(),
                     maxLines: 2,
                     overflow: TextOverflow.ellipsis,
                     style: TextStyle(

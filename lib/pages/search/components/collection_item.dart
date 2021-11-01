@@ -2,7 +2,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:youcomic/api/model/collection.dart';
 import 'package:youcomic/pages/collection/collection.dart';
-import 'package:youcomic/util/icon.dart';
 
 class CollectionItem extends StatelessWidget {
   final CollectionEntity collection;
@@ -34,7 +33,7 @@ class CollectionItem extends StatelessWidget {
                   child: Container(
                     width: 300,
                     child: Text(
-                      collection.name,
+                      collection.getName(),
                       style: TextStyle(fontSize: 16, color: Colors.black87),
                     ),
                   )),

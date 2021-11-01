@@ -8,7 +8,7 @@ class TagFilterDrawer extends StatelessWidget {
   final List<String> activeTypeFilters;
 
   TagFilterDrawer(
-      {this.onClose, this.onTypeFilterChange, this.activeTypeFilters});
+      {required this.onClose, required this.onTypeFilterChange, required this.activeTypeFilters});
 
   @override
   Widget build(BuildContext context) {

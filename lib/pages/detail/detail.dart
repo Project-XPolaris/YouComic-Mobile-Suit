@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -15,7 +16,7 @@ import 'components/detail_section.dart';
 class DetailPage extends StatelessWidget {
   final BookEntity book;
 
-  DetailPage({this.book});
+  DetailPage({required this.book});
 
   static launch(BuildContext context, BookEntity book) {
     Navigator.push(
@@ -31,21 +32,24 @@ class DetailPage extends StatelessWidget {
     return ChangeNotifierProvider(
       create: (_) => DetailProvider(book: this.book),
       child:
-      Consumer<DetailProvider>(builder: (context, detailProvider, builder) {
+          Consumer<DetailProvider>(builder: (context, detailProvider, builder) {
         detailProvider.onLoad();
         onReadButtonClick() {
-          ReadPage.launch(context, detailProvider.book.id);
+          var id = detailProvider.book.id;
+          if (id == null) {
+            return;
+          }
+          ReadPage.launch(context, id);
         }
 
         var tags = detailProvider.tags
-            .map((tag) =>
-            Padding(
-              padding: EdgeInsets.only(right: 8, bottom: 2),
-              child: ActionChip(
-                label: Text(tag.name),
-                onPressed: () => TagPage.launch(context, tag),
-              ),
-            ))
+            .map((tag) => Padding(
+                  padding: EdgeInsets.only(right: 8, bottom: 2),
+                  child: ActionChip(
+                    label: Text(tag.getName()),
+                    onPressed: () => TagPage.launch(context, tag),
+                  ),
+                ))
             .toList();
         renderRelateArtist() {
           if (detailProvider.relateArtistBookDataSource.books.length > 0) {
@@ -117,6 +121,7 @@ class DetailPage extends StatelessWidget {
           }
           return [];
         }
+
         List<Widget> renderAction() {
           if (ApplicationConfig().useNanoMode) {
             return [
@@ -157,23 +162,26 @@ class DetailPage extends StatelessWidget {
                     child: Text("加入收藏"),
                     onPressed: () {
                       detailProvider.loadCollections();
-                      Scaffold.of(sc.currentContext)
-                          .showBottomSheet((context) {
-                        return SelectCollectionBottomSheet();
-                      });
+                      var buildContext = sc.currentContext;
+                      if (buildContext != null) {
+                        Scaffold.of(buildContext).showBottomSheet((context) {
+                          return SelectCollectionBottomSheet();
+                        });
+                      }
                     },
                   ),
                 ))
           ];
         }
 
+        var cover = detailProvider.cover;
         return Scaffold(
             appBar: AppBar(
               brightness: Brightness.light,
               backgroundColor: Colors.white,
               iconTheme: IconThemeData(color: Colors.black87),
               title: Text(
-                detailProvider.book == null ? "未知" : detailProvider.book.name,
+                detailProvider.book.name,
                 style: TextStyle(color: Colors.black87),
               ),
             ),
@@ -188,61 +196,63 @@ class DetailPage extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: <Widget>[
-                          Image(
-                            width: 120,
-                            image: NetworkImage(detailProvider.cover,
-                                headers: {"Authorization": ApiClient().token}),
-                          ),
+                          cover != null
+                              ? CachedNetworkImage(
+                                  width: 120,
+                                  httpHeaders: {
+                                    "Authorization": ApiClient().token
+                                  },
+                                  imageUrl: cover,
+                                )
+                              : Container(),
                           Flexible(
                               child: Padding(
-                                padding: EdgeInsets.only(left: 10),
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
+                            padding: EdgeInsets.only(left: 10),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: <Widget>[
+                                Wrap(
                                   children: <Widget>[
-                                    Wrap(
-                                      children: <Widget>[
-                                        Text(
-                                          detailProvider.name,
-                                          style: TextStyle(
-                                            fontSize: 20,
-                                            fontWeight: FontWeight.w300,
-                                          ),
-                                        )
-                                      ],
-                                    ),
-                                    Padding(
-                                      padding: EdgeInsets.only(top: 8),
-                                      child: Text(detailProvider.artist),
-                                    ),
-                                    Padding(
-                                      padding: EdgeInsets.only(top: 12),
-                                      child: Text(
-                                        detailProvider.series,
-                                        style: TextStyle(
-                                            fontWeight: FontWeight.w300,
-                                            color: Colors.grey),
-                                      ),
-                                    ),
-                                    Padding(
-                                      padding: EdgeInsets.only(top: 12),
-                                      child: Text(
-                                        detailProvider.theme,
-                                        style: TextStyle(
-                                            fontWeight: FontWeight.w300,
-                                            color: Colors.grey),
+                                    Text(
+                                      detailProvider.name,
+                                      style: TextStyle(
+                                        fontSize: 20,
+                                        fontWeight: FontWeight.w300,
                                       ),
                                     )
                                   ],
                                 ),
-                              )),
+                                Padding(
+                                  padding: EdgeInsets.only(top: 8),
+                                  child: Text(detailProvider.artist),
+                                ),
+                                Padding(
+                                  padding: EdgeInsets.only(top: 12),
+                                  child: Text(
+                                    detailProvider.series,
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.w300,
+                                        color: Colors.grey),
+                                  ),
+                                ),
+                                Padding(
+                                  padding: EdgeInsets.only(top: 12),
+                                  child: Text(
+                                    detailProvider.theme,
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.w300,
+                                        color: Colors.grey),
+                                  ),
+                                )
+                              ],
+                            ),
+                          )),
                         ],
                       )),
                   Padding(
                     padding: EdgeInsets.only(top: 16, left: 16, right: 16),
                     child: Row(
-                      children: <Widget>[
-                        ...renderAction()
-                      ],
+                      children: <Widget>[...renderAction()],
                     ),
                   ),
                   Divider(),

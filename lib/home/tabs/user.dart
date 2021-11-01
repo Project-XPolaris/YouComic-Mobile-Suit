@@ -33,12 +33,6 @@ class UserPage extends StatelessWidget {
                 padding: EdgeInsets.only(top: 24),
                 child: Text(userProvider.nickname,style: TextStyle(fontSize: 24),),
               ),
-              Padding(
-                padding: EdgeInsets.only(top: 32),
-                child: RaisedButton(
-                  child: Text("登出"),
-                ),
-              )
             ],
           ),
         ),

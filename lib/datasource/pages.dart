@@ -1,4 +1,5 @@
 import 'package:youcomic/api/client.dart';
+import 'package:youcomic/api/model/container.dart';
 import 'package:youcomic/api/model/page.dart';
 
 class PageDataSource {
@@ -8,7 +9,7 @@ class PageDataSource {
   int page = 1;
   int pageSize = 5;
   bool isLoading = false;
-  Map<String, dynamic> extraQueryParam;
+  Map<String, dynamic> extraQueryParam = {};
   int count = 0;
 
   loadMore() async {
@@ -17,15 +18,14 @@ class PageDataSource {
     }
     isLoading = true;
     final response = await ApiClient().fetchPages({
-      "order": "order",
+      "order": "page_order",
       "page_size": 5,
       "page": page + 1
     }..addAll(extraQueryParam));
-    final morePages = PageEntity.parseList(response.data["result"]);
-    morePages
-        .forEach((page) => page.path = "${ApiClient().baseUrl}${page.path}");
-    String nextUrl = response.data["next"];
-    page = response.data["page"];
+    List<PageEntity> morePages = response.result;
+    morePages.forEach((page) => page.path = "${ApiClient().baseUrl}${page.path}");
+    String nextUrl = response.next;
+    page = response.page;
     hasMore = nextUrl.isNotEmpty;
     pages.addAll(morePages);
     isLoading = false;
@@ -35,21 +35,15 @@ class PageDataSource {
     if ((pages.isEmpty && !isLoading) || force) {
       page = 1;
       isLoading = true;
-      print({
-        "order": "order",
-        "page_size": 99999,
-        "page": page
-      }..addAll(extraQueryParam));
       var response = await ApiClient().fetchPages({
-        "order": "order",
+        "order": "page_order",
         "page_size": 99999,
         "page": page
       }..addAll(extraQueryParam));
-      print(response.data);
-      pages = PageEntity.parseList(response.data["result"]);
+      pages = response.result;
       pages.forEach((page) => page.path = "${ApiClient().baseUrl}${page.path}");
-      String nextUrl = response.data["next"];
-      count = response.data["count"];
+      String nextUrl = response.next;
+      count = response.count;
       hasMore = nextUrl.isNotEmpty;
       isLoading = false;
     }

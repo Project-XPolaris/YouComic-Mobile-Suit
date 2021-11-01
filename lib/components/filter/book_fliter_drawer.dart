@@ -7,19 +7,19 @@ class BookFilterDrawer extends StatelessWidget {
   final List<String> activeOrders;
   final Function(List<String>) onOrderUpdate;
   final Function(List<DateTime>) onCustomTimeRangeChange;
-  final List<DateTime> customTimeRange;
+  final List<DateTime>? customTimeRange;
   final Function() onClearCustomTimeRange;
   final Function(String newRange) onTimeRangeChange;
-  final String timeRangeSelectMode;
+  final String? timeRangeSelectMode;
 
   BookFilterDrawer({
-    this.onClose,
-    this.activeOrders,
-    this.onOrderUpdate,
-    this.onCustomTimeRangeChange,
+    required this.onClose,
+    required this.activeOrders,
+    required this.onOrderUpdate,
+    required this.onCustomTimeRangeChange,
     this.customTimeRange,
-    this.onClearCustomTimeRange,
-    this.onTimeRangeChange,
+    required this.onClearCustomTimeRange,
+    required this.onTimeRangeChange,
     this.timeRangeSelectMode
   });
 

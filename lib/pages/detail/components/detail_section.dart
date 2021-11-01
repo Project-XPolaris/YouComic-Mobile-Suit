@@ -4,7 +4,7 @@ class DetailSection extends StatelessWidget {
   final Widget child;
   final String title;
 
-  DetailSection({this.child, this.title});
+  DetailSection({required this.child, required this.title});
 
   @override
   Widget build(BuildContext context) {

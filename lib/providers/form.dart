@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 class FormProvider with ChangeNotifier {
-  Map<String,dynamic> values;
+  Map<String,dynamic> values = {};
   setValue(String key,dynamic value){
     this.values[key] = value;
   }

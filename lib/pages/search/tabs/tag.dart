@@ -7,7 +7,7 @@ import 'package:youcomic/pages/tag/tag.dart';
 class SearchTags extends StatelessWidget {
   final SearchProvider provider;
 
-  SearchTags({this.provider});
+  SearchTags({required this.provider});
 
   @override
   Widget build(BuildContext context) {

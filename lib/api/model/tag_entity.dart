@@ -1,11 +1,10 @@
-import 'package:youcomic/generated/json/base/json_convert_content.dart';
-import 'package:youcomic/generated/json/base/json_filed.dart';
+
 
 class TagEntity {
-  int id;
-  String createdAt;
-  String name;
-  String type;
+  int? id;
+  String? createdAt;
+  String? name;
+  String? type;
 
   TagEntity({this.id, this.createdAt, this.name, this.type});
 
@@ -27,5 +26,11 @@ class TagEntity {
     data['name'] = this.name;
     data['type'] = this.type;
     return data;
+  }
+  getName(){
+    return this.name ?? "";
+  }
+  getType(){
+    return this.type ?? "";
   }
 }

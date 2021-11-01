@@ -4,7 +4,7 @@ import 'package:youcomic/datasource/tags.dart';
 class TagsProvider with ChangeNotifier {
   TagDataSource dataSource = new TagDataSource();
   bool first = true;
-  final List<String> typesFilter = List();
+  final List<String> typesFilter = [];
 
   onLoadMore() async {
     await dataSource.loadMore();

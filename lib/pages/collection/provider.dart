@@ -5,7 +5,7 @@ import 'package:youcomic/datasource/books.dart';
 class CollectionDetailProvider with ChangeNotifier {
   CollectionEntity collection;
   BookDataSource dataSource = BookDataSource();
-  CollectionDetailProvider({this.collection});
+  CollectionDetailProvider({required this.collection});
   var isFirst = true;
   onLoad() async {
     if (!isFirst) {

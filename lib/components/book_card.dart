@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:youcomic/api/client.dart';
 import 'package:youcomic/api/model/book_entity.dart';
@@ -7,7 +8,7 @@ import 'package:youcomic/pages/detail/detail.dart';
 class BookCard extends StatelessWidget {
   final BookEntity book;
 
-  BookCard({this.book});
+  BookCard({required this.book});
 
   @override
   Widget build(BuildContext context) {
@@ -23,6 +24,7 @@ class BookCard extends StatelessWidget {
     onCardClick() {
       DetailPage.launch(context, book);
     }
+    var coverUrl = book.cover;
     return Container(
       width: 130,
       child: Card(
@@ -34,15 +36,19 @@ class BookCard extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
-                Image(
+                coverUrl != null ? Image(
                   width: 130,
                   height: 180,
                   fit: BoxFit.cover,
-                  image: NetworkImage(book.cover,
+                  image: CachedNetworkImageProvider(coverUrl,
                       headers: {"Authorization": ApiClient().token}),
                   errorBuilder: (b,s,e) {
                     return Container();
                   },
+                ) : Container(
+                  width: 130,
+                  height: 180,
+                  color: Colors.black12,
                 ),
                 Padding(
                   padding: EdgeInsets.only(top: 8, left: 8),

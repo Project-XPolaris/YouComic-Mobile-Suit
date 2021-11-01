@@ -1,17 +1,18 @@
 class CollectionEntity {
-  int id;
-  String name;
-  int owner;
-  bool contain;
+  int? id;
+  String? name;
+  int? owner;
+  late bool contain;
 
-  CollectionEntity({this.id, this.name, this.owner, this.contain});
+  CollectionEntity({this.id, this.name, this.owner, this.contain = false});
 
   CollectionEntity.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     name = json['name'];
     owner = json['owner'];
+    contain = false;
     if (json.containsKey("contain")) {
-      contain = json["contain"];
+      contain = json["contain"] ?? false;
     }
   }
 
@@ -25,5 +26,8 @@ class CollectionEntity {
     data['name'] = this.name;
     data['owner'] = this.owner;
     return data;
+  }
+  String getName(){
+    return this.name ?? "";
   }
 }

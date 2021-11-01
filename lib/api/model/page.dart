@@ -1,18 +1,18 @@
 class PageEntity {
-  int id;
-  String createdAt;
-  int order;
-  int bookId;
-  String path;
-  int width;
-  int height;
+  int? id;
+  String? createdAt;
+  int? order;
+  int? bookId;
+  String? path;
+  late int width;
+  late int height;
 
-  PageEntity({this.id, this.createdAt, this.order, this.bookId, this.path,this.width,this.height});
+  PageEntity({this.id, this.createdAt, this.order, this.bookId, this.path,required this.width,required this.height});
 
   PageEntity.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     createdAt = json['created_at'];
-    order = json['order'];
+    order = json['page_order'];
     bookId = json['book_id'];
     path = json['path'];
     height = json['height'];
@@ -32,4 +32,5 @@ class PageEntity {
     data['height'] = this.height;
     return data;
   }
+
 }

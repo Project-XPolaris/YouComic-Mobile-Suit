@@ -8,7 +8,7 @@ import 'package:youcomic/home/tabs/books/provider.dart';
 class BookListPage extends StatelessWidget {
   final BookListProvider externalBookListProvider;
 
-  BookListPage({this.externalBookListProvider});
+  BookListPage({required this.externalBookListProvider});
 
   @override
   Widget build(BuildContext context) {

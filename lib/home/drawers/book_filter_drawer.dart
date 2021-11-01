@@ -5,9 +5,9 @@ import 'package:youcomic/home/tabs/books/provider.dart';
 
 class HomeBookListFilterDrawer extends StatelessWidget {
   final BookListProvider externalBookListProvider;
-  final Function onClose;
+  final Function() onClose;
 
-  HomeBookListFilterDrawer({this.onClose, this.externalBookListProvider});
+  HomeBookListFilterDrawer({required this.onClose, required this.externalBookListProvider});
 
   @override
   Widget build(BuildContext context) {

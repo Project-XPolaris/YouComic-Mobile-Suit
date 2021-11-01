@@ -14,7 +14,7 @@ class StartProvider extends ChangeNotifier {
   Color mainColor = Colors.blue;
   String loginMode = YOUCOMIC_SERVER_MODE;
 
-  StartProvider({this.username, this.password, this.apiUrl});
+  StartProvider({required this.username, required this.password, required this.apiUrl});
 
   static final String YOUCOMIC_SERVER_MODE = "Server";
   static final String YOUCOMIC_NANO_MODE = "Nano";
@@ -85,10 +85,10 @@ class StartProvider extends ChangeNotifier {
         MaterialPageRoute(builder: (context) => MyHomePage()),
       );
     } on DioError catch (e) {
-      if (e.type == DioErrorType.RESPONSE) {
-        ApiError apiError = ApiError.fromDioError(e);
+      if (e.type == DioErrorType.response) {
+        ApiResponse apiError = ApiResponse.fromDioError(e);
         Scaffold.of(context).showSnackBar(SnackBar(
-          content: Text(apiError.reason),
+          content: Text(apiError.reason ?? ""),
         ));
       }
     }

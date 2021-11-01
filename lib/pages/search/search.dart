@@ -9,7 +9,7 @@ import 'package:youcomic/pages/search/tabs/tag.dart';
 class SearchPage extends StatelessWidget {
   final String searchKey;
 
-  SearchPage({this.searchKey});
+  SearchPage({required this.searchKey});
 
   static launch(BuildContext context, String searchKey) {
     Navigator.push(

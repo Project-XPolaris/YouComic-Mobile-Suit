@@ -14,15 +14,19 @@ class SelectCollectionBottomSheet extends StatelessWidget {
           CollectionEntity entity =
               detailProvider.collectionDataProvider.collections[idx];
           onItemClick() async {
+            var id = entity.id;
+            if (id == null) {
+              return;
+            }
             if (entity.contain) {
-              detailProvider.removeFromCollection(entity.id);
+              detailProvider.removeFromCollection(id);
             } else {
               detailProvider.addToCollection(entity.id);
             }
           }
 
           return ListTile(
-            title: Text(entity.name),
+            title: Text(entity.getName()),
             leading: CircleAvatar(
               child: Icon(Icons.folder),
             ),

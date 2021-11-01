@@ -4,7 +4,7 @@ import 'package:flutter/widgets.dart';
 class FilterDrawer extends StatelessWidget {
   final Function onClose;
   final List<Widget> children;
-  FilterDrawer({this.onClose, this.children});
+  FilterDrawer({required this.onClose, required this.children});
 
   @override
   Widget build(BuildContext context) {

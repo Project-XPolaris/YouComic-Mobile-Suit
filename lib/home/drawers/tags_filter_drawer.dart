@@ -5,9 +5,9 @@ import 'package:youcomic/home/tabs/tags/provider.dart';
 
 class HomeTagsFilterDrawer extends StatelessWidget {
   final TagsProvider externalTagProvider;
-  final Function onClose;
+  final Function() onClose;
 
-  HomeTagsFilterDrawer({this.externalTagProvider, this.onClose});
+  HomeTagsFilterDrawer({required this.externalTagProvider, required this.onClose});
 
   @override
   Widget build(BuildContext context) {

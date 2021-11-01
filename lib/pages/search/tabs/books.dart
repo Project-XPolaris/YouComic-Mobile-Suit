@@ -6,7 +6,7 @@ import '../provider.dart';
 class SearchBooksTab extends StatelessWidget {
   final SearchProvider provider;
 
-  SearchBooksTab({this.provider});
+  SearchBooksTab({required this.provider});
 
   @override
   Widget build(BuildContext context) {

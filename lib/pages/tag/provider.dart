@@ -11,9 +11,9 @@ class TagProvider extends ChangeNotifier {
   var title = "标签";
   BookDataSource bookDataSource = new BookDataSource();
   var isFirst = true;
-  SubscribeStatus subscribeStatus = null;
+  SubscribeStatus? subscribeStatus = null;
 
-  TagProvider({this.tag});
+  TagProvider({required this.tag});
 
   loadMoreBooks() async {
     await bookDataSource.loadMore();
@@ -33,13 +33,21 @@ class TagProvider extends ChangeNotifier {
   }
 
   onSubscribe() async {
-    ApiClient().subscribeTag(tag.id);
+    var id = tag.id;
+    if (id == null) {
+      return;
+    }
+    ApiClient().subscribeTag(id);
     subscribeStatus = SubscribeStatus.Subscribed;
     notifyListeners();
   }
 
   onCancelSubscribe() async {
-    ApiClient().cancelSubscribeTag(tag.id);
+    var id = tag.id;
+    if (id == null) {
+      return;
+    }
+    ApiClient().cancelSubscribeTag(id);
     subscribeStatus = SubscribeStatus.UnSubscribed;
     notifyListeners();
   }

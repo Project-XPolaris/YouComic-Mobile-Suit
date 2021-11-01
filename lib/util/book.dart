@@ -1,24 +1,29 @@
 import 'package:youcomic/api/model/book_entity.dart';
 import 'package:youcomic/api/model/tag_entity.dart';
+import 'package:collection/collection.dart';
 
 String getBookTagName(
-    {BookEntity bookEntity, String tagType, String defaultText = ""}) {
-  if (bookEntity.tags == null) {
+    {required BookEntity bookEntity,
+    required String tagType,
+    String defaultText = ""}) {
+  if (bookEntity.tags.isEmpty) {
     return defaultText;
   }
   var target = bookEntity.tags
-      .firstWhere((tag) => tag.type == tagType, orElse: () => null);
+      .firstWhereOrNull((tag) => tag.type == tagType);
 
   if (target != null) {
-    return target.name;
+    return target.getName();
   }
   return defaultText;
 }
 
-TagEntity getBookTag(
-    {BookEntity bookEntity, String tagType}) {
+TagEntity? getBookTag({required BookEntity bookEntity, String? tagType}) {
+  if (tagType == null) {
+    return null;
+  }
   var target = bookEntity.tags
-      .firstWhere((tag) => tag.type == tagType, orElse: () => null);
+      .firstWhereOrNull((tag) => tag.type == tagType);
   if (target != null) {
     return target;
   }

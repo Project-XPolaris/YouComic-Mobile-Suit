@@ -8,7 +8,7 @@ import 'package:youcomic/util/icon.dart';
 
 class TagsPage extends StatelessWidget {
   final TagsProvider externalTagProvider;
-  TagsPage({this.externalTagProvider});
+  TagsPage({required this.externalTagProvider});
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider<TagsProvider>.value(
@@ -33,10 +33,10 @@ class TagsPage extends StatelessWidget {
                 itemBuilder: (itemContext, idx) {
                   final TagEntity tag = provider.dataSource.tags[idx];
                   return ListTile(
-                      title: Text(tag.name),
-                      subtitle: Text(tag.type),
+                      title: Text(tag.getName()),
+                      subtitle: Text(tag.getType()),
                       leading: CircleAvatar(
-                        child: Icon(selectIconByTagType(tag.type)),
+                        child: Icon(selectIconByTagType(tag.getType())),
 
                       ),
                       onTap: () => TagPage.launch(context, tag));

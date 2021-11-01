@@ -7,12 +7,13 @@ import 'package:youcomic/util/book.dart';
 
 class BookItem extends StatelessWidget {
   final BookEntity book;
-  final Function onLongPress;
+  final Function()? onLongPress;
 
-  BookItem({this.book, this.onLongPress});
+  BookItem({required this.book, this.onLongPress});
 
   @override
   Widget build(BuildContext context) {
+    String? coverUrl = book.cover;
     return GestureDetector(
       onTap: () {
         DetailPage.launch(context, book);
@@ -22,18 +23,27 @@ class BookItem extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           ClipRRect(
-              borderRadius: BorderRadius.circular(8.0),
-              child: CachedNetworkImage(
-                width: 96,
-                height: 150,
-                fit: BoxFit.cover,
-                httpHeaders: {"Authorization": ApiClient().token},
-                imageUrl: book.cover,
-                placeholder: (context, url) => Container(color: Colors.black12,),
-                errorWidget: (context, url, error) => Container(color: Colors.black12,),
-              ),
+            borderRadius: BorderRadius.circular(8.0),
+            child: coverUrl != null
+                ? CachedNetworkImage(
+                    width: 96,
+                    height: 150,
+                    fit: BoxFit.cover,
+                    httpHeaders: {"Authorization": ApiClient().token},
+                    imageUrl: coverUrl,
+                    placeholder: (context, url) => Container(
+                      color: Colors.black12,
+                    ),
+                    errorWidget: (context, url, error) => Container(
+                      color: Colors.black12,
+                    ),
+                  )
+                : Container(
+                    width: 96,
+                    height: 150,
+                    color: Colors.black26,
+                  ),
           ),
-
           Expanded(
             child: Padding(
                 padding: EdgeInsets.only(left: 16, top: 8),

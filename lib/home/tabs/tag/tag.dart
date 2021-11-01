@@ -86,8 +86,8 @@ class SubscribePage extends StatelessWidget {
                     onTap: (){
                       TagPage.launch(context, tag);
                     },
-                    title: Text(tag.name),
-                    subtitle: Text(tag.type),
+                    title: Text(tag.getName()),
+                    subtitle: Text(tag.getType()),
                   ),
                 );
               },

@@ -6,8 +6,8 @@ import 'package:youcomic/util/icon.dart';
 
 class CollectionItem extends StatelessWidget {
   final CollectionEntity collection;
-  final Function onRename;
-  CollectionItem({this.collection,this.onRename});
+  final Function() onRename;
+  CollectionItem({required this.collection,required this.onRename});
 
   @override
   Widget build(BuildContext context) {
@@ -34,7 +34,7 @@ class CollectionItem extends StatelessWidget {
                       ),
                       Container(
                         child: Text(
-                          collection.name,
+                          collection.getName(),
                           style: TextStyle(fontSize: 16, color: Colors.black87),
                         ),
                       ),

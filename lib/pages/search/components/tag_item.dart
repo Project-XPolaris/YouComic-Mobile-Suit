@@ -4,16 +4,16 @@ import 'package:youcomic/util/icon.dart';
 
 class TagItem extends StatelessWidget {
   final TagEntity tag;
-  final Function onTap;
-  TagItem({this.tag,this.onTap});
+  final Function()? onTap;
+  TagItem({required this.tag,this.onTap});
   @override
   Widget build(BuildContext context) {
     return ListTile(
       onTap: onTap,
-      title: Text(tag.name),
-      subtitle: Text(tag.type),
+      title: Text(tag.getName()),
+      subtitle: Text(tag.getType()),
       leading: CircleAvatar(
-        child: Icon(selectIconByTagType(tag.type)),
+        child: Icon(selectIconByTagType(tag.getType())),
       ),
     );
   }

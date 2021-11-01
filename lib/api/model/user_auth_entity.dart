@@ -1,6 +1,9 @@
-import 'package:youcomic/generated/json/base/json_convert_content.dart';
 
-class UserAuthEntity with JsonConvert<UserAuthEntity> {
-	int id;
-	String sign;
+class UserAuthEntity {
+	int? id;
+	String? sign;
+	UserAuthEntity.fromJson(Map<String, dynamic> json) {
+		id = json['id'];
+		sign = json['sign'];
+	}
 }

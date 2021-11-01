@@ -9,11 +9,11 @@ import 'package:youcomic/datasource/collections.dart';
 import 'package:youcomic/util/book.dart';
 
 class CollectionItem extends CollectionEntity {
-  bool hasBook;
+  bool hasBook = false;
 }
 
 class DetailProvider with ChangeNotifier {
-  int id;
+  int? id;
   BookEntity book;
   var name = "未知";
   var bookLoad = "None";
@@ -21,7 +21,7 @@ class DetailProvider with ChangeNotifier {
   var series = "";
   var theme = "";
   List<TagEntity> tags = [];
-  var cover = "";
+  String? cover;
   var isSelectCollectionShow = false;
   CollectionDataSource collectionDataProvider = new CollectionDataSource();
   BookDataSource relateArtistBookDataSource = new BookDataSource();
@@ -29,8 +29,8 @@ class DetailProvider with ChangeNotifier {
   BookDataSource relateThemeBookDataSource = new BookDataSource();
   List<CollectionItem> collectionItems = [];
 
-  DetailProvider({BookEntity book}) {
-    this.book = book;
+  DetailProvider({required this.book}) {
+    this.id = book.id;
   }
 
   loadRelateTag(int id) async {
@@ -78,15 +78,20 @@ class DetailProvider with ChangeNotifier {
   }
 
   onLoad() async {
+    var id = this.book.id;
+    if (id == null) {
+      return;
+    }
     if (bookLoad != "None") {
       return;
     }
     this.bookLoad = "Loading";
-    await ApiClient().fetchBook(this.book.id, withHistory: true);
+    var response = await ApiClient().fetchBook(id, withHistory: true);
+    this.book = response;
     name = this.book.name;
 
     // get cover
-    cover = book.cover;
+    cover = book.getBookCover();
 
     //get artist
 
@@ -106,12 +111,10 @@ class DetailProvider with ChangeNotifier {
 
     this.bookLoad = "Done";
     notifyListeners();
-    if (this.book != null) {
-      await loadRelateTag(this.book.id);
-      await loadRelateArtist();
-      await loadRelateSeries();
-      await loadRelateTheme();
-    }
+    await loadRelateTag(id);
+    await loadRelateArtist();
+    await loadRelateSeries();
+    await loadRelateTheme();
   }
 
   loadCollections() async {
@@ -134,7 +137,8 @@ class DetailProvider with ChangeNotifier {
     await ApiClient().addBookToCollection(collectionId, [
       this.book.id,
     ]);
-    collectionDataProvider.collections = collectionDataProvider.collections.map((element) {
+    collectionDataProvider.collections =
+        collectionDataProvider.collections.map((element) {
       if (element.id == collectionId) {
         element.contain = true;
       }
@@ -144,10 +148,15 @@ class DetailProvider with ChangeNotifier {
   }
 
   removeFromCollection(int collectionId) async {
+    var id = book.id;
+    if (id == null) {
+      return;
+    }
     await ApiClient().removeBookFromCollection(collectionId, [
-      book.id,
+      id,
     ]);
-    collectionDataProvider.collections = collectionDataProvider.collections.map((element) {
+    collectionDataProvider.collections =
+        collectionDataProvider.collections.map((element) {
       if (element.id == collectionId) {
         element.contain = false;
       }

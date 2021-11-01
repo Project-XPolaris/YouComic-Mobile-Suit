@@ -8,7 +8,7 @@ import 'package:youcomic/pages/read/provider.dart';
 
 class ReadPage extends StatelessWidget {
   final int bookId;
-  ReadPage({this.bookId});
+  ReadPage({required this.bookId});
   static launch(BuildContext context, int id) {
     Navigator.push(
       context,
@@ -28,7 +28,7 @@ class ReadPage extends StatelessWidget {
         ),
       ],
       child: Consumer<ReadProvider>(builder: (context, readProvider, builder) {
-        GlobalKey<PageJumpSliderState> sliderKey;
+        GlobalKey<PageJumpSliderState> sliderKey = new GlobalKey();
         readProvider.loadPage();
         List<double> _buildPageStartMapping() {
           if (readProvider.dataSource.pages.length == 0) {
@@ -40,8 +40,7 @@ class ReadPage extends StatelessWidget {
           for (var idx = 0; idx < readProvider.dataSource.pages.length; idx++) {
             var pageEntity = readProvider.dataSource.pages[idx];
             mapping.add(offset);
-            offset +=
-                (pageEntity.height / pageEntity.width) * size.width + 16.0;
+            offset += (pageEntity.height / pageEntity.width) * size.width + 16.0;
           }
           return mapping;
         }
@@ -76,8 +75,9 @@ class ReadPage extends StatelessWidget {
               .indexWhere((offset) => offset > _controller.position.pixels);
           Provider.of<ReadStatusProvider>(context, listen: false)
               .updateCurrentDisplayPage(pos);
-          if (sliderKey != null) {
-            sliderKey.currentState.onSliderValueChange(pos.toDouble());
+          var sliderState = sliderKey.currentState;
+          if (sliderState != null) {
+            sliderState.onSliderValueChange(pos.toDouble());
           }
           if (maxScroll == pixel) {
           } else {}
@@ -103,7 +103,9 @@ class ReadPage extends StatelessWidget {
                             showGeneralDialog(
                                 context: context,
                                 barrierColor: Colors.black54,
-                                pageBuilder: (context, anim1, anim2) {},
+                                pageBuilder: (context, anim1, anim2) {
+                                  return Container();
+                                },
                                 barrierLabel: '',
                                 barrierDismissible: true,
                                 transitionDuration: Duration(milliseconds: 300),

@@ -7,14 +7,14 @@ class TagItem {
   final bool isSelected;
   final key;
 
-  TagItem({this.name, this.onActiveChange, this.key, this.isSelected = false});
+  TagItem({required this.name, required this.onActiveChange, this.key, this.isSelected = false});
 }
 
 class TagSelectFilterSection extends StatelessWidget {
   final List<TagItem> items;
   final bool showDivider;
   final String title;
-  TagSelectFilterSection({this.items, this.showDivider = false,this.title = "排序"});
+  TagSelectFilterSection({required this.items, this.showDivider = false,this.title = "排序"});
 
   @override
   Widget build(BuildContext context) {

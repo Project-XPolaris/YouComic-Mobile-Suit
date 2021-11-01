@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 
 class TextInputBottomSheet extends StatefulWidget {
   final String buttonText;
-  final Function onOk;
+  final Function(String) onOk;
   final String initValue;
-  TextInputBottomSheet({this.buttonText= "确定", this.onOk,this.initValue = "" });
+  TextInputBottomSheet({this.buttonText= "确定", required this.onOk,this.initValue = "" });
 
   @override
   _TextInputBottomSheetState createState() => _TextInputBottomSheetState();

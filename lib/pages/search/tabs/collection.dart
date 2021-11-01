@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'package:youcomic/pages/search/components/collection_item.dart';
 
 import '../provider.dart';
 
 class SearchCollections extends StatelessWidget {
   final SearchProvider provider;
-  SearchCollections({this.provider});
+  SearchCollections({required this.provider});
   @override
   Widget build(BuildContext context) {
     ScrollController _controller = new ScrollController();

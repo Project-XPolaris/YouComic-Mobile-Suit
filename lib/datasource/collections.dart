@@ -11,7 +11,7 @@ class CollectionDataSource {
   int page = 1;
   int pageSize = 10;
   bool isLoading = false;
-  Map<String, dynamic> extraQueryParam;
+  Map<String, dynamic> extraQueryParam = {};
 
   loadMore() async {
     if (!hasMore || isLoading) {

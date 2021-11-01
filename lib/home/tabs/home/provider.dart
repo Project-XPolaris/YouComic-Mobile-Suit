@@ -7,7 +7,7 @@ class HomeProvider with ChangeNotifier {
   BookDataSource recentlyBookDataSource = new BookDataSource();
   bool isRecentlyBookLoaded = false;
 
-  List<CollectionEntity> recentlyCollections;
+  List<CollectionEntity> recentlyCollections = [];
   bool isRecentlyCollections = true;
   CollectionDataSource collectionDataSource = new CollectionDataSource();
   onLoadRecentlyAdd(bool force) async {

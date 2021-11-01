@@ -5,8 +5,8 @@ class EmptyView extends StatelessWidget {
   final bool isLoading;
   final Icon icon;
   final String text;
-  final Function onRefresh;
-  EmptyView({this.isLoading = false,this.icon,this.text = "",this.onRefresh});
+  final Function() onRefresh;
+  EmptyView({this.isLoading = false,required this.icon,this.text = "",required this.onRefresh});
 
   @override
   Widget build(BuildContext context) {

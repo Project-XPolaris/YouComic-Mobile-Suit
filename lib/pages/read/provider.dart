@@ -28,7 +28,7 @@ class ReadProvider extends ChangeNotifier {
     print(page);
     notifyListeners();
   }
-  ReadProvider({int id}){
+  ReadProvider({required int id}){
     dataSource.extraQueryParam = {"book": id, "template": "withSize"};
     _first = true;
     loadedPage.clear();

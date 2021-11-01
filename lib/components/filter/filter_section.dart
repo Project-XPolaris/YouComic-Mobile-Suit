@@ -4,7 +4,7 @@ class FilterSection extends StatelessWidget {
   final Widget child;
   final bool showDivider;
   final String title;
-  FilterSection({this.child, this.showDivider = false,this.title}) {}
+  FilterSection({required this.child,this.showDivider = false,required this.title}) {}
 
   @override
   Widget build(BuildContext context) {

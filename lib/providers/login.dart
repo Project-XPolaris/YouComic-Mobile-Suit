@@ -22,10 +22,10 @@ class LoginProvider with ChangeNotifier {
     var provider = Provider.of<FormProvider>(context, listen: false);
     print(provider.getValue("pages.login/username"));
     onLoginSuccess(responseData) async {
-      var userAuth = UserAuthEntity().fromJson(responseData);
+      var userAuth = UserAuthEntity.fromJson(responseData);
       SharedPreferences prefs = await SharedPreferences.getInstance();
-      prefs.setString("sign", userAuth.sign);
-      prefs.setInt("uid", userAuth.id);
+      prefs.setString("sign", userAuth.sign!);
+      prefs.setInt("uid", userAuth.id!);
     }
 
     ApiClient()

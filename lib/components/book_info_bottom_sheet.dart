@@ -7,7 +7,7 @@ import 'package:youcomic/util/book.dart';
 class BookInfoBottomSheet extends StatefulWidget {
   final BookEntity bookEntity;
 
-  BookInfoBottomSheet({this.bookEntity});
+  BookInfoBottomSheet({required this.bookEntity});
 
   @override
   _BookInfoBottomSheetState createState() => _BookInfoBottomSheetState();
@@ -16,13 +16,13 @@ class BookInfoBottomSheet extends StatefulWidget {
 class _BookInfoBottomSheetState extends State<BookInfoBottomSheet> {
   @override
   Widget build(BuildContext context) {
-    final TagEntity artistTag =
+    final TagEntity? artistTag =
         getBookTag(bookEntity: this.widget.bookEntity, tagType: "artist");
-    final TagEntity seriesTag =
+    final TagEntity? seriesTag =
         getBookTag(bookEntity: this.widget.bookEntity, tagType: "series");
-    final TagEntity themeTag =
+    final TagEntity? themeTag =
         getBookTag(bookEntity: this.widget.bookEntity, tagType: "theme");
-    final TagEntity translatorTag =
+    final TagEntity? translatorTag =
         getBookTag(bookEntity: this.widget.bookEntity, tagType: "translator");
     return Wrap(
       children: <Widget>[
@@ -87,10 +87,10 @@ class _BookInfoBottomSheetState extends State<BookInfoBottomSheet> {
 
 class BookInfoItem extends StatelessWidget {
   final String text;
-  final Function onTap;
+  final Function() onTap;
   final Icon icon;
 
-  BookInfoItem({this.text, this.onTap, this.icon});
+  BookInfoItem({required this.text, required this.onTap, required this.icon});
 
   @override
   Widget build(BuildContext context) {

@@ -7,7 +7,7 @@ class AccountEntity {
   final String password;
   final String type;
 
-  AccountEntity({this.apiUrl, this.username, this.password, this.type});
+  AccountEntity({required this.apiUrl,required this.username, required this.password, required this.type});
 
   Map<String, dynamic> toMap() {
     return {

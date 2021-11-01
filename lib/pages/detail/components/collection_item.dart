@@ -31,7 +31,7 @@ class CollectionItem extends StatelessWidget {
                   child: Container(
                     width: 300,
                     child: Text(
-                      collection.name,
+                      collection.getName(),
                       style: TextStyle(fontSize: 16, color: Colors.black87),
                     ),
                   )),

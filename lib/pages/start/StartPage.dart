@@ -16,9 +16,9 @@ class StartPage extends StatelessWidget {
         if (snapshot.hasData) {
           return ChangeNotifierProvider(
             create: (_) => StartProvider(
-              username: snapshot.data.getString("username"),
-              password: snapshot.data.getString("password"),
-              apiUrl: snapshot.data.getString("apiUrl"),
+              username: snapshot.data?.getString("username") ?? "",
+              password: snapshot.data?.getString("password") ?? "",
+              apiUrl: snapshot.data?.getString("apiUrl") ?? "",
             ),
             child: Consumer<StartProvider>(
               builder: (rootContext, startProvider, builder) {
@@ -80,7 +80,7 @@ class StartPage extends StatelessWidget {
                                   padding: EdgeInsets.only(
                                       top: 48, left: 32, right: 32),
                                   child: TextFormField(
-                                    initialValue: startProvider.apiUrl ?? "http://192.168.31.193:8880",
+                                    initialValue: startProvider.apiUrl,
                                     cursorColor: startProvider.mainColor,
                                     decoration: InputDecoration(
                                       focusedBorder: OutlineInputBorder(
@@ -99,7 +99,7 @@ class StartPage extends StatelessWidget {
                                     ),
                                     onChanged: startProvider.onApiUrlChange,
                                     validator: (value) {
-                                      if (value.isEmpty) {
+                                      if (value == null || value.isEmpty) {
                                         return '请输入地址';
                                       }
                                       return null;
@@ -127,7 +127,7 @@ class StartPage extends StatelessWidget {
                                     ),
                                     onChanged: startProvider.onUsernameChange,
                                     validator: (value) {
-                                      if (value.isEmpty) {
+                                      if (value == null || value.isEmpty) {
                                         return '请输入用户名';
                                       }
                                       return null;
@@ -156,7 +156,7 @@ class StartPage extends StatelessWidget {
                                     ),
                                     onChanged: startProvider.onPasswordChange,
                                     validator: (value) {
-                                      if (value.isEmpty) {
+                                      if (value == null || value.isEmpty) {
                                         return '请输入密码';
                                       }
                                       return null;

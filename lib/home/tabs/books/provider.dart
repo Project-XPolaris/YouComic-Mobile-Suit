@@ -6,16 +6,17 @@ import 'package:youcomic/datasource/books.dart';
 
 class BookListProvider with ChangeNotifier {
   BookDataSource dataSource = new BookDataSource();
-  bool isFilterOpen;
+  bool isFilterOpen = false;
   List<String> orderFilter = ["-id"];
-  List<DateTime> customDateRange;
-  String timeRangeSelect = null;
+  List<DateTime>? customDateRange;
+  String? timeRangeSelect = null;
   bool first = true;
 
   _getTimeRange() {
     if (this.timeRangeSelect == null) {
       return {};
     }
+    var dateRange = customDateRange;
     final now = DateTime.now().add(Duration(days: 1));
     final nowEnd = new DateTime(now.year, now.month, now.day);
     final DateFormat df = new DateFormat("yyyy-MM-dd");
@@ -28,12 +29,12 @@ class BookListProvider with ChangeNotifier {
     } else if (timeRangeSelect == "30d") {
       final startTime = nowEnd.subtract(Duration(days: 30));
       return {"startTime": df.format(startTime), "endTime": df.format(nowEnd)};
-    } else if (customDateRange != null &&
-        customDateRange.length > 1 &&
+    } else if (dateRange != null &&
+        dateRange.length > 1 &&
         timeRangeSelect == "custom") {
-      final startTime = df.format(new DateTime(customDateRange[0].year,
-          customDateRange[0].month, customDateRange[0].day));
-      final nextDayOfEnd = customDateRange[1].add(Duration(days: 1));
+      final startTime = df.format(new DateTime(dateRange[0].year,
+          dateRange[0].month, dateRange[0].day));
+      final nextDayOfEnd = dateRange[1].add(Duration(days: 1));
       return {
         "startTime": startTime,
         "endTime": df.format(new DateTime(

@@ -1,11 +1,11 @@
 import 'package:youcomic/api/model/book_entity.dart';
 
 class HistoryEntity {
-  int id;
-  int userId;
-  int bookId;
-  String createdAt;
-  BookEntity book;
+  int? id;
+  int? userId;
+  int? bookId;
+  String? createdAt;
+  BookEntity? book;
 
   HistoryEntity({this.id, this.userId, this.bookId, this.createdAt});
 

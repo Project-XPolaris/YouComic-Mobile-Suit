@@ -8,7 +8,7 @@ class TagDataSource {
   int page = 1;
   int pageSize = 10;
   var isLoading = false;
-  Map<String, dynamic> extraQueryParam;
+  Map<String, dynamic> extraQueryParam = {};
 
   loadMore() async {
     if (!hasMore || isLoading) {

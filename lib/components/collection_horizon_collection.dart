@@ -7,7 +7,7 @@ import 'horizon_card_collection.dart';
 class CollectionHorizonCollection extends StatelessWidget {
   List<CollectionEntity> collections;
 
-  CollectionHorizonCollection({this.collections});
+  CollectionHorizonCollection({required this.collections});
   @override
   Widget build(BuildContext context) {
     return HorizonCardCollection(

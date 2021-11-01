@@ -4,7 +4,7 @@ class HorizonCardCollection extends StatelessWidget {
   final Widget child;
   final String title;
   final double height;
-  HorizonCardCollection({this.child, this.title,this.height = 260});
+  HorizonCardCollection({required this.child, required this.title,this.height = 260});
 
   @override
   Widget build(BuildContext context) {

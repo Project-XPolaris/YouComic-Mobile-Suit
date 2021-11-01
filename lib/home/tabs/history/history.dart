@@ -32,10 +32,18 @@ class HistoryPage extends StatelessWidget {
           controller: _controller,
           itemBuilder: (itemContext, idx) {
             final HistoryEntity history = provider.dataSource.data[idx];
+            final book = history.book;
+            if (book == null) {
+              return Container();
+            }
             return Dismissible(
               key: UniqueKey(),
               onDismissed: (direction) async {
-                await provider.onDeleteHistory(history.id);
+                var id = history.id;
+                if (id == null) {
+                  return;
+                }
+                await provider.onDeleteHistory(id);
                 final snackBar = SnackBar(
                   content: Text('已删除'),
                   duration: Duration(seconds: 1),
@@ -45,7 +53,7 @@ class HistoryPage extends StatelessWidget {
               child: Container(
                 padding: EdgeInsets.all(8),
                 child: BookItem(
-                  book: history.book,
+                  book: book,
                 ),
               ),
             );

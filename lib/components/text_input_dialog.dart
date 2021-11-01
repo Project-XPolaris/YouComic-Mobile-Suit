@@ -3,16 +3,16 @@ import 'package:flutter/material.dart';
 class TextInputDialog extends StatefulWidget {
   final String title;
   final String label;
-  final Function(String text) onOk;
-  final Function onCancel;
-  const TextInputDialog({Key key,this.title,this.label,this.onOk,this.onCancel}) : super(key: key);
+  final Function(String text)? onOk;
+  final Function()? onCancel;
+  const TextInputDialog({Key? key,required this.title,required this.label,this.onOk,this.onCancel}) : super(key: key);
 
   @override
   _TextInputDialogState createState() => _TextInputDialogState();
 }
 
 class _TextInputDialogState extends State<TextInputDialog> {
-  String text;
+  String text = "";
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
@@ -29,13 +29,15 @@ class _TextInputDialogState extends State<TextInputDialog> {
       ),
       actions: [
         TextButton(onPressed: (){
-          if (widget.onOk != null) {
-            widget.onOk(text);
+          var handler = widget.onOk;
+          if (handler != null && text.isNotEmpty) {
+            handler(text);
           }
         }, child: Text("OK")),
         TextButton(onPressed: (){
-          if (widget.onCancel != null) {
-            widget.onCancel();
+          var handler = widget.onCancel;
+          if (handler != null) {
+            handler();
           }
         }
         , child: Text("Cancel"))

@@ -10,7 +10,7 @@ import 'package:youcomic/home/tabs/favourite/provider.dart';
 class CollectionDetailPage extends StatelessWidget {
   final CollectionEntity collection;
 
-  CollectionDetailPage({this.collection});
+  CollectionDetailPage({required this.collection});
 
   static launch(BuildContext context, collection) {
     Navigator.push(

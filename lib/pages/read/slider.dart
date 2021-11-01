@@ -3,13 +3,13 @@ import 'package:flutter/material.dart';
 import 'package:youcomic/api/model/page.dart';
 
 class PageJumpSlider extends StatefulWidget {
-  final Function(double) onValueSubmit;
+  final Function(double)? onValueSubmit;
   final int count;
   final double initValue;
   final List<PageEntity> pages;
 
   PageJumpSlider(
-      {Key key, this.onValueSubmit, this.count, this.initValue, this.pages})
+      {Key? key, this.onValueSubmit, required this.count, required this.initValue,required this.pages})
       : super(key: key);
 
   @override
@@ -18,9 +18,9 @@ class PageJumpSlider extends StatefulWidget {
 }
 
 class PageJumpSliderState extends State<PageJumpSlider> {
-  double currentValue = 1;
+  double currentValue;
 
-  PageJumpSliderState({this.currentValue});
+  PageJumpSliderState({this.currentValue = 1});
 
   onSliderValueChange(double newValue) {
     setState(() {
@@ -30,6 +30,7 @@ class PageJumpSliderState extends State<PageJumpSlider> {
 
   @override
   Widget build(BuildContext context) {
+    var currentPath = this.widget.pages[currentValue.toInt() - 1].path;
     return Dialog(
         backgroundColor: Colors.transparent,
         elevation: 0,
@@ -40,11 +41,12 @@ class PageJumpSliderState extends State<PageJumpSlider> {
               height: 270,
               width: 200,
               child: Center(
-                child: CachedNetworkImage(
-                  imageUrl: this.widget.pages[currentValue.toInt() - 1].path,
-                  progressIndicatorBuilder: (context, url, downloadProgress) =>
-                      CircularProgressIndicator(
-                          value: downloadProgress.progress),
+                child: currentPath != null ? CachedNetworkImage(
+                  imageUrl: currentPath,
+                  progressIndicatorBuilder: (context, url, downloadProgress) => CircularProgressIndicator(value: downloadProgress.progress),
+                ):Container(
+                  height: 270,
+                  width: 200,
                 ),
               ),
             ),

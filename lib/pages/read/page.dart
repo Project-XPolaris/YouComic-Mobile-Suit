@@ -11,9 +11,9 @@ class ImagePage extends StatelessWidget {
   final PageEntity page;
   final bool displayImage;
   final double height;
-  final double width;
+  final double? width;
 
-  ImagePage({this.page, this.displayImage = false, this.height, this.width});
+  ImagePage({required this.page, this.displayImage = false, required this.height, this.width});
 
   @override
   Widget build(BuildContext context) {
@@ -25,11 +25,8 @@ class ImagePage extends StatelessWidget {
         ));
     return Consumer<ReadStatusProvider>(
         builder: (context, readStatusProvider, builder) {
-      if ((readStatusProvider.currentDisplayPage - page.order).abs() < 2) {
-        print("display page  = ${page.order}");
-      }
-      return (readStatusProvider.currentDisplayPage - page.order).abs() < 3?CachedNetworkImage(
-        imageUrl: page.path,
+      return (readStatusProvider.currentDisplayPage - page.order!).abs() < 3?CachedNetworkImage(
+        imageUrl: page.path!,
         width: width,
         height: height,
         httpHeaders: {"Authorization": ApiClient().token},

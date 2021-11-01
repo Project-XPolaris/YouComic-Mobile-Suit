@@ -7,13 +7,19 @@ List<Widget> renderAction(TagProvider provider) {
     if (action == "add") {
       await provider.onSubscribe();
       final snackBar = SnackBar(content: Text('添加成功'));
-      Scaffold.of(scKey.currentContext).showSnackBar(snackBar);
+      var buildContext = scKey.currentContext;
+      if (buildContext != null) {
+        Scaffold.of(buildContext).showSnackBar(snackBar);
+      }
     }
 
     if (action == "remove") {
       await provider.onCancelSubscribe();
       final snackBar = SnackBar(content: Text('已取消订阅'));
-      Scaffold.of(scKey.currentContext).showSnackBar(snackBar);
+      var buildContext = scKey.currentContext;
+      if (buildContext != null) {
+        Scaffold.of(buildContext).showSnackBar(snackBar);
+      }
     }
   }
 

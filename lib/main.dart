@@ -15,9 +15,7 @@ import 'package:youcomic/menu.dart';
 import 'package:youcomic/pages/login/Login.dart';
 import 'package:youcomic/pages/start/StartPage.dart';
 import 'package:youcomic/providers/app.dart';
-import 'package:youcomic/providers/form.dart';
 import 'package:youcomic/providers/layout.dart';
-import 'package:youcomic/providers/login.dart';
 import 'package:youcomic/providers/user_provider.dart';
 
 import 'home/tabs/books/book_list.dart';
@@ -110,6 +108,7 @@ class MyHomePage extends StatelessWidget {
             externalBookListProvider: bookProvider,
           );
         }
+        return Container();
       }
 
       return Scaffold(

@@ -41,7 +41,7 @@ class LoginPage extends StatelessWidget {
                       onChanged: (String value) =>
                           loginLayout.onUsernameChange(value, context),
                       validator: (value) {
-                        if (value.isEmpty) {
+                        if (value == null || value.isEmpty) {
                           return 'Please enter some text';
                         }
                         return null;
@@ -59,7 +59,7 @@ class LoginPage extends StatelessWidget {
                         onChanged: (String value) =>
                             loginLayout.onPasswordChange(value, context),
                         validator: (value) {
-                          if (value.isEmpty) {
+                          if (value == null || value.isEmpty) {
                             return 'Please enter some text';
                           }
                           return null;

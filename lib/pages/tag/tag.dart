@@ -12,7 +12,7 @@ import 'package:youcomic/pages/tag/provider.dart';
 class TagPage extends StatelessWidget {
   final TagEntity tagEntity;
 
-  TagPage({this.tagEntity});
+  TagPage({required this.tagEntity});
 
   static launch(BuildContext context, TagEntity tag) {
     Navigator.push(

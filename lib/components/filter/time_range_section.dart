@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:youcomic/components/filter/filter_section.dart';
-import 'package:date_range_picker/date_range_picker.dart' as DateRagePicker;
 import 'package:intl/intl.dart';
 
 class QuickTimeRangePick {
@@ -8,36 +7,35 @@ class QuickTimeRangePick {
 
   final String key;
 
-  QuickTimeRangePick({this.title, this.key});
+  QuickTimeRangePick({required this.title, required this.key});
 }
 
 class TimeRangeFilterSection extends StatelessWidget {
-  final String selectMode;
-  final List<DateTime> customDateRange;
+  final String? selectMode;
+  final List<DateTime>? customDateRange;
   final Function onCustomTimeRangeUpdate;
   final Function onClearCustomTimeRange;
   final Function onTimeRangeChange;
 
-  TimeRangeFilterSection({this.selectMode,
-    this.customDateRange,
-    this.onCustomTimeRangeUpdate,
-    this.onClearCustomTimeRange,
-    this.onTimeRangeChange});
+  TimeRangeFilterSection(
+      {this.selectMode,
+      this.customDateRange,
+      required this.onCustomTimeRangeUpdate,
+      required this.onClearCustomTimeRange,
+      required this.onTimeRangeChange});
 
   _onCustomTimeSelect(BuildContext context) async {
-    final List<DateTime> picked = await DateRagePicker.showDatePicker(
-      context: context,
-      initialFirstDate: new DateTime.now(),
-      initialLastDate: (new DateTime.now()).add(new Duration(days: 7)),
-      firstDate: new DateTime(2015),
-      lastDate: new DateTime(2022),
-    );
-    if (picked != null && picked.length == 2) {
-      onCustomTimeRangeUpdate(picked);
+    var range = await showDateRangePicker(
+        context: context,
+        firstDate: new DateTime.now(),
+        lastDate: (new DateTime.now()).add(new Duration(days: 7)));
+    if (range != null) {
+      onCustomTimeRangeUpdate([range.start, range.end]);
     }
   }
 
   Widget renderCustomDateRange(BuildContext context) {
+    var customDateRange = this.customDateRange;
     if (customDateRange == null) {
       return ActionChip(
         onPressed: () {
@@ -48,8 +46,8 @@ class TimeRangeFilterSection extends StatelessWidget {
     }
 
     final formatter = new DateFormat("yyyy-MM-dd");
-    final String startText = formatter.format(this.customDateRange[0]);
-    final String endText = formatter.format(this.customDateRange[1]);
+    final String startText = formatter.format(customDateRange[0]);
+    final String endText = formatter.format(customDateRange[1]);
     final ChipThemeData chipTheme = ChipTheme.of(context);
     final selected = this.selectMode != null && this.selectMode == "custom";
     return RawChip(
@@ -91,15 +89,14 @@ class TimeRangeFilterSection extends StatelessWidget {
     }
 
     return _quickPick
-        .map((item) =>
-        Padding(
-          padding: EdgeInsets.only(right: 8),
-          child: ChoiceChip(
-            onSelected: (isSelect) => onSelect(item.key, isSelect),
-            selected: selectMode != null && selectMode == item.key,
-            label: Text(item.title),
-          ),
-        ))
+        .map((item) => Padding(
+              padding: EdgeInsets.only(right: 8),
+              child: ChoiceChip(
+                onSelected: (isSelect) => onSelect(item.key, isSelect),
+                selected: selectMode != null && selectMode == item.key,
+                label: Text(item.title),
+              ),
+            ))
         .toList();
   }
 

@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
@@ -12,6 +13,8 @@ class FilterDrawer extends StatelessWidget {
       child: Padding(
           padding: EdgeInsets.all(16),
           child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.start,
             children: <Widget>[
               Padding(
                 padding: EdgeInsets.only(top: 16),

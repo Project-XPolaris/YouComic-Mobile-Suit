@@ -18,6 +18,8 @@ class HomeTagsFilterDrawer extends StatelessWidget {
           onClose: onClose,
           activeTypeFilters: tagProvider.typesFilter,
           onTypeFilterChange: (List<String> filter) => tagProvider.refreshTagTypeFilter(filter),
+          onRandomChange: tagProvider.refreshRandom,
+          random: tagProvider.randomPick,
         );
       }),
     );

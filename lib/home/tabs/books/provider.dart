@@ -11,6 +11,7 @@ class BookListProvider with ChangeNotifier {
   List<DateTime>? customDateRange;
   String? timeRangeSelect = null;
   bool first = true;
+  bool random = false;
 
   _getTimeRange() {
     if (this.timeRangeSelect == null) {
@@ -62,6 +63,9 @@ class BookListProvider with ChangeNotifier {
   }
 
   updateOrderFilter(newFilter) {
+    if (newFilter[0] == "random") {
+      random = true;
+    }
     orderFilter = newFilter;
     loadBooks(true);
     notifyListeners();
@@ -79,12 +83,18 @@ class BookListProvider with ChangeNotifier {
   }
 
   loadBooks(bool force) async {
-    print(!(!first || force));
-    if (!first && !force){
+    if (!first && !force) {
       return;
     }
     first = false;
-    dataSource.extraQueryParam = {"order": orderFilter[0], ..._getTimeRange()};
+    Map<String,String> param = {};
+    if (random) {
+      param["random"] = "1";
+    }else{
+      param["order"] =  orderFilter[0];
+    }
+    dataSource.extraQueryParam = {...param, ..._getTimeRange()};
+    print(dataSource.extraQueryParam);
     await dataSource.loadBooks(force);
     print(dataSource.books);
     notifyListeners();

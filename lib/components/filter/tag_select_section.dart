@@ -25,7 +25,7 @@ class TagSelectFilterSection extends StatelessWidget {
         children: <Widget>[
           ...items.map(
             (tag) => Padding(
-                padding: EdgeInsets.only(right: 8),
+                padding: EdgeInsets.only(right: 8,bottom: 8),
                 child: ChoiceChip(
                   label: Text(tag.name),
                   onSelected: (isSelected) {

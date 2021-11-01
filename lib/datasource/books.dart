@@ -35,16 +35,11 @@ class BookDataSource {
       page = 1;
       isLoading = true;
       var response = await ApiClient().fetchBooks({
-        "order": "-id",
         "page_size": pageSize,
         "page": page
       }..addAll(extraQueryParam));
       books = BookEntity.parseList(response.data["result"]);
-      books.forEach(
-          (book) => book.cover = getRealThumbnailCover(book.id, book.cover));
-      books.forEach((element) {
-        print(element.cover);
-      });
+      books.forEach((book) => book.cover = getRealThumbnailCover(book.id, book.cover));
       String nextUrl = response.data["next"];
       hasMore = nextUrl.isNotEmpty;
       isLoading = false;

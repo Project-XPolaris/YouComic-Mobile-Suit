@@ -25,7 +25,6 @@ class ReadProvider extends ChangeNotifier {
 
   updateCurrentDisplayPage(page) {
     currentDisplayPage = page;
-    print(page);
     notifyListeners();
   }
   ReadProvider({required int id}){
@@ -41,7 +40,6 @@ class ReadProvider extends ChangeNotifier {
     }
     _first = false;
     await dataSource.loadPages(true);
-    print(dataSource.pages);
     notifyListeners();
   }
 }

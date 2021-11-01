@@ -80,6 +80,7 @@ class MyHomePage extends StatelessWidget {
           BookListPage(
             externalBookListProvider: bookProvider,
           ),
+          TagsPage(externalTagProvider: tagsProvider,),
           FavoritesPage(),
           SubscribePage(),
           HistoryPage()
@@ -107,6 +108,14 @@ class MyHomePage extends StatelessWidget {
             onClose: closeDrawer,
             externalBookListProvider: bookProvider,
           );
+
+        }
+        if (layoutProvider.tabIdx == 2) {
+          return HomeTagsFilterDrawer(
+            externalTagProvider: tagsProvider,
+            onClose: closeDrawer,
+          );
+
         }
         return Container();
       }

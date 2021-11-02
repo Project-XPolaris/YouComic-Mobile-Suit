@@ -6,9 +6,16 @@ class TagFilterDrawer extends StatelessWidget {
   final Function() onClose;
   final Function(List<String> updatedActiveTypeFilters) onTypeFilterChange;
   final List<String> activeTypeFilters;
+  final List<String> activeOrders;
+  final Function(List<String>) onOrderUpdate;
 
-  TagFilterDrawer(
-      {required this.onClose, required this.onTypeFilterChange, required this.activeTypeFilters});
+  TagFilterDrawer({
+    required this.onClose,
+    required this.onTypeFilterChange,
+    required this.activeTypeFilters,
+    required this.activeOrders,
+    required this.onOrderUpdate,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -47,11 +54,62 @@ class TagFilterDrawer extends StatelessWidget {
               updateTypeFilter(key, isSelect),
           isSelected: activeTypeFilters.contains("translator")),
     ];
+    _buildOrderOptions() {
+      onSelectChange(dynamic key, bool isSelected) {
+        if (isSelected) {
+          onOrderUpdate([
+            key,
+          ]);
+        }
+      }
+
+      return [
+        new TagItem(
+            name: "id升序",
+            key: "id",
+            isSelected: activeOrders.contains("id"),
+            onActiveChange: onSelectChange),
+        new TagItem(
+            name: "id降序",
+            key: "-id",
+            isSelected: activeOrders.contains("-id"),
+            onActiveChange: onSelectChange),
+        new TagItem(
+            name: "名称升序",
+            key: "name",
+            isSelected: activeOrders.contains("name"),
+            onActiveChange: onSelectChange),
+        new TagItem(
+            name: "名称降序",
+            key: "-name",
+            isSelected: activeOrders.contains("-name"),
+            onActiveChange: onSelectChange),
+        new TagItem(
+            name: "创建时间升序",
+            key: "created_at",
+            isSelected: activeOrders.contains("created_at"),
+            onActiveChange: onSelectChange),
+        new TagItem(
+            name: "创建时间降序",
+            key: "-created_at",
+            isSelected: activeOrders.contains("-created_at"),
+            onActiveChange: onSelectChange),
+        new TagItem(
+            name: "随机",
+            key: "random",
+            isSelected: activeOrders.contains("random"),
+            onActiveChange: onSelectChange)
+      ];
+    }
+
     return FilterDrawer(
       onClose: onClose,
       children: [
         TagSelectFilterSection(
           items: items,
+        ),
+        TagSelectFilterSection(
+          items: _buildOrderOptions(),
         )
       ],
     );

@@ -20,7 +20,6 @@ class LoginProvider with ChangeNotifier {
 
   loginUser(context) {
     var provider = Provider.of<FormProvider>(context, listen: false);
-    print(provider.getValue("pages.login/username"));
     onLoginSuccess(responseData) async {
       var userAuth = UserAuthEntity.fromJson(responseData);
       SharedPreferences prefs = await SharedPreferences.getInstance();

@@ -19,7 +19,6 @@ class SearchTags extends StatelessWidget {
         provider.onLoadMoreTag();
       } else {}
     });
-    print(provider.tagsDataSource.tags);
     return ListView.separated(
       separatorBuilder: (BuildContext context, int index) => Divider(),
       itemBuilder: (itemContext, idx) {

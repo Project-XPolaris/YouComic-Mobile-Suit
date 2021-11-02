@@ -12,7 +12,6 @@ class LayoutProvider with ChangeNotifier {
     notifyListeners();
   }
   void setTabIdx(int tabIdx) {
-    print(tabIdx);
     this._tabIdx = tabIdx;
     notifyListeners();
   }

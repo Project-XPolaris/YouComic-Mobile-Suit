@@ -5,6 +5,9 @@ class TagsProvider with ChangeNotifier {
   TagDataSource dataSource = new TagDataSource();
   bool first = true;
   final List<String> typesFilter = [];
+  List<String> orderFilter = ["-id"];
+  bool random = false;
+
 
   onLoadMore() async {
     await dataSource.loadMore();
@@ -23,6 +26,18 @@ class TagsProvider with ChangeNotifier {
     this.onLoad();
   }
 
+
+  updateOrderFilter(newFilter) {
+    print(newFilter);
+    if (newFilter[0] == "random") {
+      random = true;
+    }
+    orderFilter = newFilter;
+    first = true;
+    notifyListeners();
+    onLoad();
+  }
+
   onLoad() async {
     if (first) {
       first = false;
@@ -32,6 +47,12 @@ class TagsProvider with ChangeNotifier {
       } else {
         dataSource.extraQueryParam.remove("type");
       }
+      if (random) {
+        dataSource.extraQueryParam["random"] = "1";
+      }else{
+        dataSource.extraQueryParam["order"] =  orderFilter[0];
+      }
+      print(dataSource.extraQueryParam);
       await dataSource.loadTags(true);
       notifyListeners();
     }

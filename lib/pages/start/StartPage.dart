@@ -42,7 +42,6 @@ class StartPage extends StatelessWidget {
                                       alignment: Alignment.topRight,
                                       child: FlatButton(
                                         onPressed: (){
-                                          print(startProvider.loginMode);
                                           if (startProvider.loginMode == StartProvider.YOUCOMIC_SERVER_MODE){
                                             startProvider.changeLoginModel(StartProvider.YOUCOMIC_NANO_MODE);
                                           }else{

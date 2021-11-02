@@ -177,7 +177,7 @@ class DetailPage extends StatelessWidget {
         var cover = detailProvider.cover;
         return Scaffold(
             appBar: AppBar(
-              brightness: Brightness.light,
+              elevation: 1,
               backgroundColor: Colors.white,
               iconTheme: IconThemeData(color: Colors.black87),
               title: Text(

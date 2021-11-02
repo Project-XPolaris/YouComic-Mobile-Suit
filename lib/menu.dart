@@ -6,7 +6,6 @@ import 'package:youcomic/providers/layout.dart';
 renderAppBar(LayoutProvider layoutProvider, BuildContext context) {
   var searchTitle = TextField(
     onSubmitted: (searchKey) {
-      print(searchKey);
       SearchPage.launch(context, searchKey);
       layoutProvider.switchSearch();
     },
@@ -25,7 +24,7 @@ renderAppBar(LayoutProvider layoutProvider, BuildContext context) {
 
   List<Widget> actions = [];
   return AppBar(
-    brightness: Brightness.light,
+    elevation: 1,
     automaticallyImplyLeading: false,
     backgroundColor: Colors.white,
     // Here we take the value from the MyHomePage object that was created by
@@ -34,7 +33,7 @@ renderAppBar(LayoutProvider layoutProvider, BuildContext context) {
         ? searchTitle
         : Text(
             "YouComic",
-            style: TextStyle(color: Colors.black54),
+            style: TextStyle(color: Colors.black87),
           ),
     actions: <Widget>[
       IconButton(

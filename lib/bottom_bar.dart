@@ -13,42 +13,42 @@ class BottomBar extends StatelessWidget {
             icon: Icon(
               Icons.book,
             ),
-            title: Text('书籍'),
+            label: '书籍',
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.bookmark),
-            title: Text('标签'),
+            label: '标签',
           )
         ];
       }
       return [
         BottomNavigationBarItem(
           icon: Icon(Icons.home),
-          title: Text('主页'),
+          label:'主页',
         ),
         BottomNavigationBarItem(
           icon: Icon(
             Icons.book,
           ),
-          title: Text('书籍'),
+          label: '书籍',
         ),
         BottomNavigationBarItem(
           icon: Icon(
             Icons.tag,
           ),
-          title: Text('标签'),
+          label: '标签',
         ),
         BottomNavigationBarItem(
           icon: Icon(Icons.star),
-          title: Text('收藏'),
+          label: '收藏',
         ),
         BottomNavigationBarItem(
           icon: Icon(Icons.bookmark),
-          title: Text('标签'),
+          label: '标签',
         ),
         BottomNavigationBarItem(
           icon: Icon(Icons.history),
-          title: Text('历史'),
+          label: '历史',
         )
       ];
     }
@@ -57,10 +57,12 @@ class BottomBar extends StatelessWidget {
       builder: (context, layoutProvider, child) {
         return Container(
           child: BottomNavigationBar(
+            elevation: 1,
             type: ApplicationConfig().useNanoMode?BottomNavigationBarType.fixed:BottomNavigationBarType.shifting,
             currentIndex: layoutProvider.tabIdx,
             selectedItemColor: Colors.blue,
             unselectedItemColor: Colors.black26,
+            backgroundColor: Colors.white,
             onTap: layoutProvider.setTabIdx,
             items: [...getBottomBarItems()],
           ),

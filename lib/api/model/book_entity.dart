@@ -23,7 +23,6 @@ class BookEntity {
   }
 
   BookEntity.fromJson(json) {
-    print(json);
     id = json['id'];
     createdAt = json['created_at'];
     updatedAt = json['updated_at'];

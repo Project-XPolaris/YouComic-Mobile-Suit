@@ -26,7 +26,7 @@ class BookListPage extends StatelessWidget {
         _controller.addListener(() {
           var maxScroll = _controller.position.maxScrollExtent;
           var pixel = _controller.position.pixels;
-          if (maxScroll == pixel) {
+          if ((maxScroll - pixel) < 20) {
             bookListProvider.loadMore();
           } else {}
         });

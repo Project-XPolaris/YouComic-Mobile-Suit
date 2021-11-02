@@ -52,7 +52,6 @@ class ReadPage extends StatelessWidget {
           for (var idx = 0; idx < readProvider.dataSource.pages.length; idx++) {
             final pageKey = GlobalKey();
             final pageEntity = readProvider.dataSource.pages[idx];
-            print(pageEntity);
             pages.add(Padding(
                 key: pageKey,
                 padding: EdgeInsets.only(top: 16),

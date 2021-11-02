@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:youcomic/api/client.dart';
-import 'package:youcomic/api/util.dart';
 import 'package:youcomic/datasource/books.dart';
 
 class BookListProvider with ChangeNotifier {
@@ -94,9 +92,7 @@ class BookListProvider with ChangeNotifier {
       param["order"] =  orderFilter[0];
     }
     dataSource.extraQueryParam = {...param, ..._getTimeRange()};
-    print(dataSource.extraQueryParam);
     await dataSource.loadBooks(force);
-    print(dataSource.books);
     notifyListeners();
   }
 }

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:youcomic/components/book_horizon_collection.dart';
 import 'package:youcomic/components/collection_horizon_collection.dart';
-import 'package:youcomic/home/tabs/home/provider.dart';
+import 'package:youcomic/pages/home/tabs/home/provider.dart';
 
 class HomePage extends StatelessWidget {
   @override

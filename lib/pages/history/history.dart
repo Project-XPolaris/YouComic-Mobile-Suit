@@ -1,12 +1,19 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:youcomic/api/model/history.dart';
 import 'package:youcomic/components/book_item.dart';
 import 'package:youcomic/components/empty_view.dart';
-import 'package:youcomic/home/tabs/history/provider.dart';
+import 'package:youcomic/pages/history/provider.dart';
 
 class HistoryPage extends StatelessWidget {
+  const HistoryPage() : super();
+  static launch(BuildContext context) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+          builder: (context) => HistoryPage()),
+    );
+  }
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider<HistoryProvider>(
@@ -60,6 +67,17 @@ class HistoryPage extends StatelessWidget {
           },
         );
         return Scaffold(
+          appBar: AppBar(
+            elevation: 1,
+            automaticallyImplyLeading: false,
+            backgroundColor: Colors.white,
+            // Here we take the value from the MyHomePage object that was created by
+            // the App.build method, and use it to set our appbar title.
+            title: Text(
+              "浏览历史",
+              style: TextStyle(color: Colors.black87),
+            ),
+          ),
           body: RefreshIndicator(
             onRefresh: _pullToRefresh,
             child: provider.dataSource.data.isEmpty?EmptyView(

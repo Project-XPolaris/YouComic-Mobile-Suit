@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 import 'package:youcomic/api/model/tag_entity.dart';
-import 'package:youcomic/home/tabs/tags/provider.dart';
+import 'package:youcomic/pages/home/tabs/tags/provider.dart';
 import 'package:youcomic/pages/tag/tag.dart';
 import 'package:youcomic/util/icon.dart';
 

@@ -16,8 +16,8 @@ class ApiClient {
   static ApiClient? _instance;
 
   ApiClient._() {
-    dio.options.connectTimeout = 5000; //5s
-    dio.options.receiveTimeout = 3000;
+    dio.options.connectTimeout = 50000; //5s
+    dio.options.receiveTimeout = 30000;
   }
 
   static ApiClient _client() {
@@ -148,7 +148,7 @@ class ApiClient {
   }
 
   clearHistory(int historyId) async {
-    return dio.delete("$baseUrl/account/histories",
+    return dio.delete("$baseUrl/my/histories",
         options: Options(headers: {"Authorization": token}));
   }
 

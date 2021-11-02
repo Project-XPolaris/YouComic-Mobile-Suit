@@ -2,23 +2,20 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:youcomic/bottom_bar.dart';
 import 'package:youcomic/config/application.dart';
-import 'package:youcomic/home/drawers/book_filter_drawer.dart';
-import 'package:youcomic/home/drawers/tags_filter_drawer.dart';
-import 'package:youcomic/home/tabs/books/provider.dart';
-import 'package:youcomic/home/tabs/favourite/my_collection.dart';
-import 'package:youcomic/home/tabs/history/history.dart';
-import 'package:youcomic/home/tabs/home/home.dart';
-import 'package:youcomic/home/tabs/tag/tag.dart';
-import 'package:youcomic/home/tabs/tags/provider.dart';
-import 'package:youcomic/home/tabs/tags/tags.dart';
 import 'package:youcomic/menu.dart';
-import 'package:youcomic/pages/login/Login.dart';
+import 'package:youcomic/pages/home/drawers/book_filter_drawer.dart';
+import 'package:youcomic/pages/home/drawers/tags_filter_drawer.dart';
+import 'package:youcomic/pages/home/tabs/books/book_list.dart';
+import 'package:youcomic/pages/home/tabs/books/provider.dart';
+import 'package:youcomic/pages/home/tabs/home/home.dart';
+import 'package:youcomic/pages/home/tabs/my/my.dart';
+import 'package:youcomic/pages/home/tabs/tags/provider.dart';
+import 'package:youcomic/pages/home/tabs/tags/tags.dart';
 import 'package:youcomic/pages/start/StartPage.dart';
 import 'package:youcomic/providers/app.dart';
 import 'package:youcomic/providers/layout.dart';
 import 'package:youcomic/providers/user_provider.dart';
 
-import 'home/tabs/books/book_list.dart';
 
 void main() {
   runApp(MultiProvider(
@@ -51,7 +48,6 @@ class MyApp extends StatelessWidget {
       routes: {
         "/home": (context) => MyHomePage(),
         "/start": (context) => StartPage(),
-        "/login": (context) => LoginPage()
       },
     );
   }
@@ -81,9 +77,7 @@ class MyHomePage extends StatelessWidget {
             externalBookListProvider: bookProvider,
           ),
           TagsPage(externalTagProvider: tagsProvider,),
-          FavoritesPage(),
-          SubscribePage(),
-          HistoryPage()
+          MyPage()
         ];
       }
 
@@ -133,6 +127,5 @@ class MyHomePage extends StatelessWidget {
       );
     });
   }
-
   MyHomePage();
 }

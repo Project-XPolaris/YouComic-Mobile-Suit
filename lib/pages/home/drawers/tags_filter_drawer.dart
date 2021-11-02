@@ -1,7 +1,7 @@
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 import 'package:youcomic/components/filter/tag_filter_drawer.dart';
-import 'package:youcomic/home/tabs/tags/provider.dart';
+import 'package:youcomic/pages/home/tabs/tags/provider.dart';
 
 class HomeTagsFilterDrawer extends StatelessWidget {
   final TagsProvider externalTagProvider;

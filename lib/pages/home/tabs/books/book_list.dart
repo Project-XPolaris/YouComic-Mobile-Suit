@@ -3,7 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:youcomic/components/book_info_bottom_sheet.dart';
 import 'package:youcomic/components/book_item.dart';
-import 'package:youcomic/home/tabs/books/provider.dart';
+import 'package:youcomic/pages/home/tabs/books/provider.dart';
 
 class BookListPage extends StatelessWidget {
   final BookListProvider externalBookListProvider;

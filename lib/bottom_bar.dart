@@ -39,16 +39,8 @@ class BottomBar extends StatelessWidget {
           label: '标签',
         ),
         BottomNavigationBarItem(
-          icon: Icon(Icons.star),
-          label: '收藏',
-        ),
-        BottomNavigationBarItem(
-          icon: Icon(Icons.bookmark),
-          label: '标签',
-        ),
-        BottomNavigationBarItem(
-          icon: Icon(Icons.history),
-          label: '历史',
+          icon: Icon(Icons.person),
+          label: '我的',
         )
       ];
     }
@@ -57,12 +49,10 @@ class BottomBar extends StatelessWidget {
       builder: (context, layoutProvider, child) {
         return Container(
           child: BottomNavigationBar(
-            elevation: 1,
             type: ApplicationConfig().useNanoMode?BottomNavigationBarType.fixed:BottomNavigationBarType.shifting,
             currentIndex: layoutProvider.tabIdx,
             selectedItemColor: Colors.blue,
             unselectedItemColor: Colors.black26,
-            backgroundColor: Colors.white,
             onTap: layoutProvider.setTabIdx,
             items: [...getBottomBarItems()],
           ),

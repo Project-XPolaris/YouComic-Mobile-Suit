@@ -85,8 +85,6 @@ class SearchPage extends StatelessWidget {
           length: tabViews.length,
           child: Scaffold(
             appBar: AppBar(
-              brightness: Brightness.light,
-              backgroundColor: Colors.white,
               iconTheme: IconThemeData(color: Colors.black87),
               title: Text(
                 provider.title,

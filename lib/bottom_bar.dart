@@ -49,10 +49,11 @@ class BottomBar extends StatelessWidget {
       builder: (context, layoutProvider, child) {
         return Container(
           child: BottomNavigationBar(
-            type: ApplicationConfig().useNanoMode?BottomNavigationBarType.fixed:BottomNavigationBarType.shifting,
+            type: BottomNavigationBarType.fixed,
+            fixedColor: Colors.blue,
+            elevation: 0,
+            backgroundColor: Color(0xFFE1F5FE),
             currentIndex: layoutProvider.tabIdx,
-            selectedItemColor: Colors.blue,
-            unselectedItemColor: Colors.black26,
             onTap: layoutProvider.setTabIdx,
             items: [...getBottomBarItems()],
           ),

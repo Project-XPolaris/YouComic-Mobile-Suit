@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:youcomic/bottom_bar.dart';
 import 'package:youcomic/config/application.dart';
@@ -15,7 +16,6 @@ import 'package:youcomic/pages/start/StartPage.dart';
 import 'package:youcomic/providers/app.dart';
 import 'package:youcomic/providers/layout.dart';
 import 'package:youcomic/providers/user_provider.dart';
-
 
 void main() {
   runApp(MultiProvider(
@@ -43,6 +43,12 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         primarySwatch: Colors.blue,
+        appBarTheme: AppBarTheme(
+            backgroundColor: Color(0xFFE1F5FE),
+            elevation: 0,
+            systemOverlayStyle: SystemUiOverlayStyle.dark),
+        bottomNavigationBarTheme: BottomNavigationBarThemeData(
+            unselectedItemColor: Color(0x99000000)),
       ),
       initialRoute: "/start",
       routes: {
@@ -57,6 +63,7 @@ class MyHomePage extends StatelessWidget {
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
   BookListProvider bookProvider = BookListProvider();
   TagsProvider tagsProvider = TagsProvider();
+
   @override
   Widget build(BuildContext rootContext) {
     return Consumer<LayoutProvider>(builder: (context, layoutProvider, child) {
@@ -68,7 +75,9 @@ class MyHomePage extends StatelessWidget {
             BookListPage(
               externalBookListProvider: bookProvider,
             ),
-            TagsPage(externalTagProvider: tagsProvider,)
+            TagsPage(
+              externalTagProvider: tagsProvider,
+            )
           ];
         }
         return [
@@ -76,7 +85,9 @@ class MyHomePage extends StatelessWidget {
           BookListPage(
             externalBookListProvider: bookProvider,
           ),
-          TagsPage(externalTagProvider: tagsProvider,),
+          TagsPage(
+            externalTagProvider: tagsProvider,
+          ),
           MyPage()
         ];
       }
@@ -102,14 +113,12 @@ class MyHomePage extends StatelessWidget {
             onClose: closeDrawer,
             externalBookListProvider: bookProvider,
           );
-
         }
         if (layoutProvider.tabIdx == 2) {
           return HomeTagsFilterDrawer(
             externalTagProvider: tagsProvider,
             onClose: closeDrawer,
           );
-
         }
         return Container();
       }
@@ -127,5 +136,6 @@ class MyHomePage extends StatelessWidget {
       );
     });
   }
+
   MyHomePage();
 }

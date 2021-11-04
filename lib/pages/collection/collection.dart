@@ -38,8 +38,6 @@ class CollectionDetailPage extends StatelessWidget {
         });
         return Scaffold(
           appBar: AppBar(
-            brightness: Brightness.light,
-            backgroundColor: Colors.white,
             iconTheme: IconThemeData(color: Colors.black87),
             title: Text(
               "收藏夹",

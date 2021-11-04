@@ -84,8 +84,6 @@ class TagPage extends StatelessWidget {
         );
         return Scaffold(
           appBar: AppBar(
-            brightness: Brightness.light,
-            backgroundColor: Colors.white,
             iconTheme: IconThemeData(color: Colors.black87),
             actions: ApplicationConfig().useNanoMode
                 ? null

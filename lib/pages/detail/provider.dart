@@ -36,6 +36,7 @@ class DetailProvider with ChangeNotifier {
   loadRelateTag(int id) async {
     var response = await ApiClient().fetchBookTags(id);
     this.tags = TagEntity.parseList(response.data["result"]);
+    book.tags = this.tags;
     notifyListeners();
   }
 
@@ -45,6 +46,8 @@ class DetailProvider with ChangeNotifier {
   }
 
   loadRelateArtist() async {
+    print("load artist");
+    print(book.tags.lastIndexWhere((tag) => tag.type == "artist"));
     if (book.tags.lastIndexWhere((tag) => tag.type == "artist") != -1) {
       var artistTag = book.tags.firstWhere((tag) => tag.type == "artist");
       relateArtistBookDataSource.extraQueryParam = {"tag": artistTag.id};
@@ -95,6 +98,9 @@ class DetailProvider with ChangeNotifier {
 
     //get artist
 
+    this.bookLoad = "Done";
+    notifyListeners();
+    await loadRelateTag(id);
     this.artist =
         getBookTagName(bookEntity: book, tagType: "artist", defaultText: "");
 
@@ -108,10 +114,6 @@ class DetailProvider with ChangeNotifier {
 
     this.theme =
         getBookTagName(bookEntity: book, tagType: "theme", defaultText: "");
-
-    this.bookLoad = "Done";
-    notifyListeners();
-    await loadRelateTag(id);
     await loadRelateArtist();
     await loadRelateSeries();
     await loadRelateTheme();

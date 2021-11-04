@@ -3,7 +3,6 @@ import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:youcomic/api/client.dart';
 import 'package:youcomic/api/model/user_auth_entity.dart';
-import 'package:youcomic/main.dart';
 
 import 'form.dart';
 

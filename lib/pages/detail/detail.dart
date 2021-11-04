@@ -69,7 +69,6 @@ class DetailPage extends StatelessWidget {
                   ),
                 ),
               ),
-              Divider(),
             ];
           }
           return [];
@@ -93,7 +92,6 @@ class DetailPage extends StatelessWidget {
                   ),
                 ),
               ),
-              Divider(),
             ];
           }
           return [];
@@ -145,11 +143,10 @@ class DetailPage extends StatelessWidget {
                 flex: 1,
                 child: Padding(
                   padding: EdgeInsets.only(left: 8),
-                  child: FlatButton(
-                    color: Colors.blue,
+                  child: OutlinedButton(
                     child: Text(
                       "阅读",
-                      style: TextStyle(color: Colors.white),
+                      style: TextStyle(color: Colors.blue),
                     ),
                     onPressed: onReadButtonClick,
                   ),
@@ -175,10 +172,9 @@ class DetailPage extends StatelessWidget {
         }
 
         var cover = detailProvider.cover;
+        print("artist = " + detailProvider.artist);
         return Scaffold(
             appBar: AppBar(
-              elevation: 1,
-              backgroundColor: Colors.white,
               iconTheme: IconThemeData(color: Colors.black87),
               title: Text(
                 detailProvider.book.name,
@@ -255,7 +251,6 @@ class DetailPage extends StatelessWidget {
                       children: <Widget>[...renderAction()],
                     ),
                   ),
-                  Divider(),
                   Padding(
                     padding: EdgeInsets.only(
                         left: 16, right: 16, top: 24, bottom: 24),
@@ -266,7 +261,6 @@ class DetailPage extends StatelessWidget {
                       ),
                     ),
                   ),
-                  Divider(),
                   ...renderRelateArtist(),
                   ...renderRelateSeries(),
                   ...renderRelateTheme()

@@ -6,7 +6,7 @@ class TagDataSource {
   List<TagEntity> tags = [];
   var hasMore = true;
   int page = 1;
-  int pageSize = 10;
+  int pageSize = 50;
   var isLoading = false;
   Map<String, dynamic> extraQueryParam = {};
 

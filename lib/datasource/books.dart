@@ -6,7 +6,7 @@ class BookDataSource {
   List<BookEntity> books = [];
   bool hasMore = true;
   int page = 1;
-  int pageSize = 5;
+  int pageSize = 20;
   bool isLoading = false;
   Map<String, dynamic> extraQueryParam = {};
 

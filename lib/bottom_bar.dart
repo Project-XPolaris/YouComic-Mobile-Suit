@@ -6,40 +6,40 @@ import 'package:youcomic/providers/layout.dart';
 class BottomBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    List<BottomNavigationBarItem> getBottomBarItems() {
+    List<NavigationDestination> getBottomBarItems() {
       if (ApplicationConfig().useNanoMode) {
         return [
-          BottomNavigationBarItem(
+          NavigationDestination(
             icon: Icon(
-              Icons.book,
+              Icons.book_rounded,
             ),
             label: '书籍',
           ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.bookmark),
+          NavigationDestination(
+            icon: Icon(Icons.bookmark_rounded),
             label: '标签',
           )
         ];
       }
       return [
-        BottomNavigationBarItem(
-          icon: Icon(Icons.home),
+        NavigationDestination(
+          icon: Icon(Icons.home_rounded),
           label:'主页',
         ),
-        BottomNavigationBarItem(
+        NavigationDestination(
           icon: Icon(
-            Icons.book,
+            Icons.book_rounded,
           ),
           label: '书籍',
         ),
-        BottomNavigationBarItem(
+        NavigationDestination(
           icon: Icon(
-            Icons.tag,
+            Icons.tag_rounded,
           ),
           label: '标签',
         ),
-        BottomNavigationBarItem(
-          icon: Icon(Icons.person),
+        NavigationDestination(
+          icon: Icon(Icons.person_rounded),
           label: '我的',
         )
       ];
@@ -48,14 +48,10 @@ class BottomBar extends StatelessWidget {
     return Consumer<LayoutProvider>(
       builder: (context, layoutProvider, child) {
         return Container(
-          child: BottomNavigationBar(
-            type: BottomNavigationBarType.fixed,
-            fixedColor: Colors.blue,
-            elevation: 0,
-            backgroundColor: Color(0xFFE1F5FE),
-            currentIndex: layoutProvider.tabIdx,
-            onTap: layoutProvider.setTabIdx,
-            items: [...getBottomBarItems()],
+          child: NavigationBar(
+            selectedIndex: layoutProvider.tabIdx,
+            onDestinationSelected: layoutProvider.setTabIdx,
+            destinations: [...getBottomBarItems()],
           ),
         );
       },

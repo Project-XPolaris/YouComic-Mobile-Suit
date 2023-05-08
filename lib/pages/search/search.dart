@@ -28,26 +28,26 @@ class SearchPage extends StatelessWidget {
         return [
           Tab(
               icon: Icon(
-            Icons.book,
+            Icons.book_rounded,
           )),
           Tab(
               icon: Icon(
-            Icons.bookmark,
+            Icons.bookmark_rounded,
           )),
         ];
       }
       return [
         Tab(
             icon: Icon(
-          Icons.book,
+          Icons.book_rounded,
         )),
         Tab(
             icon: Icon(
-          Icons.bookmark,
+          Icons.bookmark_rounded,
         )),
         Tab(
             icon: Icon(
-          Icons.folder,
+          Icons.folder_rounded,
         )),
       ];
     }
@@ -85,16 +85,17 @@ class SearchPage extends StatelessWidget {
           length: tabViews.length,
           child: Scaffold(
             appBar: AppBar(
-              iconTheme: IconThemeData(color: Colors.black87),
               title: Text(
                 provider.title,
-                style: TextStyle(color: Colors.black87),
               ),
               bottom: TabBar(
-                indicatorColor: Colors.black87,
-                unselectedLabelColor: Colors.black26,
-                labelColor: Colors.black87,
                 tabs: getTabItem(),
+              ),
+              leading: IconButton(
+                icon: Icon(Icons.arrow_back_rounded),
+                onPressed: () {
+                  Navigator.pop(context);
+                },
               ),
             ),
             body: TabBarView(

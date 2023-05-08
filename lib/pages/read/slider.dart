@@ -41,9 +41,9 @@ class PageJumpSliderState extends State<PageJumpSlider> {
               height: 270,
               width: 200,
               child: Center(
-                child: currentPath != null ? CachedNetworkImage(
-                  imageUrl: currentPath,
-                  progressIndicatorBuilder: (context, url, downloadProgress) => CircularProgressIndicator(value: downloadProgress.progress),
+                child: currentPath != null ? Image.network(
+                  currentPath,
+                  // progressIndicatorBuilder: (context, url, downloadProgress) => CircularProgressIndicator(value: downloadProgress.progress),
                 ):Container(
                   height: 270,
                   width: 200,

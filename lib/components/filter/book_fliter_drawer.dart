@@ -88,14 +88,13 @@ class BookFilterDrawer extends StatelessWidget {
                     "Filter",
                     style: TextStyle(
                         fontSize: 20,
-                        fontWeight: FontWeight.w600,
-                        color: Colors.black87),
+                        fontWeight: FontWeight.w600),
                   ),
                   IconButton(
                     onPressed: () {
                       onClose();
                     },
-                    icon: Icon(Icons.close),
+                    icon: Icon(Icons.close_rounded),
                   )
                 ],
               ),

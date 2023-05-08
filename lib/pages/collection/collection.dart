@@ -38,10 +38,14 @@ class CollectionDetailPage extends StatelessWidget {
         });
         return Scaffold(
           appBar: AppBar(
-            iconTheme: IconThemeData(color: Colors.black87),
             title: Text(
               "收藏夹",
-              style: TextStyle(color: Colors.black87),
+            ),
+            leading: IconButton(
+              icon: Icon(Icons.arrow_back_rounded),
+              onPressed: () {
+                Navigator.pop(context);
+              },
             ),
           ),
           body: ListView.separated(
@@ -58,8 +62,6 @@ class CollectionDetailPage extends StatelessWidget {
                 },
                 onDismissed: (direction) {
                   collectionDetailProvider.dataSource.books.removeAt(idx);
-                  Scaffold.of(context).showSnackBar(
-                      SnackBar(content: Text('Yay! A SnackBar!')));
                 },
                 child: BookItem(
                     book: collectionDetailProvider.dataSource.books[idx],

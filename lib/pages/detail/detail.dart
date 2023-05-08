@@ -46,7 +46,14 @@ class DetailPage extends StatelessWidget {
             .map((tag) => Padding(
                   padding: EdgeInsets.only(right: 8, bottom: 2),
                   child: ActionChip(
-                    label: Text(tag.getName()),
+                    backgroundColor:
+                        Theme.of(context).colorScheme.primaryContainer,
+                    label: Text(
+                      tag.getName(),
+                      style: TextStyle(
+                          color:
+                              Theme.of(context).colorScheme.onPrimaryContainer),
+                    ),
                     onPressed: () => TagPage.launch(context, tag),
                   ),
                 ))
@@ -127,11 +134,9 @@ class DetailPage extends StatelessWidget {
                   flex: 1,
                   child: Padding(
                     padding: EdgeInsets.only(left: 8),
-                    child: FlatButton(
-                      color: Colors.blue,
+                    child: TextButton(
                       child: Text(
                         "阅读",
-                        style: TextStyle(color: Colors.white),
                       ),
                       onPressed: onReadButtonClick,
                     ),
@@ -143,10 +148,9 @@ class DetailPage extends StatelessWidget {
                 flex: 1,
                 child: Padding(
                   padding: EdgeInsets.only(left: 8),
-                  child: OutlinedButton(
+                  child: ElevatedButton(
                     child: Text(
                       "阅读",
-                      style: TextStyle(color: Colors.blue),
                     ),
                     onPressed: onReadButtonClick,
                   ),
@@ -155,7 +159,7 @@ class DetailPage extends StatelessWidget {
                 flex: 1,
                 child: Padding(
                   padding: EdgeInsets.only(left: 8),
-                  child: OutlineButton(
+                  child: ElevatedButton(
                     child: Text("加入收藏"),
                     onPressed: () {
                       detailProvider.loadCollections();
@@ -172,13 +176,17 @@ class DetailPage extends StatelessWidget {
         }
 
         var cover = detailProvider.cover;
-        print("artist = " + detailProvider.artist);
         return Scaffold(
             appBar: AppBar(
-              iconTheme: IconThemeData(color: Colors.black87),
               title: Text(
                 detailProvider.book.name,
-                style: TextStyle(color: Colors.black87),
+                style: TextStyle(),
+              ),
+              leading: IconButton(
+                icon: Icon(Icons.arrow_back_rounded),
+                onPressed: () {
+                  Navigator.pop(context);
+                },
               ),
             ),
             body: SingleChildScrollView(
@@ -193,12 +201,10 @@ class DetailPage extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: <Widget>[
                           cover != null
-                              ? CachedNetworkImage(
+                              ? Image.network(
+                                  cover,
                                   width: 120,
-                                  httpHeaders: {
-                                    "Authorization": ApiClient().token
-                                  },
-                                  imageUrl: cover,
+                                  headers: {"Authorization": ApiClient().token},
                                 )
                               : Container(),
                           Flexible(
@@ -227,17 +233,16 @@ class DetailPage extends StatelessWidget {
                                   child: Text(
                                     detailProvider.series,
                                     style: TextStyle(
-                                        fontWeight: FontWeight.w300,
-                                        color: Colors.grey),
+                                      fontWeight: FontWeight.w300,
+                                    ),
                                   ),
                                 ),
                                 Padding(
                                   padding: EdgeInsets.only(top: 12),
                                   child: Text(
                                     detailProvider.theme,
-                                    style: TextStyle(
-                                        fontWeight: FontWeight.w300,
-                                        color: Colors.grey),
+                                    style:
+                                        TextStyle(fontWeight: FontWeight.w300),
                                   ),
                                 )
                               ],

@@ -25,23 +25,16 @@ class BookItem extends StatelessWidget {
           ClipRRect(
             borderRadius: BorderRadius.circular(8.0),
             child: coverUrl != null
-                ? CachedNetworkImage(
+                ? Image.network(
+              coverUrl,
                     width: 96,
                     height: 150,
                     fit: BoxFit.cover,
-                    httpHeaders: {"Authorization": ApiClient().token},
-                    imageUrl: coverUrl,
-                    placeholder: (context, url) => Container(
-                      color: Colors.black12,
-                    ),
-                    errorWidget: (context, url, error) => Container(
-                      color: Colors.black12,
-                    ),
+                    headers: {"Authorization": ApiClient().token},
                   )
                 : Container(
                     width: 96,
                     height: 150,
-                    color: Colors.black26,
                   ),
           ),
           Expanded(
@@ -80,7 +73,6 @@ class BookItem extends StatelessWidget {
                               bookEntity: book,
                               tagType: "series",
                               defaultText: ""),
-                          style: TextStyle(color: Colors.black54),
                         ),
                       ),
                       Padding(
@@ -90,7 +82,6 @@ class BookItem extends StatelessWidget {
                               bookEntity: book,
                               tagType: "theme",
                               defaultText: ""),
-                          style: TextStyle(color: Colors.black54),
                         ),
                       )
                     ],

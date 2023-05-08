@@ -13,7 +13,8 @@ class TagItem extends StatelessWidget {
       title: Text(tag.getName()),
       subtitle: Text(tag.getType()),
       leading: CircleAvatar(
-        child: Icon(selectIconByTagType(tag.getType())),
+        backgroundColor: Theme.of(context).colorScheme.primaryContainer,
+        child: Icon(selectIconByTagType(tag.getType()),color: Theme.of(context).colorScheme.onPrimaryContainer,),
       ),
     );
   }

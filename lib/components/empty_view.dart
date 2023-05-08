@@ -21,14 +21,12 @@ class EmptyView extends StatelessWidget {
     final List<Widget> unAction = [
       Text(
         text,
-        style: TextStyle(fontSize: 22, color: Colors.black26),
+        style: TextStyle(fontSize: 22),
       ),
-      FlatButton(
-        color: Colors.black12,
+      ElevatedButton(
         onPressed: onRefresh,
         child: Text(
           "重新加载",
-          style: TextStyle(color: Colors.black54),
         ),
       ),
     ];

@@ -40,8 +40,8 @@ class BookCard extends StatelessWidget {
                   width: 130,
                   height: 180,
                   fit: BoxFit.cover,
-                  image: CachedNetworkImageProvider(coverUrl,
-                      headers: {"Authorization": ApiClient().token}),
+                  image: NetworkImage(coverUrl,
+                      headers: {"Authorization": "${ApiClient().token}"}),
                   errorBuilder: (b,s,e) {
                     return Container();
                   },

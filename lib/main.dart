@@ -3,7 +3,6 @@ import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:youcomic/bottom_bar.dart';
 import 'package:youcomic/config/application.dart';
-import 'package:youcomic/menu.dart';
 import 'package:youcomic/pages/home/drawers/book_filter_drawer.dart';
 import 'package:youcomic/pages/home/drawers/tags_filter_drawer.dart';
 import 'package:youcomic/pages/home/tabs/books/book_list.dart';
@@ -12,7 +11,7 @@ import 'package:youcomic/pages/home/tabs/home/home.dart';
 import 'package:youcomic/pages/home/tabs/my/my.dart';
 import 'package:youcomic/pages/home/tabs/tags/provider.dart';
 import 'package:youcomic/pages/home/tabs/tags/tags.dart';
-import 'package:youcomic/pages/start/StartPage.dart';
+import 'package:youcomic/pages/init/init.dart';
 import 'package:youcomic/providers/app.dart';
 import 'package:youcomic/providers/layout.dart';
 import 'package:youcomic/providers/user_provider.dart';
@@ -42,18 +41,20 @@ class MyApp extends StatelessWidget {
       title: 'YouComic',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        primarySwatch: Colors.blue,
-        appBarTheme: AppBarTheme(
-            backgroundColor: Color(0xFFE1F5FE),
-            elevation: 0,
-            systemOverlayStyle: SystemUiOverlayStyle.dark),
-        bottomNavigationBarTheme: BottomNavigationBarThemeData(
-            unselectedItemColor: Color(0x99000000)),
+        useMaterial3: true,
+        colorSchemeSeed: Colors.blue,
+        brightness: Brightness.light,
       ),
+      darkTheme: ThemeData(
+        useMaterial3: true,
+        colorSchemeSeed: Colors.blue,
+        brightness: Brightness.dark,
+      ),
+      themeMode: ThemeMode.dark,
       initialRoute: "/start",
       routes: {
         "/home": (context) => MyHomePage(),
-        "/start": (context) => StartPage(),
+        "/start": (context) => InitPage(),
       },
     );
   }
@@ -126,7 +127,6 @@ class MyHomePage extends StatelessWidget {
       return Scaffold(
         key: _scaffoldKey,
         endDrawer: getDrawer(),
-        appBar: renderAppBar(layoutProvider, context),
         bottomNavigationBar: BottomBar(),
         body: IndexedStack(
           index: layoutProvider.tabIdx,

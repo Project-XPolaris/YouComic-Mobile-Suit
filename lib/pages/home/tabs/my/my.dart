@@ -3,22 +3,26 @@ import 'package:youcomic/pages/history/history.dart';
 import 'package:youcomic/pages/mycollection/mycollection.dart';
 import 'package:youcomic/pages/mytag/mytag.dart';
 
+import '../../../../menu.dart';
+
 class MyPage extends StatelessWidget {
   const MyPage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: renderAppBar(context),
       key: key,
       body: Container(
         child: ListView(
           children: [
             Container(
               margin: EdgeInsets.only(top: 64),
-              width: 64,
-              height: 64,
+              width: 120,
+              height: 120,
               child: CircleAvatar(
-                child: Icon(Icons.person,size: 32,),
+                backgroundColor: Theme.of(context).colorScheme.primaryContainer,
+                child: Icon(Icons.person_rounded,size: 64,color: Theme.of(context).colorScheme.onPrimaryContainer,),
               ),
             ),
             Container(
@@ -27,28 +31,25 @@ class MyPage extends StatelessWidget {
                 child: Text("My",style: TextStyle(fontSize: 22,fontWeight: FontWeight.w300),),
               ),
             ),
-            Divider(),
             ListTile(
               onTap: (){
                 MyCollection.launch(context);
               },
-              leading: Icon(Icons.star),
+              leading: Icon(Icons.star_rounded),
               title: Text("收藏夹"),
             ),
-            Divider(),
             ListTile(
               onTap: (){
                 MyTagPage.launch(context);
               },
-              leading: Icon(Icons.bookmark),
+              leading: Icon(Icons.bookmark_rounded),
               title: Text("订阅的标签"),
             ),
-            Divider(),
             ListTile(
               onTap: (){
                 HistoryPage.launch(context);
               },
-              leading: Icon(Icons.history),
+              leading: Icon(Icons.history_rounded),
               title: Text("浏览历史"),
             ),
           ],

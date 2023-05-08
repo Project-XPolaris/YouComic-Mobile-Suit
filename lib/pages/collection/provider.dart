@@ -12,7 +12,6 @@ class CollectionDetailProvider with ChangeNotifier {
       return;
     }
     isFirst = false;
-    notifyListeners();
     dataSource.extraQueryParam = {"collection":collection.id};
     await dataSource.loadBooks(true);
     notifyListeners();

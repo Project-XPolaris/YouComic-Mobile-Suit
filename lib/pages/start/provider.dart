@@ -87,7 +87,7 @@ class StartProvider extends ChangeNotifier {
     } on DioError catch (e) {
       if (e.type == DioErrorType.response) {
         ApiResponse apiError = ApiResponse.fromDioError(e);
-        Scaffold.of(context).showSnackBar(SnackBar(
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
           content: Text(apiError.reason ?? ""),
         ));
       }

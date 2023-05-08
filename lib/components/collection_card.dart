@@ -12,24 +12,29 @@ class CollectionCard extends StatelessWidget {
     return Container(
       width: 150,
       child: Card(
-        child: InkWell(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.all(Radius.circular(8))
+        ),
+        child: GestureDetector(
           onTap: (){
             CollectionDetailPage.launch(context, collectionEntity);
           },
           child: Column(
             children: <Widget>[
               Container(
-                color: Colors.blue,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.only(topLeft: Radius.circular(8),topRight: Radius.circular(8)),
+                  color: Theme.of(context).colorScheme.secondaryContainer
+                ),
                 child: Padding(
                   padding: EdgeInsets.only(top: 16,bottom: 16),
                   child: Center(
-                    child: Icon(Icons.folder,size: 36,color: Colors.white,),
+                    child: Icon(Icons.folder_rounded,size: 36,color: Theme.of(context).colorScheme.onSecondaryContainer,),
                   ),
                 ),
-              )
-              ,
+              ),
               Divider(height: 1,),
-              Padding(
+              Container(
                 padding: EdgeInsets.only(top: 8),
                 child: Center(
                   child: Text(

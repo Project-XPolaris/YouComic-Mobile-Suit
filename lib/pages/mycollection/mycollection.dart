@@ -43,13 +43,13 @@ class MyCollection extends StatelessWidget {
                       title: Text("确认删除"),
                       content: Text("将会移除收藏夹"),
                       actions: <Widget>[
-                        FlatButton(
+                        TextButton(
                           child: Text("删除"),
                           onPressed: () {
                             Navigator.pop(context, true);
                           },
                         ),
-                        FlatButton(
+                        TextButton(
                           child: Text("取消"),
                           onPressed: () {
                             Navigator.pop(context, false);
@@ -84,7 +84,6 @@ class MyCollection extends StatelessWidget {
                             if (id != null) {
                               showModalBottomSheet(
                                   context: itemContext,
-                                  backgroundColor: Colors.transparent,
                                   builder: (BuildContext context) {
                                     return TextInputBottomSheet(
                                       initValue: collection.getName(),
@@ -101,10 +100,10 @@ class MyCollection extends StatelessWidget {
                             contentPadding: EdgeInsets.only(
                                 top: 8, bottom: 8, left: 16, right: 16),
                             leading: CircleAvatar(
-                              backgroundColor: Colors.blueAccent,
+                              backgroundColor: Theme.of(context).colorScheme.primary,
                               child: Icon(
-                                Icons.folder,
-                                color: Colors.white,
+                                Icons.folder_rounded,
+                                color: Theme.of(context).colorScheme.onPrimary
                               ),
                             ),
                             title: Text(collection.getName()),
@@ -116,7 +115,7 @@ class MyCollection extends StatelessWidget {
                             return;
                           }
                           provider.deleteCollection(id);
-                          Scaffold.of(itemContext).showSnackBar(new SnackBar(content: Text("已删除")));
+                          ScaffoldMessenger.of(itemContext).showSnackBar(new SnackBar(content: Text("已删除")));
                         },
                         confirmDismiss: (DismissDirection direction) async {
                           return showDeleteConfirm();
@@ -128,9 +127,8 @@ class MyCollection extends StatelessWidget {
                 text: "这里暂时没有东西",
                 isLoading: provider.dataSource.isLoading,
                 icon: Icon(
-                  Icons.star,
+                  Icons.star_rounded,
                   size: 96,
-                  color: Colors.black26,
                 ),
                 onRefresh: () {
                   provider.onForceReload();
@@ -140,12 +138,14 @@ class MyCollection extends StatelessWidget {
 
             return Scaffold(
               appBar: AppBar(
-                automaticallyImplyLeading: false,
-                // Here we take the value from the MyHomePage object that was created by
-                // the App.build method, and use it to set our appbar title.
                 title: Text(
                   "收藏夹",
-                  style: TextStyle(color: Colors.black87),
+                ),
+                leading: IconButton(
+                  icon: Icon(Icons.arrow_back_rounded),
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
                 ),
               ),
               floatingActionButton: FloatingActionButton(
@@ -168,8 +168,7 @@ class MyCollection extends StatelessWidget {
                         );
                       });
                 },
-                child: Icon(Icons.add),
-                backgroundColor: Colors.blue,
+                child: Icon(Icons.add_rounded),
               ),
               body: RefreshIndicator(
                 onRefresh: _pullToRefresh,

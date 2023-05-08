@@ -37,13 +37,13 @@ class ApiClient {
         encodeParam[key] = value.toString();
       }
     });
-    var parseBaseUri = Uri.parse(baseUrl);
+    var parseBaseUri = Uri.parse(baseUrl + path);
     var uri = Uri(
         host: parseBaseUri.host,
         port: parseBaseUri.port,
         scheme: parseBaseUri.scheme,
         queryParameters: encodeParam,
-        path: path);
+        path: parseBaseUri.path);
     return uri.toString();
   }
 

@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:youcomic/api/model/tag_entity.dart';
-import 'package:youcomic/components/book_info_bottom_sheet.dart';
-import 'package:youcomic/components/book_item.dart';
 import 'package:youcomic/components/empty_view.dart';
+import 'package:youcomic/components/filter/book_fliter_drawer.dart';
 import 'package:youcomic/config/application.dart';
 import 'package:youcomic/pages/tag/menu.dart';
 import 'package:youcomic/pages/tag/provider.dart';
+
+import '../../components/books_view.dart';
 
 class TagPage extends StatelessWidget {
   final TagEntity tagEntity;
@@ -31,33 +31,6 @@ class TagPage extends StatelessWidget {
       child: Consumer<TagProvider>(builder: (context, tagProvider, builder) {
         tagProvider.onLoad();
         tagProvider.checkIsSubscribe();
-        Future _pullToRefresh() async {
-          await tagProvider.bookDataSource.loadBooks(true);
-        }
-
-        List<Widget> items = [];
-        createBookItem(book) {
-          items.add(Container(
-            padding: EdgeInsets.all(8),
-            child: BookItem(
-              book: book,
-              onLongPress: () {
-                HapticFeedback.vibrate();
-                showModalBottomSheet(
-                    context: context,
-                    builder: (context) {
-                      return BookInfoBottomSheet(
-                        bookEntity: book,
-                      );
-                    });
-              },
-            ),
-          ));
-        }
-
-        tagProvider.bookDataSource.books
-            .forEach((book) => createBookItem(book));
-
         ScrollController _controller = new ScrollController();
         _controller.addListener(() {
           var maxScroll = _controller.position.maxScrollExtent;
@@ -66,34 +39,84 @@ class TagPage extends StatelessWidget {
             tagProvider.loadMoreBooks();
           } else {}
         });
-        Widget list = ListView(
-          children: items.toList(),
-          controller: _controller,
-        );
+        Future _pullToRefresh() async {
+          await tagProvider.onLoad(force: true);
+        }
+
+        Widget renderContent() {
+          return RefreshIndicator(
+            onRefresh: _pullToRefresh,
+            child: BooksView(
+              books: tagProvider.bookDataSource.books,
+              viewMode: tagProvider.viewMode,
+              controller: _controller,
+            ),
+          );
+        }
+
         Widget emptyView = EmptyView(
-          isLoading:  tagProvider.bookDataSource.isLoading,
+          isLoading: tagProvider.bookDataSource.isLoading,
           icon: Icon(
-            Icons.bookmark,
+            Icons.bookmark_rounded,
             size: 96,
-            color: Colors.black26,
           ),
           text: "暂时没有订阅的标签",
-          onRefresh: (){
-          tagProvider.bookDataSource.loadBooks(true);
+          onRefresh: () {
+            tagProvider.bookDataSource.loadBooks(true);
           },
         );
+        getActionMenu() {
+          if (ApplicationConfig().useNanoMode) {
+            return [];
+          }
+          return renderAction(tagProvider);
+        }
+
         return Scaffold(
           appBar: AppBar(
-            iconTheme: IconThemeData(color: Colors.black87),
-            actions: ApplicationConfig().useNanoMode
-                ? null
-                : renderAction(tagProvider),
+            actions: [
+              Builder(builder: (context) {
+                return IconButton(
+                    onPressed: () {
+                      Scaffold.of(context).openDrawer();
+                    },
+                    icon: Icon(Icons.filter_list_alt));
+              }),
+              ...getActionMenu()
+            ],
             title: Text(
               tagProvider.title,
-              style: TextStyle(color: Colors.black87),
+            ),
+            leading: IconButton(
+              icon: Icon(Icons.arrow_back_rounded),
+              onPressed: () {
+                Navigator.pop(context);
+              },
             ),
           ),
-          body: tagProvider.bookDataSource.books.isEmpty?emptyView:list,
+          endDrawer: Drawer(
+            child: Builder(
+              builder: (context) {
+                return BookFilterDrawer(
+                  onClose: () {
+                    Navigator.pop(context);
+                  },
+                  onOrderUpdate: tagProvider.bookFilter.updateOrderFilter,
+                  activeOrders: tagProvider.bookFilter.orderFilter,
+                  onCustomTimeRangeChange:
+                      tagProvider.bookFilter.updateCustomDateRange,
+                  customTimeRange: tagProvider.bookFilter.customDateRange,
+                  onTimeRangeChange: tagProvider.bookFilter.onTimeRangeChange,
+                  onClearCustomTimeRange: tagProvider.bookFilter.onClearTimeRange,
+                  timeRangeSelectMode: tagProvider.bookFilter.timeRangeSelect,
+                );
+              }
+            ),
+          ),
+
+          body: tagProvider.bookDataSource.books.isEmpty
+              ? emptyView
+              : renderContent(),
         );
       }),
     );

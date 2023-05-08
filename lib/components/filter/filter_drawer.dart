@@ -32,7 +32,7 @@ class FilterDrawer extends StatelessWidget {
                       onPressed: () {
                         onClose();
                       },
-                      icon: Icon(Icons.close),
+                      icon: Icon(Icons.close_rounded),
                     )
                   ],
                 ),

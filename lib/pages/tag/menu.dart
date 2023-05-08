@@ -9,7 +9,7 @@ List<Widget> renderAction(TagProvider provider) {
       final snackBar = SnackBar(content: Text('添加成功'));
       var buildContext = scKey.currentContext;
       if (buildContext != null) {
-        Scaffold.of(buildContext).showSnackBar(snackBar);
+        ScaffoldMessenger.of(buildContext).showSnackBar(snackBar);
       }
     }
 
@@ -18,12 +18,28 @@ List<Widget> renderAction(TagProvider provider) {
       final snackBar = SnackBar(content: Text('已取消订阅'));
       var buildContext = scKey.currentContext;
       if (buildContext != null) {
-        Scaffold.of(buildContext).showSnackBar(snackBar);
+        ScaffoldMessenger.of(buildContext).showSnackBar(snackBar);
       }
+    }
+
+    if (action == "List") {
+      provider.changeViewMode("List");
+    }
+    if (action == "Grid") {
+      provider.changeViewMode("Grid");
     }
   }
 
-  List<PopupMenuItem<String>> menuOptions = [];
+  List<PopupMenuItem<String>> menuOptions = [
+    PopupMenuItem(
+      value: "List",
+      child: Text("List"),
+    ),
+    PopupMenuItem(
+      value: "Grid",
+      child: Text("Grid"),
+    ),
+  ];
   switch (provider.subscribeStatus) {
     case SubscribeStatus.Subscribed:
       menuOptions.add(

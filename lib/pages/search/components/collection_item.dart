@@ -23,8 +23,10 @@ class CollectionItem extends StatelessWidget {
               Padding(
                 padding: EdgeInsets.only(right: 16),
                 child: CircleAvatar(
+                  backgroundColor: Theme.of(context).colorScheme.primaryContainer,
                   child: Icon(
-                    Icons.folder,
+                    Icons.folder_rounded,
+                    color: Theme.of(context).colorScheme.onPrimaryContainer,
                   ),
                 ),
               ),
@@ -34,13 +36,12 @@ class CollectionItem extends StatelessWidget {
                     width: 300,
                     child: Text(
                       collection.getName(),
-                      style: TextStyle(fontSize: 16, color: Colors.black87),
+                      style: TextStyle(fontSize: 16),
                     ),
                   )),
             ],
           ),
         ),
-        Divider(height: 0,)
       ]),
     );
   }

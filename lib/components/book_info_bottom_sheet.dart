@@ -35,12 +35,10 @@ class _BookInfoBottomSheetState extends State<BookInfoBottomSheet> {
               child: Text(
                 this.widget.bookEntity.name,
                 textAlign: TextAlign.start,
-                style: TextStyle(color: Colors.black87, fontSize: 18),
+                style: TextStyle(fontSize: 18),
               ),
             ),
-            Divider(
-              height: 0,
-            ),
+
             artistTag != null
                 ? BookInfoItem(
                     text: "Artist: ${artistTag.name}",
@@ -48,7 +46,7 @@ class _BookInfoBottomSheetState extends State<BookInfoBottomSheet> {
                       Navigator.of(context).pop();
                       TagPage.launch(context, artistTag);
                     },
-                    icon: Icon(Icons.person),
+                    icon: Icon(Icons.person_rounded),
                   )
                 : Container(),
             seriesTag != null
@@ -58,7 +56,7 @@ class _BookInfoBottomSheetState extends State<BookInfoBottomSheet> {
                       Navigator.of(context).pop();
                       TagPage.launch(context, seriesTag);
                     },
-                    icon: Icon(Icons.book))
+                    icon: Icon(Icons.book_rounded))
                 : Container(),
             themeTag != null
                 ? BookInfoItem(
@@ -67,7 +65,7 @@ class _BookInfoBottomSheetState extends State<BookInfoBottomSheet> {
                       Navigator.of(context).pop();
                       TagPage.launch(context, themeTag);
                     },
-                    icon: Icon(Icons.sentiment_very_satisfied))
+                    icon: Icon(Icons.sentiment_very_satisfied_rounded))
                 : Container(),
             translatorTag != null
                 ? BookInfoItem(
@@ -76,7 +74,7 @@ class _BookInfoBottomSheetState extends State<BookInfoBottomSheet> {
                       Navigator.of(context).pop();
                       TagPage.launch(context, translatorTag);
                     },
-                    icon: Icon(Icons.translate))
+                    icon: Icon(Icons.translate_rounded))
                 : Container()
           ],
         )
@@ -114,9 +112,6 @@ class BookInfoItem extends StatelessWidget {
                   )
                 ],
               ),
-            ),
-            Divider(
-              height: 0,
             ),
           ],
         ),

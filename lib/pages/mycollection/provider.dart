@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:youcomic/api/client.dart';
 import 'package:youcomic/api/model/collection.dart';
+import 'package:youcomic/config/application.dart';
 import 'package:youcomic/datasource/collections.dart';
 
 class CollectionProvider with ChangeNotifier {
@@ -21,8 +22,7 @@ class CollectionProvider with ChangeNotifier {
   onLoad() async {
     if (first) {
       first = false;
-      SharedPreferences prefs = await SharedPreferences.getInstance();
-      dataSource.extraQueryParam = {"owner": prefs.getInt("uid")};
+      dataSource.extraQueryParam = {"owner": ApplicationConfig().uid};
       await dataSource.loadCollections(true);
       notifyListeners();
     }

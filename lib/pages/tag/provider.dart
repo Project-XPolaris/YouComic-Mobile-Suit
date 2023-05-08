@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:youcomic/api/client.dart';
 import 'package:youcomic/api/model/tag_entity.dart';
+import 'package:youcomic/config/application.dart';
 import 'package:youcomic/datasource/books.dart';
+import 'package:youcomic/util/filter_book.dart';
 
 enum SubscribeStatus { Unknown, Subscribed, UnSubscribed }
 
@@ -12,23 +13,27 @@ class TagProvider extends ChangeNotifier {
   BookDataSource bookDataSource = new BookDataSource();
   var isFirst = true;
   SubscribeStatus? subscribeStatus = null;
-
-  TagProvider({required this.tag});
+  String viewMode = ApplicationConfig().TagBooksView;
+  BookFilter bookFilter = new BookFilter();
+  TagProvider({required this.tag}){
+    this.bookFilter.onUpdate = () {
+      onLoad(force: true);
+    };
+  }
 
   loadMoreBooks() async {
     await bookDataSource.loadMore();
     notifyListeners();
   }
 
-  onLoad() async {
-    if (!isFirst) {
+  onLoad({force = false}) async {
+    if (!isFirst && !force) {
       return;
     }
     isFirst = false;
     title = "标签：${tag.name}";
-    notifyListeners();
-    bookDataSource.extraQueryParam = {"tag": tag.id,"order":"-id"};
-    await bookDataSource.loadBooks(true);
+    bookDataSource.extraQueryParam = {"tag": tag.id,...bookFilter.getParams()};
+    await bookDataSource.loadBooks(force);
     notifyListeners();
   }
 
@@ -56,19 +61,21 @@ class TagProvider extends ChangeNotifier {
     if (subscribeStatus != null) {
       return;
     }
-    subscribeStatus = SubscribeStatus.Unknown;
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    if (!prefs.containsKey("uid")) {
+    if (ApplicationConfig().uid == null) {
       return;
     }
-    final uid = prefs.getInt("uid");
-    final response = await ApiClient().fetchTags({"subscription": uid, "id": tag.id});
+    final response = await ApiClient().fetchTags({"subscription": int.parse(ApplicationConfig().uid ?? "0"), "id": tag.id});
     final count = response.data["count"];
     if (count > 0) {
       this.subscribeStatus = SubscribeStatus.Subscribed;
     } else {
       this.subscribeStatus = SubscribeStatus.UnSubscribed;
     }
+    notifyListeners();
+  }
+  changeViewMode(String value) {
+    this.viewMode = value;
+    ApplicationConfig().updateTagBooksView(value);
     notifyListeners();
   }
 }

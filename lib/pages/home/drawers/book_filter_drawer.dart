@@ -17,13 +17,13 @@ class HomeBookListFilterDrawer extends StatelessWidget {
           Consumer<BookListProvider>(builder: (context, bookProvider, child) {
         return BookFilterDrawer(
           onClose: this.onClose,
-          onOrderUpdate: bookProvider.updateOrderFilter,
-          activeOrders: bookProvider.orderFilter,
-          onCustomTimeRangeChange: bookProvider.updateCustomDateRange,
-          customTimeRange: bookProvider.customDateRange,
-          onTimeRangeChange: bookProvider.onTimeRangeChange,
-          onClearCustomTimeRange: bookProvider.onClearTimeRange,
-          timeRangeSelectMode: bookProvider.timeRangeSelect,
+          onOrderUpdate: bookProvider.bookFilter.updateOrderFilter,
+          activeOrders: bookProvider.bookFilter.orderFilter,
+          onCustomTimeRangeChange: bookProvider.bookFilter.updateCustomDateRange,
+          customTimeRange: bookProvider.bookFilter.customDateRange,
+          onTimeRangeChange: bookProvider.bookFilter.onTimeRangeChange,
+          onClearCustomTimeRange: bookProvider.bookFilter.onClearTimeRange,
+          timeRangeSelectMode: bookProvider.bookFilter.timeRangeSelect,
         );
       }),
     );

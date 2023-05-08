@@ -28,7 +28,7 @@ class CollectionItem extends StatelessWidget {
                         padding: EdgeInsets.only(right: 16),
                         child: CircleAvatar(
                           child: Icon(
-                            Icons.folder,
+                            Icons.folder_rounded,
                           ),
                         ),
                       ),
@@ -42,7 +42,7 @@ class CollectionItem extends StatelessWidget {
                   ),
                 ),
                 PopupMenuButton(
-                  icon: Icon(Icons.more_vert),
+                  icon: Icon(Icons.more_vert_rounded),
                   onSelected: (value){
                     if (value == "rename"){
                       onRename();

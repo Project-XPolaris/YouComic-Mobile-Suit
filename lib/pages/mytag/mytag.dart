@@ -43,13 +43,13 @@ class MyTagPage extends StatelessWidget {
                       title: Text("确认操作"),
                       content: Text("将会取消订阅"),
                       actions: <Widget>[
-                        FlatButton(
+                        TextButton(
                           child: Text("取消订阅"),
                           onPressed: () {
                             Navigator.pop(context, true);
                           },
                         ),
-                        FlatButton(
+                        TextButton(
                           child: Text("返回"),
                           onPressed: () {
                             Navigator.pop(context, false);
@@ -65,9 +65,8 @@ class MyTagPage extends StatelessWidget {
                 return EmptyView(
                   isLoading: provider.dataSource.isLoading,
                   icon: Icon(
-                    Icons.bookmark,
+                    Icons.bookmark_rounded,
                     size: 96,
-                    color: Colors.black26,
                   ),
                   text: "暂时没有订阅的标签",
                   onRefresh: (){
@@ -75,8 +74,7 @@ class MyTagPage extends StatelessWidget {
                   },
                 );
               }else{
-                return ListView.separated(
-                  separatorBuilder: (BuildContext context, int index) => Divider(),
+                return ListView.builder(
                   itemCount: provider.dataSource.tags.length,
                   physics: AlwaysScrollableScrollPhysics(),
                   controller: _controller,
@@ -88,7 +86,8 @@ class MyTagPage extends StatelessWidget {
                       confirmDismiss: _onDismissConfirm,
                       child: ListTile(
                         leading: CircleAvatar(
-                          child: Icon(Icons.bookmark),
+                          backgroundColor: Theme.of(context).colorScheme.primaryContainer,
+                          child: Icon(Icons.bookmark_rounded,color: Theme.of(context).colorScheme.onPrimaryContainer,),
                         ),
                         onTap: (){
                           TagPage.launch(context, tag);
@@ -103,12 +102,14 @@ class MyTagPage extends StatelessWidget {
             }
             return Scaffold(
               appBar: AppBar(
-                automaticallyImplyLeading: false,
-                // Here we take the value from the MyHomePage object that was created by
-                // the App.build method, and use it to set our appbar title.
                 title: Text(
                   "订阅的标签",
-                  style: TextStyle(color: Colors.black87),
+                ),
+                leading: IconButton(
+                  icon: Icon(Icons.arrow_back_rounded),
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
                 ),
               ),
               body: RefreshIndicator(

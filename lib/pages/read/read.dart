@@ -1,27 +1,38 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:youcomic/pages/read/page.dart';
 import 'package:youcomic/pages/read/slider.dart';
 import 'package:youcomic/pages/read/status_provider.dart';
 import 'package:youcomic/pages/read/provider.dart';
+import 'package:youcomic/pages/tag/color.dart';
 
-class ReadPage extends StatelessWidget {
+class ReadPage extends StatefulWidget {
   final int bookId;
+
   ReadPage({required this.bookId});
+
   static launch(BuildContext context, int id) {
     Navigator.push(
       context,
-      MaterialPageRoute(builder: (context) => ReadPage(bookId:id)),
+      MaterialPageRoute(builder: (context) => ReadPage(bookId: id)),
     );
   }
+
+  @override
+  State<ReadPage> createState() => _ReadPageState();
+}
+
+class _ReadPageState extends State<ReadPage> {
+  bool isShowAppBar = true;
 
   @override
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(
-          create: (_) => ReadProvider(id: bookId),
+          create: (_) => ReadProvider(id: widget.bookId),
         ),
         ChangeNotifierProvider<ReadStatusProvider>(
           create: (_) => ReadStatusProvider(),
@@ -40,7 +51,8 @@ class ReadPage extends StatelessWidget {
           for (var idx = 0; idx < readProvider.dataSource.pages.length; idx++) {
             var pageEntity = readProvider.dataSource.pages[idx];
             mapping.add(offset);
-            offset += (pageEntity.height / pageEntity.width) * size.width + 16.0;
+            offset +=
+                (pageEntity.height / pageEntity.width) * size.width + 16.0;
           }
           return mapping;
         }
@@ -52,26 +64,39 @@ class ReadPage extends StatelessWidget {
           for (var idx = 0; idx < readProvider.dataSource.pages.length; idx++) {
             final pageKey = GlobalKey();
             final pageEntity = readProvider.dataSource.pages[idx];
-            pages.add(Padding(
+            pages.add(Container(
                 key: pageKey,
                 padding: EdgeInsets.only(top: 16),
                 child: ImagePage(
                   page: pageEntity,
                   height: ((pageEntity.height / pageEntity.width) * size.width),
+                  width: size.width,
                 )));
             pageKeyMapping[idx] = pageKey;
             readProvider.loadedPage.add(idx);
           }
+          print("render ${pages.length} pages");
           return pages;
         }
 
         ScrollController _controller = new ScrollController();
         _controller.addListener(() {
+          // hide app bar
+          if (_controller.position.userScrollDirection ==
+                  ScrollDirection.reverse &&
+              isShowAppBar) {
+            setState(() {
+              isShowAppBar = false;
+            });
+          }
           final maxScroll = _controller.position.maxScrollExtent;
           final pixel = _controller.offset;
           final pageStartMapping = _buildPageStartMapping();
-          final pos = pageStartMapping
+          var pos = pageStartMapping
               .indexWhere((offset) => offset > _controller.position.pixels);
+          if (pos == -1) {
+            pos = pageStartMapping.length;
+          }
           Provider.of<ReadStatusProvider>(context, listen: false)
               .updateCurrentDisplayPage(pos);
           var sliderState = sliderKey.currentState;
@@ -82,12 +107,14 @@ class ReadPage extends StatelessWidget {
           } else {}
         });
         return Scaffold(
+          appBar: this.isShowAppBar ? AppBar() : null,
+          extendBodyBehindAppBar: true,
           body: Stack(
             children: <Widget>[
               SingleChildScrollView(
                 controller: _controller,
                 child: Column(
-                  children: <Widget>[...buildPages()],
+                  children: buildPages(),
                 ),
               ),
               Align(
@@ -135,6 +162,11 @@ class ReadPage extends StatelessWidget {
                                     ),
                                   );
                                 });
+                          },
+                          onTap: () {
+                            setState(() {
+                              this.isShowAppBar = true;
+                            });
                           },
                           child: SizedBox(
                             child: Padding(

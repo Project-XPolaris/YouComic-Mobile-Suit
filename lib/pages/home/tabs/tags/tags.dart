@@ -6,6 +6,8 @@ import 'package:youcomic/pages/home/tabs/tags/provider.dart';
 import 'package:youcomic/pages/tag/tag.dart';
 import 'package:youcomic/util/icon.dart';
 
+import '../../../../menu.dart';
+
 class TagsPage extends StatelessWidget {
   final TagsProvider externalTagProvider;
   TagsPage({required this.externalTagProvider});
@@ -28,9 +30,10 @@ class TagsPage extends StatelessWidget {
         }
 
         return Scaffold(
+            appBar: renderAppBar(context),
             body: RefreshIndicator(
               onRefresh: _pullToRefresh,
-              child: ListView.separated(
+              child: ListView.builder(
                   controller: _controller,
                   itemBuilder: (itemContext, idx) {
                     final TagEntity tag = provider.dataSource.tags[idx];
@@ -38,13 +41,12 @@ class TagsPage extends StatelessWidget {
                         title: Text(tag.getName()),
                         subtitle: Text(tag.getType()),
                         leading: CircleAvatar(
-                          child: Icon(selectIconByTagType(tag.getType())),
+                          backgroundColor: Theme.of(context).colorScheme.primaryContainer,
+                          child: Icon(selectIconByTagType(tag.getType()),color: Theme.of(context).colorScheme.onPrimaryContainer,),
 
                         ),
                         onTap: () => TagPage.launch(context, tag));
                   },
-                  separatorBuilder: (BuildContext context, int index) =>
-                      Divider(),
                   itemCount: provider.dataSource.tags.length),
             ));
       }),

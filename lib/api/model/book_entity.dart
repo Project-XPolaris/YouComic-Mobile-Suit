@@ -37,4 +37,12 @@ class BookEntity {
   String? getBookCover(){
     return getRealThumbnailCover(this.id, this.cover);
   }
+  String get displayAuthor {
+    for (TagEntity tag in tags) {
+      if (tag.type == "artist") {
+        return tag.name ?? "Unknown";
+      }
+    }
+    return "Unknown";
+  }
 }

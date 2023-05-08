@@ -39,9 +39,7 @@ class _TextInputBottomSheetState extends State<TextInputBottomSheet> {
                         });
                       },
                     ),
-                    RaisedButton(
-                      elevation: 0,
-                      color: Colors.blue,
+                    ElevatedButton(
                       onPressed: inputText.length != 0 ? () {this.widget.onOk(inputText);} : null,
                       child: Text(widget.buttonText,style: TextStyle(color: Colors.white),),
                     )

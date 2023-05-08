@@ -22,7 +22,7 @@ class CollectionItem extends StatelessWidget {
                 padding: EdgeInsets.only(right: 16),
                 child: CircleAvatar(
                   child: Icon(
-                    Icons.folder,
+                    Icons.folder_rounded,
                   ),
                 ),
               ),

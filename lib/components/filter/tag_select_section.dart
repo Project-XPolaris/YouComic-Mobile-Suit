@@ -20,13 +20,14 @@ class TagSelectFilterSection extends StatelessWidget {
   Widget build(BuildContext context) {
     return FilterSection(
       title: title,
-      showDivider: true,
+      showDivider: false,
       child: Wrap(
         children: <Widget>[
           ...items.map(
             (tag) => Padding(
                 padding: EdgeInsets.only(right: 8,bottom: 8),
                 child: ChoiceChip(
+                  selectedColor: Theme.of(context).colorScheme.primaryContainer,
                   label: Text(tag.name),
                   onSelected: (isSelected) {
                     tag.onActiveChange(tag.key, isSelected);

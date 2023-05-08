@@ -32,8 +32,7 @@ class HistoryPage extends StatelessWidget {
           await provider.onForceReload();
         }
 
-        Widget listView = ListView.separated(
-          separatorBuilder: (BuildContext context, int index) => Divider(height: 0,),
+        Widget listView = ListView.builder(
           itemCount: provider.dataSource.data.length,
           physics: AlwaysScrollableScrollPhysics(),
           controller: _controller,
@@ -55,7 +54,7 @@ class HistoryPage extends StatelessWidget {
                   content: Text('已删除'),
                   duration: Duration(seconds: 1),
                 );
-                Scaffold.of(context).showSnackBar(snackBar);
+                ScaffoldMessenger.of(context).showSnackBar(snackBar);
               },
               child: Container(
                 padding: EdgeInsets.all(8),
@@ -68,12 +67,14 @@ class HistoryPage extends StatelessWidget {
         );
         return Scaffold(
           appBar: AppBar(
-            automaticallyImplyLeading: false,
-            // Here we take the value from the MyHomePage object that was created by
-            // the App.build method, and use it to set our appbar title.
             title: Text(
               "浏览历史",
-              style: TextStyle(color: Colors.black87),
+            ),
+            leading: IconButton(
+              icon: Icon(Icons.arrow_back_rounded),
+              onPressed: () {
+                Navigator.pop(context);
+              },
             ),
           ),
           body: RefreshIndicator(
@@ -81,9 +82,8 @@ class HistoryPage extends StatelessWidget {
             child: provider.dataSource.data.isEmpty?EmptyView(
               isLoading: provider.isLoading,
               icon: Icon(
-                Icons.history,
+                Icons.history_rounded,
                 size: 96,
-                color: Colors.black26,
               ),
               text: "没有历史记录",
               onRefresh: (){

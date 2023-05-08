@@ -1,11 +1,17 @@
 import 'package:flutter/widgets.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:youcomic/config/application.dart';
 import 'package:youcomic/datasource/tags.dart';
 
 class SubscribeProvider with ChangeNotifier {
   TagDataSource dataSource = new TagDataSource();
   bool first = true;
-
+  Map<String,String?> _getExtraParams(){
+    return{
+      "subscription": ApplicationConfig().uid,
+      "page_size":"100"
+    };
+  }
   onLoadMore() async {
     await dataSource.loadMore();
     notifyListeners();
@@ -19,8 +25,7 @@ class SubscribeProvider with ChangeNotifier {
   onLoad() async {
     if (first) {
       first = false;
-      SharedPreferences prefs = await SharedPreferences.getInstance();
-      dataSource.extraQueryParam = {"subscription": prefs.getInt("uid")};
+      dataSource.extraQueryParam = _getExtraParams();
       await dataSource.loadTags(true);
       notifyListeners();
     }

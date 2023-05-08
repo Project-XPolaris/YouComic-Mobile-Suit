@@ -9,7 +9,7 @@ class CollectionDataSource {
 
   bool hasMore = true;
   int page = 1;
-  int pageSize = 10;
+  int pageSize = 20;
   bool isLoading = false;
   Map<String, dynamic> extraQueryParam = {};
 

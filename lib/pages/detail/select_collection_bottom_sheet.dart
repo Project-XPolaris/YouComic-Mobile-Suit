@@ -28,7 +28,7 @@ class SelectCollectionBottomSheet extends StatelessWidget {
           return ListTile(
             title: Text(entity.getName()),
             leading: CircleAvatar(
-              child: Icon(Icons.folder),
+              child: Icon(Icons.folder_rounded),
             ),
             onTap: onItemClick,
             trailing: entity.contain ? Text("已存在") : null,

@@ -24,6 +24,8 @@ class HomeBookListFilterDrawer extends StatelessWidget {
           onTimeRangeChange: bookProvider.bookFilter.onTimeRangeChange,
           onClearCustomTimeRange: bookProvider.bookFilter.onClearTimeRange,
           timeRangeSelectMode: bookProvider.bookFilter.timeRangeSelect,
+          onPageRangeChange: bookProvider.bookFilter.updatePageRange,
+          pageRangeSelectId: bookProvider.bookFilter.pageRangeItem.id,
         );
       }),
     );

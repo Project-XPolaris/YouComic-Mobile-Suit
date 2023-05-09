@@ -95,25 +95,24 @@ class TagPage extends StatelessWidget {
             ),
           ),
           endDrawer: Drawer(
-            child: Builder(
-              builder: (context) {
-                return BookFilterDrawer(
-                  onClose: () {
-                    Navigator.pop(context);
-                  },
-                  onOrderUpdate: tagProvider.bookFilter.updateOrderFilter,
-                  activeOrders: tagProvider.bookFilter.orderFilter,
-                  onCustomTimeRangeChange:
-                      tagProvider.bookFilter.updateCustomDateRange,
-                  customTimeRange: tagProvider.bookFilter.customDateRange,
-                  onTimeRangeChange: tagProvider.bookFilter.onTimeRangeChange,
-                  onClearCustomTimeRange: tagProvider.bookFilter.onClearTimeRange,
-                  timeRangeSelectMode: tagProvider.bookFilter.timeRangeSelect,
-                );
-              }
-            ),
+            child: Builder(builder: (context) {
+              return BookFilterDrawer(
+                onClose: () {
+                  Navigator.pop(context);
+                },
+                onOrderUpdate: tagProvider.bookFilter.updateOrderFilter,
+                activeOrders: tagProvider.bookFilter.orderFilter,
+                onCustomTimeRangeChange:
+                    tagProvider.bookFilter.updateCustomDateRange,
+                customTimeRange: tagProvider.bookFilter.customDateRange,
+                onTimeRangeChange: tagProvider.bookFilter.onTimeRangeChange,
+                onClearCustomTimeRange: tagProvider.bookFilter.onClearTimeRange,
+                timeRangeSelectMode: tagProvider.bookFilter.timeRangeSelect,
+                onPageRangeChange: tagProvider.bookFilter.updatePageRange,
+                pageRangeSelectId: tagProvider.bookFilter.pageRangeItem.id,
+              );
+            }),
           ),
-
           body: tagProvider.bookDataSource.books.isEmpty
               ? emptyView
               : renderContent(),

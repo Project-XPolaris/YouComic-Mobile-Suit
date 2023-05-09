@@ -10,7 +10,8 @@ class BooksView extends StatelessWidget {
   final List<BookEntity> books;
   final String viewMode;
   final ScrollController? controller;
-  const BooksView({Key? key,required this.books,required this.viewMode,this.controller}) : super(key: key);
+  final int itemWidth;
+  const BooksView({Key? key,required this.books,required this.viewMode,this.controller,this.itemWidth = 180}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -48,6 +49,7 @@ class BooksView extends StatelessWidget {
       books: books,
       controller: controller,
       onLongPress: onBookLongPress,
+      itemWidth: itemWidth,
     );
   }
 }

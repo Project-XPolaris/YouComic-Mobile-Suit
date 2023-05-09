@@ -13,10 +13,16 @@ class TagProvider extends ChangeNotifier {
   BookDataSource bookDataSource = new BookDataSource();
   var isFirst = true;
   SubscribeStatus? subscribeStatus = null;
-  String viewMode = ApplicationConfig().TagBooksView;
+  late String viewMode;
   BookFilter bookFilter = new BookFilter();
-  TagProvider({required this.tag}){
-    this.bookFilter.onUpdate = () {
+  final VIEW_MODE_KEY = "tag/book/viewMode";
+  TagProvider({required this.tag}) {
+    if (ApplicationConfig().data.containsKey(VIEW_MODE_KEY)) {
+      viewMode = ApplicationConfig().data[VIEW_MODE_KEY];
+    } else {
+      viewMode = ApplicationConfig().width > 600 ? "Grid" : "List";
+    }
+    bookFilter.onUpdate = () {
       onLoad(force: true);
     };
   }
@@ -32,7 +38,7 @@ class TagProvider extends ChangeNotifier {
     }
     isFirst = false;
     title = "标签：${tag.name}";
-    bookDataSource.extraQueryParam = {"tag": tag.id,...bookFilter.getParams()};
+    bookDataSource.extraQueryParam = {"tag": tag.id, ...bookFilter.getParams()};
     await bookDataSource.loadBooks(force);
     notifyListeners();
   }
@@ -64,7 +70,10 @@ class TagProvider extends ChangeNotifier {
     if (ApplicationConfig().uid == null) {
       return;
     }
-    final response = await ApiClient().fetchTags({"subscription": int.parse(ApplicationConfig().uid ?? "0"), "id": tag.id});
+    final response = await ApiClient().fetchTags({
+      "subscription": int.parse(ApplicationConfig().uid ?? "0"),
+      "id": tag.id
+    });
     final count = response.data["count"];
     if (count > 0) {
       this.subscribeStatus = SubscribeStatus.Subscribed;
@@ -73,9 +82,10 @@ class TagProvider extends ChangeNotifier {
     }
     notifyListeners();
   }
+
   changeViewMode(String value) {
     this.viewMode = value;
-    ApplicationConfig().updateTagBooksView(value);
+    ApplicationConfig().updateConfig(VIEW_MODE_KEY, value);
     notifyListeners();
   }
 }

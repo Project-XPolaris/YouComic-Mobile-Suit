@@ -29,14 +29,13 @@ class HomePage extends StatelessWidget {
               child: Wrap(
               children: [
                 ...homeProvider.tagDataSource.tags.map((e) => Padding(
-                      padding: EdgeInsets.only(right: 8),
+                      padding: EdgeInsets.only(right: 8,bottom: 8),
                       child: ActionChip(
                         avatar: Icon(selectIconByTagType(e.type)),
                         label: Text(e.name ?? ""),
                         onPressed: () {
                          TagPage.launch(context, e);
                         }
-
                       ),
                     ))
               ],

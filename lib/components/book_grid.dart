@@ -9,9 +9,10 @@ class BookGrid extends StatelessWidget {
   final List<BookEntity> books;
   final ScrollController? controller;
   final Function(BookEntity book)? onLongPress;
+  final int itemWidth;
 
   const BookGrid(
-      {Key? key, required this.books, this.controller, this.onLongPress})
+      {Key? key, required this.books, this.controller, this.onLongPress,this.itemWidth = 180})
       : super(key: key);
 
   @override
@@ -24,8 +25,8 @@ class BookGrid extends StatelessWidget {
               onLongPress: onLongPress,
             ))
       ],
-      itemWidth: 220,
-      aspectRatio: 180 / (220 + 16 + 16 + 8),
+      itemWidth: itemWidth,
+      aspectRatio: 9 / 16,
       controller: controller,
     );
   }
@@ -45,15 +46,11 @@ class BookGridItem extends StatelessWidget {
         DetailPage.launch(context, book);
       },
       child: Container(
-        width: 180,
-        height: 220 + 16 + 16 + 8,
-        padding: EdgeInsets.all(0),
+        padding: EdgeInsets.only(bottom: 16),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Container(
-              width: 180,
-              height: 220,
+            Expanded(
               child: Center(
                 child: ClipRRect(
                   child: Image.network(
@@ -67,7 +64,7 @@ class BookGridItem extends StatelessWidget {
               ),
             ),
             Container(
-              margin: EdgeInsets.only(top: 8),
+              margin: EdgeInsets.only(top: 4),
               height: 16,
               child: Text(
                 book.name,
@@ -76,11 +73,43 @@ class BookGridItem extends StatelessWidget {
               ),
             ),
             Container(
+              margin: EdgeInsets.only(top: 4),
               height: 16,
               child: Text(
                 book.displayAuthor,
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
+                style: TextStyle(color: Theme.of(context).colorScheme.onBackground.withOpacity(0.5),fontSize: 12),
+              ),
+            ),
+            Container(
+              height: 16,
+              margin: EdgeInsets.only(top: 4),
+              child: Text(
+                  book.displayTheme,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  style: TextStyle(color: Theme.of(context).colorScheme.onBackground.withOpacity(0.5),fontSize: 12)
+              ),
+            ),
+            Container(
+              height: 16,
+              margin: EdgeInsets.only(top: 4),
+              child: Text(
+                  book.displaySeries,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  style: TextStyle(color: Theme.of(context).colorScheme.onBackground.withOpacity(0.5),fontSize: 12)
+              ),
+            ),
+            Container(
+              height: 16,
+              margin: EdgeInsets.only(top: 4),
+              child: Text(
+                  "${book.pageCount}P",
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  style: TextStyle(color: Theme.of(context).colorScheme.onBackground.withOpacity(0.5),fontSize: 12)
               ),
             )
           ],

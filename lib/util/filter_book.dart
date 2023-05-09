@@ -1,10 +1,12 @@
 import 'package:intl/intl.dart';
+import 'package:youcomic/components/filter/range_save_filter.dart';
 
 class BookFilter {
   List<String> orderFilter = ["-id"];
   List<DateTime>? customDateRange;
   String? timeRangeSelect = null;
   bool random = false;
+  RangeItem pageRangeItem = RangeItem(id: "all", max: null, min: null);
   Function()? onUpdate;
 
 
@@ -63,6 +65,10 @@ class BookFilter {
     orderFilter = newFilter;
     onUpdate?.call();
   }
+  updatePageRange(RangeItem item) {
+    pageRangeItem = item;
+    onUpdate?.call();
+  }
 
   Map<String,dynamic> getParams() {
     Map<String, String> param = {};
@@ -70,6 +76,14 @@ class BookFilter {
       param["random"] = "1";
     } else {
       param["order"] = orderFilter[0];
+    }
+    if (pageRangeItem.id != "all") {
+      if (pageRangeItem.min != null) {
+        param["pageMin"] = pageRangeItem.min.toString();
+      }
+      if (pageRangeItem.max != null) {
+        param["pageMax"] = pageRangeItem.max.toString();
+      }
     }
     return {...param, ..._getTimeRange()};
   }

@@ -9,6 +9,7 @@ class BookEntity {
   late String name ;
   String? cover;
   List<TagEntity> tags = [];
+  late int pageCount;
 
   BookEntity(
       {this.id,
@@ -33,6 +34,7 @@ class BookEntity {
         tags.add(new TagEntity.fromJson(v));
       });
     }
+    pageCount = json['pageCount'];
   }
   String? getBookCover(){
     return getRealThumbnailCover(this.id, this.cover);
@@ -40,6 +42,22 @@ class BookEntity {
   String get displayAuthor {
     for (TagEntity tag in tags) {
       if (tag.type == "artist") {
+        return tag.name ?? "Unknown";
+      }
+    }
+    return "Unknown";
+  }
+  String get displayTheme {
+    for (TagEntity tag in tags) {
+      if (tag.type == "theme") {
+        return tag.name ?? "Unknown";
+      }
+    }
+    return "Unknown";
+  }
+  String get displaySeries {
+    for (TagEntity tag in tags) {
+      if (tag.type == "series") {
         return tag.name ?? "Unknown";
       }
     }

@@ -42,7 +42,7 @@ class BookEntity {
   String get displayAuthor {
     for (TagEntity tag in tags) {
       if (tag.type == "artist") {
-        return tag.name ?? "Unknown";
+        return tag.name ?? "Unknown Artist";
       }
     }
     return "Unknown";
@@ -50,7 +50,7 @@ class BookEntity {
   String get displayTheme {
     for (TagEntity tag in tags) {
       if (tag.type == "theme") {
-        return tag.name ?? "Unknown";
+        return tag.name ?? "Unknown Theme";
       }
     }
     return "Unknown";
@@ -58,9 +58,9 @@ class BookEntity {
   String get displaySeries {
     for (TagEntity tag in tags) {
       if (tag.type == "series") {
-        return tag.name ?? "Unknown";
+        return tag.name ?? "Unknown Series";
       }
     }
-    return "Unknown";
+    return "Unknown Series";
   }
 }

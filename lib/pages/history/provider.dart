@@ -22,7 +22,6 @@ class HistoryProvider with ChangeNotifier {
   onLoad() async {
     if (first) {
       isLoading = true;
-      notifyListeners();
       first = false;
       dataSource.extraQueryParam = {};
       await dataSource.loadData(true);

@@ -1,3 +1,4 @@
+
 import 'package:flutter/material.dart';
 import 'package:youcomic/api/client.dart';
 import 'package:youcomic/api/model/book_entity.dart';
@@ -46,25 +47,30 @@ class BookGridItem extends StatelessWidget {
         DetailPage.launch(context, book);
       },
       child: Container(
-        padding: EdgeInsets.only(bottom: 16),
+        decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(8),
+            color: Theme.of(context).colorScheme.secondaryContainer.withAlpha(20)),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Expanded(
-              child: Center(
-                child: ClipRRect(
-                  child: Image.network(
-                    book.cover ?? "",
-                    fit: BoxFit.contain,
-                    headers: {"Authorization": "${ApiClient().token}"},
-                    // height: 180 * StandardPageRatio,
+              child: Container(
+                padding: EdgeInsets.all(16),
+                child: Center(
+                  child: ClipRRect(
+                    child: Image.network(
+                      book.cover ?? "",
+                      fit: BoxFit.contain,
+                      headers: {"Authorization": "${ApiClient().token}"},
+                      // height: 180 * StandardPageRatio,
+                    ),
+                    borderRadius: BorderRadius.circular(8),
                   ),
-                  borderRadius: BorderRadius.circular(8),
                 ),
               ),
             ),
             Container(
-              margin: EdgeInsets.only(top: 4),
+              margin: EdgeInsets.only(top: 8,left: 16,right: 16),
               height: 16,
               child: Text(
                 book.name,
@@ -73,18 +79,18 @@ class BookGridItem extends StatelessWidget {
               ),
             ),
             Container(
-              margin: EdgeInsets.only(top: 4),
+              margin: EdgeInsets.only(top: 4,left: 16,right: 16),
               height: 16,
               child: Text(
                 book.displayAuthor,
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
-                style: TextStyle(color: Theme.of(context).colorScheme.onBackground.withOpacity(0.5),fontSize: 12),
+                style: TextStyle(color: Theme.of(context).colorScheme.onBackground.withOpacity(0.5),fontSize: 13),
               ),
             ),
             Container(
               height: 16,
-              margin: EdgeInsets.only(top: 4),
+              margin: EdgeInsets.only(top: 4,left: 16,right: 16),
               child: Text(
                   book.displayTheme,
                   maxLines: 1,
@@ -94,7 +100,7 @@ class BookGridItem extends StatelessWidget {
             ),
             Container(
               height: 16,
-              margin: EdgeInsets.only(top: 4),
+              margin: EdgeInsets.only(left: 16,right: 16),
               child: Text(
                   book.displaySeries,
                   maxLines: 1,
@@ -104,7 +110,7 @@ class BookGridItem extends StatelessWidget {
             ),
             Container(
               height: 16,
-              margin: EdgeInsets.only(top: 4),
+              margin: EdgeInsets.only(left: 16,right: 16,bottom: 8),
               child: Text(
                   "${book.pageCount}P",
                   maxLines: 1,

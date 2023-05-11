@@ -4,6 +4,7 @@ class HistoryEntity {
   int? id;
   int? userId;
   int? bookId;
+  late int pagePos;
   String? createdAt;
   BookEntity? book;
 
@@ -13,6 +14,7 @@ class HistoryEntity {
     id = json['id'];
     userId = json['user_id'];
     bookId = json['book_id'];
+    pagePos = json['page_pos'];
     createdAt = json['created_at'];
     if (json.containsKey("book")) {
       book = BookEntity.fromJson(json['book']);

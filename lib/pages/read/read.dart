@@ -6,17 +6,21 @@ import 'package:youcomic/pages/read/page.dart';
 import 'package:youcomic/pages/read/slider.dart';
 import 'package:youcomic/pages/read/status_provider.dart';
 import 'package:youcomic/pages/read/provider.dart';
-import 'package:youcomic/pages/tag/color.dart';
 
 class ReadPage extends StatefulWidget {
   final int bookId;
+  final String title;
 
-  ReadPage({required this.bookId});
+  ReadPage({required this.bookId, required this.title});
 
-  static launch(BuildContext context, int id) {
+  static launch(BuildContext context, int id, String title) {
     Navigator.push(
       context,
-      MaterialPageRoute(builder: (context) => ReadPage(bookId: id)),
+      MaterialPageRoute(
+          builder: (context) => ReadPage(
+                bookId: id,
+                title: title,
+              )),
     );
   }
 
@@ -26,6 +30,9 @@ class ReadPage extends StatefulWidget {
 
 class _ReadPageState extends State<ReadPage> {
   bool isShowAppBar = true;
+  ScrollController _controller = new ScrollController();
+  double sidePadding = 120;
+  double? pageSliderVal;
 
   @override
   Widget build(BuildContext context) {
@@ -35,7 +42,7 @@ class _ReadPageState extends State<ReadPage> {
           create: (_) => ReadProvider(id: widget.bookId),
         ),
         ChangeNotifierProvider<ReadStatusProvider>(
-          create: (_) => ReadStatusProvider(),
+          create: (_) => ReadStatusProvider(bookId: widget.bookId),
         ),
       ],
       child: Consumer<ReadProvider>(builder: (context, readProvider, builder) {
@@ -51,8 +58,8 @@ class _ReadPageState extends State<ReadPage> {
           for (var idx = 0; idx < readProvider.dataSource.pages.length; idx++) {
             var pageEntity = readProvider.dataSource.pages[idx];
             mapping.add(offset);
-            offset +=
-                (pageEntity.height / pageEntity.width) * size.width + 16.0;
+            offset += (pageEntity.aspectRatio * size.width) -
+                (sidePadding * 2 * pageEntity.aspectRatio);
           }
           return mapping;
         }
@@ -66,25 +73,22 @@ class _ReadPageState extends State<ReadPage> {
             final pageEntity = readProvider.dataSource.pages[idx];
             pages.add(Container(
                 key: pageKey,
-                padding: EdgeInsets.only(top: 16),
+                padding: EdgeInsets.only(
+                    bottom: 16, left: sidePadding, right: sidePadding),
                 child: ImagePage(
                   page: pageEntity,
-                  height: ((pageEntity.height / pageEntity.width) * size.width),
-                  width: size.width,
+                  height: (pageEntity.aspectRatio * size.width) -
+                      (sidePadding * 2 * pageEntity.aspectRatio),
                 )));
             pageKeyMapping[idx] = pageKey;
             readProvider.loadedPage.add(idx);
           }
-          print("render ${pages.length} pages");
           return pages;
         }
 
-        ScrollController _controller = new ScrollController();
         _controller.addListener(() {
           // hide app bar
-          if (_controller.position.userScrollDirection ==
-                  ScrollDirection.reverse &&
-              isShowAppBar) {
+          if (isShowAppBar) {
             setState(() {
               isShowAppBar = false;
             });
@@ -97,8 +101,12 @@ class _ReadPageState extends State<ReadPage> {
           if (pos == -1) {
             pos = pageStartMapping.length;
           }
-          Provider.of<ReadStatusProvider>(context, listen: false)
-              .updateCurrentDisplayPage(pos);
+          ReadStatusProvider provider =
+              Provider.of<ReadStatusProvider>(context, listen: false);
+          if (pos != provider.currentDisplayPage) {
+            provider.updateCurrentDisplayPage(pos);
+            provider.saveReadProgress(pos);
+          }
           var sliderState = sliderKey.currentState;
           if (sliderState != null) {
             sliderState.onSliderValueChange(pos.toDouble());
@@ -107,82 +115,184 @@ class _ReadPageState extends State<ReadPage> {
           } else {}
         });
         return Scaffold(
-          appBar: this.isShowAppBar ? AppBar() : null,
+          appBar: this.isShowAppBar
+              ? AppBar(
+                  title: Text(widget.title),
+                  backgroundColor: Colors.black.withAlpha(200),
+                )
+              : null,
           extendBodyBehindAppBar: true,
           body: Stack(
             children: <Widget>[
               SingleChildScrollView(
                 controller: _controller,
                 child: Column(
-                  children: buildPages(),
+                  children: [
+                    ...buildPages(),
+                    Builder(builder: (context) {
+                      if (readProvider.hasJumpToPage &&
+                          readProvider.historyEntity != null &&
+                          readProvider.historyEntity!.pagePos > 0) {
+                        final pageStartMapping = _buildPageStartMapping();
+                        _controller.animateTo(
+                            pageStartMapping[
+                                readProvider.historyEntity!.pagePos - 1],
+                            duration: Duration(milliseconds: 1),
+                            curve: Curves.fastOutSlowIn);
+                        readProvider.hasJumpToPage = false;
+                      }
+                      return Container();
+                    })
+                  ],
                 ),
               ),
-              Align(
-                  alignment: Alignment.bottomRight,
-                  child: Consumer<ReadStatusProvider>(
-                      builder: (context, readStatusProvider, builder) {
-                    return Container(
-                        color: Colors.black87,
-                        child: GestureDetector(
-                          onLongPress: () {
-                            HapticFeedback.vibrate();
-                            showGeneralDialog(
-                                context: context,
-                                barrierColor: Colors.black54,
-                                pageBuilder: (context, anim1, anim2) {
-                                  return Container();
-                                },
-                                barrierLabel: '',
-                                barrierDismissible: true,
-                                transitionDuration: Duration(milliseconds: 300),
-                                transitionBuilder:
-                                    (context, anim1, anim2, child) {
-                                  final curvedValue =
-                                      Curves.ease.transform(anim1.value) - 1.0;
-                                  return Transform(
-                                    transform: Matrix4.translationValues(
-                                        -curvedValue * 200, 0.0, 0.0),
-                                    child: PageJumpSlider(
-                                      key: sliderKey,
-                                      pages: readProvider.dataSource.pages,
-                                      initValue: readStatusProvider
-                                          .currentDisplayPage
-                                          .toDouble(),
-                                      count: readProvider.dataSource.count,
-                                      onValueSubmit: (double to) {
-                                        final pageStartMapping =
-                                            _buildPageStartMapping();
-                                        _controller.animateTo(
-                                            pageStartMapping[to.toInt() - 1],
-                                            duration: Duration(seconds: 1),
-                                            curve: Curves.fastOutSlowIn);
-                                        readStatusProvider.switchPageJumper();
-                                        Navigator.pop(context);
-                                      },
-                                    ),
-                                  );
+              !isShowAppBar
+                  ? Align(
+                      alignment: Alignment.bottomRight,
+                      child: Consumer<ReadStatusProvider>(
+                          builder: (context, readStatusProvider, builder) {
+                        return Container(
+                            color: Colors.black87,
+                            child: GestureDetector(
+                              onLongPress: () {
+                                HapticFeedback.vibrate();
+                                showGeneralDialog(
+                                    context: context,
+                                    barrierColor: Colors.black54,
+                                    pageBuilder: (context, anim1, anim2) {
+                                      return Container();
+                                    },
+                                    barrierLabel: '',
+                                    barrierDismissible: true,
+                                    transitionDuration:
+                                        Duration(milliseconds: 300),
+                                    transitionBuilder:
+                                        (context, anim1, anim2, child) {
+                                      final curvedValue =
+                                          Curves.ease.transform(anim1.value) -
+                                              1.0;
+                                      return Transform(
+                                        transform: Matrix4.translationValues(
+                                            -curvedValue * 200, 0.0, 0.0),
+                                        child: PageJumpSlider(
+                                          key: sliderKey,
+                                          pages: readProvider.dataSource.pages,
+                                          initValue: readStatusProvider
+                                              .currentDisplayPage
+                                              .toDouble(),
+                                          count: readProvider.dataSource.count,
+                                          onValueSubmit: (double to) {
+                                            final pageStartMapping =
+                                                _buildPageStartMapping();
+                                            _controller.animateTo(
+                                                pageStartMapping[
+                                                    to.toInt() - 1],
+                                                duration: Duration(seconds: 1),
+                                                curve: Curves.fastOutSlowIn);
+                                            readStatusProvider
+                                                .switchPageJumper();
+                                            Navigator.pop(context);
+                                          },
+                                        ),
+                                      );
+                                    });
+                              },
+                              onTap: () {
+                                setState(() {
+                                  this.isShowAppBar = true;
                                 });
-                          },
-                          onTap: () {
-                            setState(() {
-                              this.isShowAppBar = true;
-                            });
-                          },
-                          child: SizedBox(
-                            child: Padding(
-                              padding: EdgeInsets.only(
-                                  top: 2, left: 16, right: 16, bottom: 2),
-                              child: Text(
-                                "第${readStatusProvider.currentDisplayPage}页,共${readProvider.dataSource.count}页",
-                                textAlign: TextAlign.end,
-                                style: TextStyle(color: Colors.white),
+                              },
+                              child: SizedBox(
+                                child: Padding(
+                                  padding: EdgeInsets.only(
+                                      top: 2, left: 16, right: 16, bottom: 2),
+                                  child: Text(
+                                    "第${readStatusProvider.currentDisplayPage}页,共${readProvider.dataSource.count}页",
+                                    textAlign: TextAlign.end,
+                                    style: TextStyle(color: Colors.white),
+                                  ),
+                                ),
+                              ),
+                            ));
+                      }))
+                  : Container(),
+            ],
+          ),
+          extendBody: true,
+          bottomNavigationBar: this.isShowAppBar
+              ? Consumer<ReadStatusProvider>(
+                  builder: (context, readStatusProvider, builder) {
+                  return (Container(
+                      height: 64,
+                      padding: EdgeInsets.only(left: 16, right: 16),
+                      color: Colors.black.withAlpha(200),
+                      child: Row(
+                        children: [
+                          Container(
+                            height: 64,
+                            child: Row(
+                              children: [
+                                Icon(Icons.width_normal),
+                                Container(
+                                  width: 160,
+                                  child: Slider(
+                                      max: 0.6,
+                                      value: sidePadding /
+                                          (MediaQuery.of(context).size.width -
+                                              300),
+                                      onChanged: (val) {
+                                        setState(() {
+                                          sidePadding = (MediaQuery.of(context)
+                                                      .size
+                                                      .width -
+                                                  300) *
+                                              val;
+                                        });
+                                      }),
+                                )
+                              ],
+                            ),
+                          ),
+                          Expanded(
+                            child: Container(
+                              child: Slider(
+                                min: 1,
+                                max: readProvider.dataSource.count.toDouble() == 0? 2 : readProvider.dataSource.count.toDouble(),
+                                divisions: readProvider.dataSource.count == 0? 1 : readProvider.dataSource.count,
+                                value: pageSliderVal != null
+                                    ? pageSliderVal ?? 0
+                                    : readStatusProvider.currentDisplayPage
+                                        .toDouble(),
+                                onChanged: (val) {
+                                  setState(() {
+                                    pageSliderVal = val;
+                                  });
+                                },
+                                onChangeEnd: (val) {
+                                  final pageStartMapping =
+                                      _buildPageStartMapping();
+                                  _controller.animateTo(
+                                      pageStartMapping[
+                                          (val.round() - 1).toInt()],
+                                      duration: Duration(milliseconds: 200),
+                                      curve: Curves.fastOutSlowIn);
+                                  setState(() {
+                                    pageSliderVal = null;
+                                  });
+                                },
+                                label:
+                                    "${pageSliderVal != null ? pageSliderVal!.round().toString() : readStatusProvider.currentDisplayPage.toString()}页",
                               ),
                             ),
                           ),
-                        ));
-                  })),
-            ],
-          ),
+                          Container(
+                            child: Text(
+                                "第${readStatusProvider.currentDisplayPage}页,共${readProvider.dataSource.count}页 ${(readStatusProvider.currentDisplayPage / readProvider.dataSource.count * 100).toStringAsFixed(0)}%"),
+                          )
+                        ],
+                      )));
+                })
+              : null,
         );
       }),
     );

@@ -39,7 +39,7 @@ class DetailPage extends StatelessWidget {
           if (id == null) {
             return;
           }
-          ReadPage.launch(context, id);
+          ReadPage.launch(context, id,book.name);
         }
 
         var tags = detailProvider.tags

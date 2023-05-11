@@ -15,7 +15,6 @@ class ImagePage extends StatelessWidget {
   final double height;
   final double? width;
   final Color? color;
-  final double imageWidth;
 
   ImagePage({
     required this.page,
@@ -23,7 +22,6 @@ class ImagePage extends StatelessWidget {
     required this.height,
     this.width,
     this.color,
-    this.imageWidth = 0.0,
   });
 
   @override
@@ -36,13 +34,13 @@ class ImagePage extends StatelessWidget {
         ));
     return Consumer<ReadStatusProvider>(
         builder: (context, readStatusProvider, builder) {
-      return (readStatusProvider.currentDisplayPage - page.order!).abs() < 3 ||
+      return (readStatusProvider.currentDisplayPage - page.order!).abs() < 100 ||
               readStatusProvider.currentDisplayPage == -1
           ? Image.network(
             page.path!,
-            width: imageWidth != 0 ? imageWidth : width,
+            width: width,
             height: height,
-            fit: imageWidth != 0 ? BoxFit.none : BoxFit.fitWidth,
+            fit: BoxFit.fitWidth,
             headers: {"Authorization": ApiClient().token},
             // loadingBuilder: (context, child, progress) {
             //   return pagePlacement;

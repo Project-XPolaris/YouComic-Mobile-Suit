@@ -35,6 +35,7 @@ dependencies:
   sqflite: ^2.1.0
   path: ^1.8.2
   file: ^6.1.4
+  easy_debounce: ^2.0.3
   youui:
     git: https://github.com/Project-XPolaris/YouUI.git
 

@@ -46,26 +46,28 @@ class BookListPage extends StatelessWidget {
               }, icon: Icon(Icons.filter_alt)),
               PopupMenuButton(
                 icon: Icon(Icons.more_vert_rounded),
-                itemBuilder: (BuildContext context) {
-                  return [
-                    PopupMenuItem(
+                itemBuilder: (BuildContext context) => [
+                    PopupMenuItem<String>(
                       child: Text("List"),
                       value: "List",
                     ),
-                    PopupMenuItem(
+                    PopupMenuItem<String>(
+                      child: Text("List"),
+                      value: "List",
+                    ),
+                    PopupMenuItem<String>(
                       child: Text("Large Grid"),
                       value: "LargeGrid",
                     ),
-                    PopupMenuItem(
+                    PopupMenuItem<String>(
                       child: Text("Medium Grid"),
                       value: "MediumGrid",
                     ),
-                    PopupMenuItem(
+                    PopupMenuItem<String>(
                       child: Text("Small Grid"),
                       value: "SmallGrid",
                     ),
-                  ];
-                },
+                  ],
                 onSelected: (value) {
                   switch (value) {
                     case "List":

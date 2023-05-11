@@ -33,4 +33,6 @@ class PageEntity {
     return data;
   }
 
+  double get aspectRatio => height / width;
+
 }

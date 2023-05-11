@@ -157,4 +157,10 @@ class ApiClient {
         data: {"books": bookIds},
         options: Options(headers: {"Authorization": token}));
   }
+
+  createHistory({required int bookId,int pagePos = 0}){
+    return dio.post("$baseUrl/histories",
+        data: {"bookId": bookId,"pagePos":pagePos},
+        options: Options(headers: {"Authorization": token}));
+  }
 }

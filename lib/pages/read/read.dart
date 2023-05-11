@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
+import 'package:youcomic/config/application.dart';
 import 'package:youcomic/pages/read/page.dart';
 import 'package:youcomic/pages/read/slider.dart';
 import 'package:youcomic/pages/read/status_provider.dart';
@@ -10,29 +11,42 @@ import 'package:youcomic/pages/read/provider.dart';
 class ReadPage extends StatefulWidget {
   final int bookId;
   final String title;
+  final PAGE_WIDTH_CONFIG_KEY = "read/pageWidth";
+  double screenWidth;
 
-  ReadPage({required this.bookId, required this.title});
+  ReadPage({required this.bookId, required this.title, this.screenWidth = 0.0});
 
   static launch(BuildContext context, int id, String title) {
     Navigator.push(
       context,
       MaterialPageRoute(
-          builder: (context) => ReadPage(
+          builder: (context) =>
+              ReadPage(
                 bookId: id,
                 title: title,
+                screenWidth: MediaQuery
+                    .of(context)
+                    .size
+                    .width,
               )),
     );
   }
 
   @override
-  State<ReadPage> createState() => _ReadPageState();
+  State<ReadPage> createState() => _ReadPageState(screenWidth);
 }
 
 class _ReadPageState extends State<ReadPage> {
   bool isShowAppBar = true;
   ScrollController _controller = new ScrollController();
-  double sidePadding = 120;
+  late double sidePadding;
+
   double? pageSliderVal;
+
+  _ReadPageState(double screenWidth) {
+    sidePadding = screenWidth *
+        ApplicationConfig().getOrDefault("read/pageWidth", 0.0) / 2;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -52,7 +66,9 @@ class _ReadPageState extends State<ReadPage> {
           if (readProvider.dataSource.pages.length == 0) {
             return [];
           }
-          final size = MediaQuery.of(context).size;
+          final size = MediaQuery
+              .of(context)
+              .size;
           var offset = 0.0;
           final List<double> mapping = [];
           for (var idx = 0; idx < readProvider.dataSource.pages.length; idx++) {
@@ -67,7 +83,9 @@ class _ReadPageState extends State<ReadPage> {
         final Map<int, GlobalKey> pageKeyMapping = {};
         buildPages() {
           final List<Widget> pages = [];
-          final size = MediaQuery.of(context).size;
+          final size = MediaQuery
+              .of(context)
+              .size;
           for (var idx = 0; idx < readProvider.dataSource.pages.length; idx++) {
             final pageKey = GlobalKey();
             final pageEntity = readProvider.dataSource.pages[idx];
@@ -102,7 +120,7 @@ class _ReadPageState extends State<ReadPage> {
             pos = pageStartMapping.length;
           }
           ReadStatusProvider provider =
-              Provider.of<ReadStatusProvider>(context, listen: false);
+          Provider.of<ReadStatusProvider>(context, listen: false);
           if (pos != provider.currentDisplayPage) {
             provider.updateCurrentDisplayPage(pos);
             provider.saveReadProgress(pos);
@@ -111,15 +129,14 @@ class _ReadPageState extends State<ReadPage> {
           if (sliderState != null) {
             sliderState.onSliderValueChange(pos.toDouble());
           }
-          if (maxScroll == pixel) {
-          } else {}
+          if (maxScroll == pixel) {} else {}
         });
         return Scaffold(
           appBar: this.isShowAppBar
               ? AppBar(
-                  title: Text(widget.title),
-                  backgroundColor: Colors.black.withAlpha(200),
-                )
+            title: Text(widget.title),
+            backgroundColor: Colors.black.withAlpha(200),
+          )
               : null,
           extendBodyBehindAppBar: true,
           body: Stack(
@@ -136,7 +153,7 @@ class _ReadPageState extends State<ReadPage> {
                         final pageStartMapping = _buildPageStartMapping();
                         _controller.animateTo(
                             pageStartMapping[
-                                readProvider.historyEntity!.pagePos - 1],
+                            readProvider.historyEntity!.pagePos - 1],
                             duration: Duration(milliseconds: 1),
                             curve: Curves.fastOutSlowIn);
                         readProvider.hasJumpToPage = false;
@@ -148,9 +165,9 @@ class _ReadPageState extends State<ReadPage> {
               ),
               !isShowAppBar
                   ? Align(
-                      alignment: Alignment.bottomRight,
-                      child: Consumer<ReadStatusProvider>(
-                          builder: (context, readStatusProvider, builder) {
+                  alignment: Alignment.bottomRight,
+                  child: Consumer<ReadStatusProvider>(
+                      builder: (context, readStatusProvider, builder) {
                         return Container(
                             color: Colors.black87,
                             child: GestureDetector(
@@ -165,7 +182,7 @@ class _ReadPageState extends State<ReadPage> {
                                     barrierLabel: '',
                                     barrierDismissible: true,
                                     transitionDuration:
-                                        Duration(milliseconds: 300),
+                                    Duration(milliseconds: 300),
                                     transitionBuilder:
                                         (context, anim1, anim2, child) {
                                       final curvedValue =
@@ -183,10 +200,10 @@ class _ReadPageState extends State<ReadPage> {
                                           count: readProvider.dataSource.count,
                                           onValueSubmit: (double to) {
                                             final pageStartMapping =
-                                                _buildPageStartMapping();
+                                            _buildPageStartMapping();
                                             _controller.animateTo(
                                                 pageStartMapping[
-                                                    to.toInt() - 1],
+                                                to.toInt() - 1],
                                                 duration: Duration(seconds: 1),
                                                 curve: Curves.fastOutSlowIn);
                                             readStatusProvider
@@ -207,7 +224,9 @@ class _ReadPageState extends State<ReadPage> {
                                   padding: EdgeInsets.only(
                                       top: 2, left: 16, right: 16, bottom: 2),
                                   child: Text(
-                                    "第${readStatusProvider.currentDisplayPage}页,共${readProvider.dataSource.count}页",
+                                    "第${readStatusProvider
+                                        .currentDisplayPage}页,共${readProvider
+                                        .dataSource.count}页",
                                     textAlign: TextAlign.end,
                                     style: TextStyle(color: Colors.white),
                                   ),
@@ -221,77 +240,103 @@ class _ReadPageState extends State<ReadPage> {
           extendBody: true,
           bottomNavigationBar: this.isShowAppBar
               ? Consumer<ReadStatusProvider>(
-                  builder: (context, readStatusProvider, builder) {
-                  return (Container(
-                      height: 64,
-                      padding: EdgeInsets.only(left: 16, right: 16),
-                      color: Colors.black.withAlpha(200),
-                      child: Row(
-                        children: [
-                          Container(
-                            height: 64,
-                            child: Row(
-                              children: [
-                                Icon(Icons.width_normal),
-                                Container(
-                                  width: 160,
-                                  child: Slider(
-                                      max: 0.6,
-                                      value: sidePadding /
-                                          (MediaQuery.of(context).size.width -
-                                              300),
-                                      onChanged: (val) {
-                                        setState(() {
-                                          sidePadding = (MediaQuery.of(context)
-                                                      .size
-                                                      .width -
-                                                  300) *
+              builder: (context, readStatusProvider, builder) {
+                return (Container(
+                    height: 64,
+                    padding: EdgeInsets.only(left: 16, right: 16),
+                    color: Colors.black.withAlpha(200),
+                    child: Row(
+                      children: [
+                        Container(
+                          height: 64,
+                          child: Row(
+                            children: [
+                              Icon(Icons.width_normal),
+                              Container(
+                                width:
+                                MediaQuery
+                                    .of(context)
+                                    .size
+                                    .width * 0.2,
+                                child: Slider(
+                                  max: 0.6,
+                                  value: sidePadding /
+                                      (MediaQuery
+                                          .of(context)
+                                          .size
+                                          .width -
+                                          300),
+                                  onChanged: (val) {
+                                    setState(() {
+                                      sidePadding =
+                                          (MediaQuery
+                                              .of(context)
+                                              .size
+                                              .width -
+                                              300) *
                                               val;
-                                        });
-                                      }),
-                                )
-                              ],
+                                    });
+                                  },
+                                  onChangeEnd: (val) {
+                                    ApplicationConfig().updateConfig(
+                                        widget.PAGE_WIDTH_CONFIG_KEY, val);
+                                  },
+                                ),
+                              )
+                            ],
+                          ),
+                        ),
+                        Expanded(
+                          child: Container(
+                            child: Slider(
+                              min: 1,
+                              max: readProvider.dataSource.count.toDouble() ==
+                                  0
+                                  ? 2
+                                  : readProvider.dataSource.count.toDouble(),
+                              divisions: readProvider.dataSource.count == 0
+                                  ? 1
+                                  : readProvider.dataSource.count,
+                              value: pageSliderVal != null
+                                  ? pageSliderVal ?? 0
+                                  : readStatusProvider.currentDisplayPage
+                                  .toDouble(),
+                              onChanged: (val) {
+                                setState(() {
+                                  pageSliderVal = val;
+                                });
+                              },
+                              onChangeEnd: (val) {
+                                final pageStartMapping =
+                                _buildPageStartMapping();
+                                _controller.animateTo(
+                                    pageStartMapping[
+                                    (val.round() - 1).toInt()],
+                                    duration: Duration(milliseconds: 200),
+                                    curve: Curves.fastOutSlowIn);
+                                setState(() {
+                                  pageSliderVal = null;
+                                });
+                              },
+                              label:
+                              "${pageSliderVal != null ? pageSliderVal!.round()
+                                  .toString() : readStatusProvider
+                                  .currentDisplayPage.toString()}页",
                             ),
                           ),
-                          Expanded(
-                            child: Container(
-                              child: Slider(
-                                min: 1,
-                                max: readProvider.dataSource.count.toDouble() == 0? 2 : readProvider.dataSource.count.toDouble(),
-                                divisions: readProvider.dataSource.count == 0? 1 : readProvider.dataSource.count,
-                                value: pageSliderVal != null
-                                    ? pageSliderVal ?? 0
-                                    : readStatusProvider.currentDisplayPage
-                                        .toDouble(),
-                                onChanged: (val) {
-                                  setState(() {
-                                    pageSliderVal = val;
-                                  });
-                                },
-                                onChangeEnd: (val) {
-                                  final pageStartMapping =
-                                      _buildPageStartMapping();
-                                  _controller.animateTo(
-                                      pageStartMapping[
-                                          (val.round() - 1).toInt()],
-                                      duration: Duration(milliseconds: 200),
-                                      curve: Curves.fastOutSlowIn);
-                                  setState(() {
-                                    pageSliderVal = null;
-                                  });
-                                },
-                                label:
-                                    "${pageSliderVal != null ? pageSliderVal!.round().toString() : readStatusProvider.currentDisplayPage.toString()}页",
-                              ),
-                            ),
-                          ),
-                          Container(
-                            child: Text(
-                                "第${readStatusProvider.currentDisplayPage}页,共${readProvider.dataSource.count}页 ${(readStatusProvider.currentDisplayPage / readProvider.dataSource.count * 100).toStringAsFixed(0)}%"),
-                          )
-                        ],
-                      )));
-                })
+                        ),
+                        Container(
+                          child: Text(
+                              "第${readStatusProvider
+                                  .currentDisplayPage}页,共${readProvider
+                                  .dataSource.count}页 ${(readStatusProvider
+                                  .currentDisplayPage /
+                                  readProvider.dataSource.count * 100)
+                                  .toStringAsFixed(0)}%"),
+                        )
+                      ],
+                    )));
+              })
               : null,
         );
       }),

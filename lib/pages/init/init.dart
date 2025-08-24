@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:youcomic/init.dart';
+import 'package:youcomic/main.dart';
 import 'package:youcomic/pages/start/StartPage.dart';
 
 class InitPage extends StatelessWidget {
@@ -7,20 +8,23 @@ class InitPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder(builder: (context, snapshot) {
-      if (snapshot.connectionState == ConnectionState.done) {
+    return FutureBuilder<bool>(
+      future: initApp(context),
+      builder: (context, snapshot) {
+        if (snapshot.connectionState != ConnectionState.done) {
+          return const SizedBox.shrink();
+        }
+        final bool isAuthed = snapshot.data == true;
         WidgetsBinding.instance.addPostFrameCallback((_) {
           Navigator.pushReplacement(
             context,
             MaterialPageRoute(
-                builder: (context) =>
-                    StartPage(
-                    )),
+              builder: (context) => isAuthed ? MyHomePage() : StartPage(),
+            ),
           );
         });
-        return Container();
-      }
-      return Container();
-    },future: initApp(context),);
+        return const SizedBox.shrink();
+      },
+    );
   }
 }

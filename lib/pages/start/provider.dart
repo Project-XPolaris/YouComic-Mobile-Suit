@@ -85,7 +85,7 @@ class StartProvider extends ChangeNotifier {
         MaterialPageRoute(builder: (context) => MyHomePage()),
       );
     } on DioError catch (e) {
-      if (e.type == DioErrorType.response) {
+      if (e.type == DioExceptionType.badResponse) {
         ApiResponse apiError = ApiResponse.fromDioError(e);
         ScaffoldMessenger.of(context).showSnackBar(SnackBar(
           content: Text(apiError.reason ?? ""),

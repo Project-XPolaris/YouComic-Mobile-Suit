@@ -16,8 +16,8 @@ class ApiClient {
   static ApiClient? _instance;
 
   ApiClient._() {
-    dio.options.connectTimeout = 50000; //5s
-    dio.options.receiveTimeout = 30000;
+    dio.options.connectTimeout = Duration(seconds: 5); //5s
+    dio.options.receiveTimeout = Duration(seconds: 3);
   }
 
   static ApiClient _client() {

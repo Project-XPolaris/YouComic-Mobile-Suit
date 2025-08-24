@@ -14,7 +14,7 @@ description: YouComic client
 version: 1.0.0+1
 
 environment:
-  sdk: ">=2.12.0 <3.4.0"
+  sdk: ">=3.3.0 <4.0.0"
 
 dependencies:
   flutter:
@@ -24,17 +24,13 @@ dependencies:
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.5
-  settings_ui: ^2.0.2
-  provider: ^6.0.3
-  dio: ^4.0.0
-  shared_preferences: ^2.0.15
-  intl: ^0.17.0
-  cached_network_image: ^3.2.2
-  flutter_cache_manager: ^3.3.0
-  characters: ^1.2.1
-  sqflite: ^2.1.0
-  path: ^1.8.2
-  file: ^6.1.4
+  provider:  ^6.0.5
+  dio: ^5.3.2
+  shared_preferences: ^2.2.1
+  intl: ^0.20.2
+  cached_network_image: ^3.3.1
+  sqflite: ^2.2.8+4
+  path: ^1.8.3
   easy_debounce: ^2.0.3
   youui:
     git: https://github.com/Project-XPolaris/YouUI.git
@@ -42,7 +38,7 @@ dependencies:
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  flutter_launcher_icons: ^0.10.0
+  flutter_launcher_icons: ^0.14.4
 
 flutter_icons:
   android: true

@@ -57,6 +57,10 @@ List<Widget> renderAction(TagProvider provider) {
           )
       );
       break;
+    case null:
+
+    case SubscribeStatus.Unknown:
+
   }
   var actions = <Widget>[
     // overflow menu
